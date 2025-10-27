@@ -52,7 +52,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         title: 'Rol',
                         type: 'basic',
                         icon: 'heroicons_outline:identification',
-                        link: '/configuraciones/rol',
+                        link: '/configuracion/roles',
                     },
                 ],
             },
@@ -138,7 +138,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-    
+
     {
         id: '3',
         title: 'OPERACIÓN',
