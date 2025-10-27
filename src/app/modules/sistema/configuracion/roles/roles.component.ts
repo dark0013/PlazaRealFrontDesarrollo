@@ -125,5 +125,7 @@ export class RolesComponent {
         });
     }
 
-    guardarDatos(data: any, opcion: string) {}
+    guardarDatos(data: any, opcion: string) {
+        
+    }
 }
