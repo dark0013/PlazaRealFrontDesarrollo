@@ -14,6 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { FuseDrawerService } from '@fuse/components/drawer';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
@@ -48,7 +49,8 @@ export class UserComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
-        private _userService: UserService
+        private _userService: UserService,
+        private _fuseDrawerService: FuseDrawerService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -108,5 +110,14 @@ export class UserComponent implements OnInit, OnDestroy {
      */
     signOut(): void {
         this._router.navigate(['/sign-out']);
+    }
+
+    toggleSettingsDrawer(): void {
+        const drawer = this._fuseDrawerService.getComponent('settingsDrawer');
+        if (drawer) {
+            drawer.toggle();
+        } else {
+            console.warn('settingsDrawer no está registrado todavía');
+        }
     }
 }

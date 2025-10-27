@@ -50,15 +50,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         private _fusePlatformService: FusePlatformService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
-        // Set the theme and scheme based on the configuration
         combineLatest([
             this._fuseConfigService.config$,
             this._fuseMediaWatcherService.onMediaQueryChange$([
@@ -74,9 +66,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
                         theme: config.theme,
                     };
 
-                    // If the scheme is set to 'auto'...
                     if (config.scheme === 'auto') {
-                        // Decide the scheme using the media query
                         options.scheme = mql.breakpoints[
                             '(prefers-color-scheme: dark)'
                         ]
@@ -88,45 +78,36 @@ export class LayoutComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe((options) => {
-                // Store the options
                 this.scheme = options.scheme;
                 this.theme = options.theme;
 
-                // Update the scheme and theme
                 this._updateScheme();
                 this._updateTheme();
             });
 
-        // Subscribe to config changes
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: FuseConfig) => {
-                // Store the config
                 this.config = config;
 
-                // Update the layout
                 this._updateLayout();
             });
 
-        // Subscribe to NavigationEnd event
         this._router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this._unsubscribeAll)
             )
             .subscribe(() => {
-                // Update the layout
                 this._updateLayout();
             });
 
-        // Set the app version
         this._renderer2.setAttribute(
             this._document.querySelector('[ng-version]'),
             'fuse-version',
             FUSE_VERSION
         );
 
-        // Set the OS name
         this._renderer2.addClass(
             this._document.body,
             this._fusePlatformService.osName
@@ -154,6 +135,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
         let route = this._activatedRoute;
         while (route.firstChild) {
             route = route.firstChild;
+        }
+
+        if (!this.config) {
+            return;
         }
 
         // 1. Set the layout from the config
