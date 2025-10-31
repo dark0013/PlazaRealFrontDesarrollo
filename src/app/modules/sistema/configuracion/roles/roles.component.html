@@ -48,7 +48,7 @@
                             matInput
                             [autocomplete]="'off'"
                             [placeholder]="'Filtrar Tabla'"
-                            (keyup)="aplicarFiltro($event)"
+                            (keyup)="applyFilter($event)"
                         />
                     </mat-form-field>
 
@@ -56,7 +56,7 @@
                         class="ml-4"
                         mat-flat-button
                         [color]="'accent'"
-                        (click)="openDialogCrud(null, 'N')"
+                        (click)="openDialogCrud(null, 'new-register')"
                     >
                         <mat-icon
                             [svgIcon]="'heroicons_outline:plus'"
@@ -127,7 +127,7 @@
                                         mat-icon-button
                                         color="accent"
                                         title="Ver Más Información"
-                                        (click)="openDialogCrud(element, 'I')"
+                                        (click)="openDialogCrud(element, 'information')"
                                     >
                                         <mat-icon>info</mat-icon>
                                     </button>
@@ -136,7 +136,7 @@
                                         mat-icon-button
                                         color="primary"
                                         title="Editar Registro"
-                                        (click)="openDialogCrud(element, 'E')"
+                                        (click)="openDialogCrud(element, 'update')"
                                     >
                                         <mat-icon>mode_edit</mat-icon>
                                     </button>
@@ -147,7 +147,7 @@
                                         *ngIf="element.state === true"
                                         title="Inactivar Registro"
                                         (click)="
-                                            abrirDialogConfirmation(
+                                            openConfirmationDialog(
                                                 element,
                                                 'EL'
                                             )
@@ -161,7 +161,7 @@
                                         color="#EA0029"
                                         *ngIf="element.state === false"
                                         (click)="
-                                            abrirDialogConfirmation(
+                                            openConfirmationDialog(
                                                 element,
                                                 'AC'
                                             )

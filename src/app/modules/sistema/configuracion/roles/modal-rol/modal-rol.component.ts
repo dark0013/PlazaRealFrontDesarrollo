@@ -1,6 +1,6 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule, NgClass } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { RoleService } from 'app/services/system/configuration/role.service';
 
 @Component({
     selector: 'app-modal-rol',
@@ -43,49 +44,48 @@ import { MatTableModule } from '@angular/material/table';
     templateUrl: './modal-rol.component.html',
     styleUrl: './modal-rol.component.scss',
 })
-export class ModalRolComponent {
-    formFieldHelpers: string[] = [''];
-    accountForm: UntypedFormGroup;
+export class ModalRolComponent implements OnInit {
+    dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dialogRef: MatDialogRef<any>,
         private _formBuilder: UntypedFormBuilder,
+        private _roleService: RoleService
     ) {
-        this.accountForm = this._formBuilder.group({
-            nombre: [this.data ? this.data.NOMBRE : '', Validators.required],
-            descripcion: [this.data ? this.data.DESCRIPCION : ''],
+        this.dataFormDinamicModal = this._formBuilder.group({
+            name: [this.data ? this.data.name : '', Validators.required],
+            description: [this.data ? this.data.description : ''],
         });
-
-        console.table(data);
-        this.initAcciones(data);
+        console.log(this.data);
+    }
+    ngOnInit(): void {
+        this.initAction(this.data);
     }
 
-    initAcciones(data?: any) {
+    initAction(data?: any) {
         if (data != null) {
-            if (data.accion == 'I') {
+            if (data.accion == 'information') {
                 this.readonlyMode = true;
             } else {
                 this.readonlyMode = false;
             }
         }
-        console.log(this.readonlyMode);
     }
 
-    guardarDatos() {
-        if (this.accountForm.valid) {
-            let opcion: string;
-            if (this.data != null) {
-                if (this.data.accion == 'I') {
-                    opcion = 'IN';
-                } else {
-                    opcion = 'AC';
-                }
+    saveData() {
+        if (this.dataFormDinamicModal.valid) {
+            if (this.data == null) {
+                this._roleService
+                    .create(this.dataFormDinamicModal.value)
+                    .subscribe();
             } else {
-                opcion = 'IN';
+                this._roleService
+                    .update(this.data.id, this.dataFormDinamicModal.value)
+                    .subscribe();
             }
-         
+
             this._dialogRef.close(null);
         }
     }

@@ -7,7 +7,7 @@
 <hr />
 <div mat-dialog-content>
     <div class="w-full">
-        <form [formGroup]="accountForm">
+        <form [formGroup]="dataFormDinamicModal">
             <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
                 <div class="sm:col-span-2">
                     <mat-form-field
@@ -15,17 +15,23 @@
                         [subscriptSizing]="'dynamic'"
                     >
                         <mat-label>Nombre</mat-label>
-                        <!-- <mat-icon class="icon-size-5" svgIcon="heroicons_outline:information-circle" matPrefix></mat-icon> -->
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'nombre'"
+                            [formControlName]="'name'"
                             matInput
                             [readonly]="readonlyMode"
                         />
+                        @if (
+                            dataFormDinamicModal
+                                .get('name')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
                     </mat-form-field>
                 </div>
 
@@ -34,14 +40,14 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Descripción (Opcional)</mat-label>
+                        <mat-label>Descripción</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'descripcion'"
+                            [formControlName]="'description'"
                             matInput
                             [readonly]="readonlyMode"
                         />
@@ -65,7 +71,7 @@
             mat-flat-button
             type="button"
             [color]="'primary'"
-            (click)="guardarDatos()"
+            (click)="saveData()"
         >
             <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
         </button>

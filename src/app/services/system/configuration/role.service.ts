@@ -9,11 +9,11 @@ import { BehaviorSubject, delay, Observable, of } from 'rxjs';
 })
 export class RoleService {
     private readonly baseUrl = `${environment.securityService}/roles`;
+    // private readonly baseUrl = `https://690419fad0f10a340b26b43f.mockapi.io/api/generico/role`;
 
     // Flag para usar mock data
-    private useMock = true;
+    private useMock = false;
 
-    // Datos simulados
     private roles: Role[] = [
         { id: 1, name: 'Admin', description: 'Administrador', state: true },
         { id: 2, name: 'User', description: 'Usuario normal', state: true },
@@ -68,6 +68,19 @@ export class RoleService {
         return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
     }
 
+    activate(id: number, changes: Partial<Role>): Observable<Role> {
+        if (this.useMock) {
+            return this.toggleState(id);
+        }
+        return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
+    }
+
+    deActivate(id: number, changes: Partial<Role>): Observable<Role> {
+        if (this.useMock) {
+            return this.toggleState(id);
+        }
+        return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
+    }
     // ---------- DELETE ----------
     delete(id: number): Observable<void> {
         if (this.useMock) {

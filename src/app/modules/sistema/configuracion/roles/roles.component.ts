@@ -72,7 +72,7 @@ export class RolesComponent {
         this.dataSource.sort = this.sort;
     }
 
-    aplicarFiltro(e: any) {
+    applyFilter(e: any) {
         this.dataSource.filter = e.target.value.trim().toLowerCase();
     }
 
@@ -89,24 +89,8 @@ export class RolesComponent {
         });
     }
 
-    abrirDialogConfirmation(dato?: any, action?: string) {
-        const actionDes = action === 'AC' ? 'Activar' : 'Inactivar';
-        const colorAcc = action === 'AC' ? 'primary' : 'warn';
-
-        this._alertService
-            .confirmacionSimple(
-                `¿Está seguro que desea ${actionDes} el registro?`,
-                colorAcc
-            )
-            .subscribe((res) => {
-                if (res === 'confirmed') {
-                    this.guardarDatos(dato, action);
-                }
-            });
-    }
-
     openDialogCrud(datoParamOpci?: any, accion?: string) {
-        if (accion != 'N') {
+        if (accion != 'new-register') {
             datoParamOpci.accion = accion;
         }
 
@@ -125,7 +109,36 @@ export class RolesComponent {
         });
     }
 
-    guardarDatos(data: any, opcion: string) {
-        
+    openConfirmationDialog(data?: any, action?: string) {
+        const actionDes = action === 'AC' ? 'Activar' : 'Inactivar';
+        const colorAcc = action === 'AC' ? 'primary' : 'warn';
+
+        this._alertService
+            .confirmacionSimple(
+                `¿Está seguro que desea ${actionDes} el registro?`,
+                colorAcc
+            )
+            .subscribe((res) => {
+                if (res === 'confirmed') {
+                    this.updateState(data, action);
+                }
+            });
+    }
+
+    updateState(data: any, opcion: string) {
+        this._roleService.toggleState(data.id).subscribe({
+            next: (resp) => {
+                // actualiza tu lista en pantalla
+                //this.loadRoles(); // o actualiza local
+            },
+            error: (err) => console.error(err),
+        });
+
+        /* const newState = opcion === 'AC'; // true = activar, false = inactivar
+
+        this._roleService.update(data.id, { estado: newState }).subscribe({
+            next: () => this.loadRoles(),
+            error: (err) => console.error(err),
+        }); */
     }
 }
