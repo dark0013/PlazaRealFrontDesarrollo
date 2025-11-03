@@ -68,18 +68,18 @@ export class RoleService {
         return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
     }
 
-    activate(id: number, changes: Partial<Role>): Observable<Role> {
+    activate(id: number): Observable<Role> {
         if (this.useMock) {
             return this.toggleState(id);
         }
-        return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
+        return this.http.patch<Role>(`${this.baseUrl}/${id}/active`, {});
     }
 
-    deActivate(id: number, changes: Partial<Role>): Observable<Role> {
+    deActivate(id: number): Observable<Role> {
         if (this.useMock) {
             return this.toggleState(id);
         }
-        return this.http.put<Role>(`${this.baseUrl}/${id}`, changes);
+        return this.http.patch<Role>(`${this.baseUrl}/${id}/deactive`, {});
     }
     // ---------- DELETE ----------
     delete(id: number): Observable<void> {

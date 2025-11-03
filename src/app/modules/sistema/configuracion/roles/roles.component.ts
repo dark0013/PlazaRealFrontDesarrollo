@@ -126,19 +126,28 @@ export class RolesComponent {
     }
 
     updateState(data: any, opcion: string) {
-        this._roleService.toggleState(data.id).subscribe({
+        /*  this._roleService.toggleState(data.id).subscribe({
             next: (resp) => {
                 // actualiza tu lista en pantalla
                 //this.loadRoles(); // o actualiza local
             },
             error: (err) => console.error(err),
-        });
-
-        /* const newState = opcion === 'AC'; // true = activar, false = inactivar
-
-        this._roleService.update(data.id, { estado: newState }).subscribe({
-            next: () => this.loadRoles(),
-            error: (err) => console.error(err),
         }); */
+
+        if (opcion === 'activate') {
+            this._roleService.activate(data.id).subscribe({
+                next: (resp) => {
+                    this.loadAllData();
+                },
+                error: (err) => console.error(err),
+            });
+        } else {
+            this._roleService.deActivate(data.id).subscribe({
+                next: (resp) => {
+                    this.loadAllData();
+                },
+                error: (err) => console.error(err),
+            });
+        }
     }
 }

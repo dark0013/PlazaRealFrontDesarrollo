@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { RoleService } from 'app/services/system/configuration/role.service';
 
@@ -40,6 +41,7 @@ import { RoleService } from 'app/services/system/configuration/role.service';
         MatOptionModule,
         MatChipsModule,
         MatDatepickerModule,
+        MatSnackBarModule,
     ],
     templateUrl: './modal-rol.component.html',
     styleUrl: './modal-rol.component.scss',
@@ -52,6 +54,7 @@ export class ModalRolComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dialogRef: MatDialogRef<any>,
         private _formBuilder: UntypedFormBuilder,
+        private _snackBar: MatSnackBar,
         private _roleService: RoleService
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
@@ -79,18 +82,35 @@ export class ModalRolComponent implements OnInit {
             if (this.data == null) {
                 this._roleService
                     .create(this.dataFormDinamicModal.value)
-                    .subscribe();
+                    .subscribe((resp) => {
+                        console.log(resp); //verificar con alain la respuesta
+                        this.showSnackbar('Rol creado correctamente', 'Cerrar');
+                    });
             } else {
                 this._roleService
                     .update(this.data.id, this.dataFormDinamicModal.value)
-                    .subscribe();
+                    .subscribe((resp) => {
+                        console.log(resp); //verificar con alain la respuesta
+                        this.showSnackbar(
+                            'Rol actualizado correctamente',
+                            'Cerrar'
+                        );
+                    });
             }
 
-            this._dialogRef.close(null);
+            this._dialogRef.close(this.dataFormDinamicModal.value);
         }
     }
 
     close() {
         this._dialogRef.close();
+    }
+
+    showSnackbar(mensaje: string, txtBoton: string = '') {
+        this._snackBar.open(mensaje, txtBoton, {
+            duration: 3000, // Duración en milisegundos (opcional)
+            horizontalPosition: 'center', // Posición horizontal ('start' | 'center' | 'end' | 'left' | 'right')
+            verticalPosition: 'bottom', // Posició vertical ('top' | 'bottom')
+        });
     }
 }
