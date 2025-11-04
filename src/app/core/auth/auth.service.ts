@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { environment } from 'app/environments/environment';
-import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private _authenticated: boolean = false;
+    //private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
     private readonly baseUrl = `${environment.securityService}/auth`;
@@ -20,6 +19,14 @@ export class AuthService {
         return localStorage.getItem('accessToken') ?? '';
     }
 
+    set authenticated(authenticated: string) {
+        localStorage.setItem('authenticated', authenticated);
+    }
+
+    get authenticated(): string {
+        return localStorage.getItem('authenticated');
+    }
+
     forgotPassword(email: string): Observable<any> {
         return this._httpClient.post('api/auth/forgot-password', email);
     }
@@ -29,16 +36,12 @@ export class AuthService {
     }
 
     signIn(credentials: { email: string; password: string }): Observable<any> {
-        if (this._authenticated) {
-            return throwError('User is already logged in.');
-        }
-
         //return this._httpClient.post('api/auth/sign-in', credentials).pipe(
         return this._httpClient.post(`${this.baseUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
                 this.accessToken = response.accessToken;
 
-                this._authenticated = true;
+                this.authenticated = "true";
 
                 this._userService.user = response.user;
 
@@ -48,34 +51,10 @@ export class AuthService {
         );
     }
 
-    signInUsingToken(): Observable<any> {
-        return this._httpClient
-            .post('api/auth/sign-in-with-token', {
-                accessToken: this.accessToken,
-            })
-            .pipe(
-                catchError(() =>
-                    of(false)
-                ),
-                switchMap((response: any) => {
-                    
-                    if (response.accessToken) {
-                        this.accessToken = response.accessToken;
-                    }
-
-                    this._authenticated = true;
-
-                    this._userService.user = response.user;
-
-                    return of(true);
-                })
-            );
-    }
-
     signOut(): Observable<any> {
         localStorage.removeItem('accessToken');
 
-        this._authenticated = false;
+        this.authenticated = "false";
 
         return of(true);
     }
@@ -97,7 +76,7 @@ export class AuthService {
     }
 
     check(): Observable<boolean> {
-        if (this._authenticated) {
+        if (this.authenticated === 'true') {
             return of(true);
         }
 
@@ -105,10 +84,13 @@ export class AuthService {
             return of(false);
         }
 
+        /* console.log(
+            'Is Token Expired:',
+            AuthUtils.isTokenExpired(this.accessToken)
+        );
         if (AuthUtils.isTokenExpired(this.accessToken)) {
             return of(false);
-        }
-
-        return this.signInUsingToken();
+        } */
+        return of(false);
     }
 }

@@ -15,7 +15,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { FuseAlertComponent } from '@fuse/components/alert';
 import { RoleService } from 'app/services/system/configuration/role.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
@@ -55,11 +54,6 @@ export class RolesComponent {
 
     ngOnInit(): void {
         this.loadAllData();
-        this._notificationService.show(
-            'error',
-            'Operación exitosa',
-            'El registro se guardó correctamente'
-        );
     }
 
     displayedColumns: string[] = [
@@ -85,14 +79,18 @@ export class RolesComponent {
     }
 
     loadAllData() {
-        //falta loading
         this.dataSource.data = null;
         this._roleService.getAll().subscribe({
             next: (data) => {
                 this.dataSource.data = data;
             },
             error: (err) => {
-                console.error('No se pudo cargar la lista de usuarios');
+                console.error('');
+                this._notificationService.show(
+                    'error',
+                    'Operación errónea',
+                    'No se pudo cargar la lista de usuarios'
+                );
             },
         });
     }
@@ -134,27 +132,33 @@ export class RolesComponent {
     }
 
     updateState(data: any, opcion: string) {
-        /*  this._roleService.toggleState(data.id).subscribe({
-            next: (resp) => {
-                // actualiza tu lista en pantalla
-                //this.loadRoles(); // o actualiza local
-            },
-            error: (err) => console.error(err),
-        }); */
-
         if (opcion === 'activate') {
             this._roleService.activate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
-                error: (err) => console.error(err),
+                error: (err) => {
+                    console.error(err);
+                    this._notificationService.show(
+                        'error',
+                        'Operación errónea',
+                        'No se pudo actualizar el estado del usuario'
+                    );
+                },
             });
         } else {
             this._roleService.deActivate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
-                error: (err) => console.error(err),
+                error: (err) => {
+                    console.error(err);
+                    this._notificationService.show(
+                        'error',
+                        'Operación errónea',
+                        'No se pudo actualizar el estado del usuario'
+                    );
+                },
             });
         }
     }
