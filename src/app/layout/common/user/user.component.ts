@@ -63,18 +63,6 @@ export class UserComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    updateUserStatus(status: string): void {
-        if (!this.user) {
-            return;
-        }
-
-        this._userService
-            .update({
-                ...this.user,
-                status,
-            })
-            .subscribe();
-    }
 
     signOut(): void {
         this._router.navigate(['/sign-out']);

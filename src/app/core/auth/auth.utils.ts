@@ -1,28 +1,9 @@
-// -----------------------------------------------------------------------------------------------------
-// @ AUTH UTILITIES
-//
-// Methods are derivations of the Auth0 Angular-JWT helper service methods
-// https://github.com/auth0/angular2-jwt
-// -----------------------------------------------------------------------------------------------------
-
 export class AuthUtils {
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Is token expired?
-     *
-     * @param token
-     * @param offsetSeconds
-     */
     static isTokenExpired(token: string, offsetSeconds?: number): boolean {
-        // Return if there is no token
         if (!token || token === '') {
             return true;
         }
 
-        // Get the expiration date
         const date = this._getTokenExpirationDate(token);
 
         offsetSeconds = offsetSeconds || 0;
@@ -31,21 +12,8 @@ export class AuthUtils {
             return true;
         }
 
-        // Check if the token is expired
         return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
     }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Private methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Base64 decoder
-     * Credits: https://github.com/atk
-     *
-     * @param str
-     * @private
-     */
     private static _b64decode(str: string): string {
         const chars =
             'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -59,35 +27,19 @@ export class AuthUtils {
             );
         }
 
-        /* eslint-disable */
         for (
-            // initialize result and counters
             let bc = 0, bs: any, buffer: any, idx = 0;
-            // get next character
             (buffer = str.charAt(idx++));
-            // character found in table? initialize bit storage and add its ascii value;
-            ~buffer &&
-            ((bs = bc % 4 ? bs * 64 + buffer : buffer),
-            // and if not first of each 4 characters,
-            // convert the first 8 bits to one ascii character
-            bc++ % 4)
+            ~buffer && ((bs = bc % 4 ? bs * 64 + buffer : buffer), bc++ % 4)
                 ? (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6))))
                 : 0
         ) {
-            // try to find character in table (0-63, not found => -1)
             buffer = chars.indexOf(buffer);
         }
-        /* eslint-enable */
 
         return output;
     }
 
-    /**
-     * Base64 unicode decoder
-     *
-     * @param str
-     * @private
-     */
     private static _b64DecodeUnicode(str: any): string {
         return decodeURIComponent(
             Array.prototype.map
@@ -100,12 +52,6 @@ export class AuthUtils {
         );
     }
 
-    /**
-     * URL Base 64 decoder
-     *
-     * @param str
-     * @private
-     */
     private static _urlBase64Decode(str: string): string {
         let output = str.replace(/-/g, '+').replace(/_/g, '/');
         switch (output.length % 4) {
@@ -127,19 +73,11 @@ export class AuthUtils {
         return this._b64DecodeUnicode(output);
     }
 
-    /**
-     * Decode token
-     *
-     * @param token
-     * @private
-     */
     private static _decodeToken(token: string): any {
-        // Return if there is no token
         if (!token) {
             return null;
         }
 
-        // Split the token
         const parts = token.split('.');
 
         if (parts.length !== 3) {
@@ -148,7 +86,6 @@ export class AuthUtils {
             );
         }
 
-        // Decode the token using the Base64 decoder
         const decoded = this._urlBase64Decode(parts[1]);
 
         if (!decoded) {
@@ -158,22 +95,13 @@ export class AuthUtils {
         return JSON.parse(decoded);
     }
 
-    /**
-     * Get token expiration date
-     *
-     * @param token
-     * @private
-     */
     private static _getTokenExpirationDate(token: string): Date | null {
-        // Get the decoded token
         const decodedToken = this._decodeToken(token);
 
-        // Return if the decodedToken doesn't have an 'exp' field
         if (!decodedToken.hasOwnProperty('exp')) {
             return null;
         }
 
-        // Convert the expiration date
         const date = new Date(0);
         date.setUTCSeconds(decodedToken.exp);
 
