@@ -67,13 +67,12 @@
 <div class="flex w-full min-w-0 flex-auto flex-col">
     <!-- Header -->
     <div
-        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow dark:border-b dark:bg-transparent dark:shadow-none md:px-6 print:hidden"
+        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow md:px-6 dark:border-b dark:bg-transparent dark:shadow-none print:hidden"
     >
         <!-- Navigation toggle button -->
         <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
-
 
         <!-- Components -->
         <div class="ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
@@ -85,12 +84,17 @@
     <div class="flex flex-auto flex-col">
         @if (true) {
             <router-outlet></router-outlet>
+            <app-notification></app-notification>
         }
+
     </div>
 
     <!-- Footer -->
-   <div class="relative flex flex-0 items-center justify-start w-full h-14 px-4 md:px-6 z-49 border-t bg-card dark:bg-transparent print:hidden">
-        <span class="font-medium text-secondary">Fundación Plaza Real &copy; {{currentYear}}</span>
+    <div
+        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 md:px-6 dark:bg-transparent print:hidden"
+    >
+        <span class="text-secondary font-medium"
+            >Fundación Plaza Real &copy; {{ currentYear }}</span
+        >
     </div>
 </div>
-

@@ -1,0 +1,13 @@
+@if (visible) {
+    <div class="alert-container">
+        <fuse-alert
+            [type]="type"
+            [appearance]="'outline'"
+            [dismissible]="true"
+            (dismissed)="close()"
+        >
+            <span fuseAlertTitle>{{ title }}</span>
+            {{ message }}
+        </fuse-alert>
+    </div>
+}

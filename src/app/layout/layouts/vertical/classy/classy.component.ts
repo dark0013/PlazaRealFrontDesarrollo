@@ -15,6 +15,7 @@ import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { NotificationsComponent } from 'app/layout/common/notifications/notifications.component';
 import { UserComponent } from 'app/layout/common/user/user.component';
+import { NotificationComponent } from 'app/shared/components/notification/notification.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -30,6 +31,7 @@ import { Subject, takeUntil } from 'rxjs';
         MatButtonModule,
         FuseFullscreenComponent,
         RouterOutlet,
+        NotificationComponent,
     ],
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy {

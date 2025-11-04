@@ -127,7 +127,12 @@
                                         mat-icon-button
                                         color="accent"
                                         title="Ver Más Información"
-                                        (click)="openDialogCrud(element, 'information')"
+                                        (click)="
+                                            openDialogCrud(
+                                                element,
+                                                'information'
+                                            )
+                                        "
                                     >
                                         <mat-icon>info</mat-icon>
                                     </button>
@@ -136,7 +141,9 @@
                                         mat-icon-button
                                         color="primary"
                                         title="Editar Registro"
-                                        (click)="openDialogCrud(element, 'update')"
+                                        (click)="
+                                            openDialogCrud(element, 'update')
+                                        "
                                     >
                                         <mat-icon>mode_edit</mat-icon>
                                     </button>
@@ -200,4 +207,4 @@
     </div>
 </div>
 
-<!-- <app-notificacion></app-notification> -->
+

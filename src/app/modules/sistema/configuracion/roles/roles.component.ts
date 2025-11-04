@@ -15,8 +15,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { FuseAlertComponent } from '@fuse/components/alert';
 import { RoleService } from 'app/services/system/configuration/role.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
+import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalRolComponent } from './modal-rol/modal-rol.component';
 
 @Component({
@@ -47,11 +49,17 @@ export class RolesComponent {
     constructor(
         private _dialog: MatDialog,
         private _roleService: RoleService,
-        private _alertService: AlertService
+        private _alertService: AlertService,
+        private _notificationService: NotificationService
     ) {}
 
     ngOnInit(): void {
         this.loadAllData();
+        this._notificationService.show(
+            'error',
+            'Operación exitosa',
+            'El registro se guardó correctamente'
+        );
     }
 
     displayedColumns: string[] = [
