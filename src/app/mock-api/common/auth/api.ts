@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
-import { user as userData } from 'app/mock-api/common/user/data';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import HmacSHA256 from 'crypto-js/hmac-sha256';
@@ -9,7 +8,14 @@ import { cloneDeep } from 'lodash-es';
 @Injectable({ providedIn: 'root' })
 export class AuthMockApi {
     private readonly _secret: any;
-    private _user: any = userData;
+    //Datos sesión quemados para el mock-api
+    private _user: any = {
+        id: '1',
+        name: 'Kevin Galarza',
+        email: 'hughes.brian@company.com',
+        avatar: 'images/avatars/male-01.png',
+        status: 'online',
+    };
 
     /**
      * Constructor
@@ -51,7 +57,10 @@ export class AuthMockApi {
         this._fuseMockApiService
             .onPost('api/auth/sign-in', 1500)
             .reply(({ request }) => {
-                // Sign in successful
+                console.log(
+                    '========================================================='
+                );
+                console.log('request.body', request.body);
                 if (
                     request.body.email === 'hughes.brian@company.com' &&
                     request.body.password === 'admin'

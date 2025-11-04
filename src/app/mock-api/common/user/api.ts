@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
-import { user as userData } from 'app/mock-api/common/user/data';
 import { assign, cloneDeep } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class UserMockApi {
-    private _user: any = userData;
+    //Datos sesión quemados para el mock-api
+    private _user: any = {
+        id: 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df',
+        name: 'Brian Hughes',
+        email: 'hughes.brian@company.com',
+        avatar: 'images/avatars/male-01.png',
+        status: 'online',
+    };
 
     /**
      * Constructor
