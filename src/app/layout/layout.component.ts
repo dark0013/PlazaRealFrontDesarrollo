@@ -15,7 +15,6 @@ import { FUSE_VERSION } from '@fuse/version';
 import { Subject, combineLatest, filter, map, takeUntil } from 'rxjs';
 import { SettingsComponent } from './common/settings/settings.component';
 import { EmptyLayoutComponent } from './layouts/empty/empty.component';
-import { ClassicLayoutComponent } from './layouts/vertical/classic/classic.component';
 import { ClassyLayoutComponent } from './layouts/vertical/classy/classy.component';
 
 @Component({
@@ -23,12 +22,7 @@ import { ClassyLayoutComponent } from './layouts/vertical/classy/classy.componen
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    imports: [
-        EmptyLayoutComponent,
-        ClassicLayoutComponent,
-        ClassyLayoutComponent,
-        SettingsComponent,
-    ],
+    imports: [EmptyLayoutComponent, ClassyLayoutComponent, SettingsComponent],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
     config: FuseConfig;
