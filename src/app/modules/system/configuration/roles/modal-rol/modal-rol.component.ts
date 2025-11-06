@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { RoleService } from 'app/services/system/configuration/role.service';
+import { NotificationService } from 'app/shared/components/notification/notification.service';
 
 @Component({
     selector: 'app-modal-rol',
@@ -55,7 +56,8 @@ export class ModalRolComponent implements OnInit {
         private _dialogRef: MatDialogRef<any>,
         private _formBuilder: UntypedFormBuilder,
         private _snackBar: MatSnackBar,
-        private _roleService: RoleService
+        private _roleService: RoleService,
+        private _notificationService: NotificationService
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
             name: [this.data ? this.data.name : '', Validators.required],
@@ -83,17 +85,20 @@ export class ModalRolComponent implements OnInit {
                 this._roleService
                     .create(this.dataFormDinamicModal.value)
                     .subscribe((resp) => {
-                        console.log(resp); //verificar con alain la respuesta
-                        this.showSnackbar('Rol creado correctamente', 'Cerrar');
+                        this._notificationService.show(
+                            'success',
+                            'Transacción exitosa',
+                            'Rol creado correctamente'
+                        );
                     });
             } else {
                 this._roleService
                     .update(this.data.id, this.dataFormDinamicModal.value)
                     .subscribe((resp) => {
-                        console.log(resp); //verificar con alain la respuesta
-                        this.showSnackbar(
-                            'Rol actualizado correctamente',
-                            'Cerrar'
+                        this._notificationService.show(
+                            'success',
+                            'Transacción exitosa',
+                            'Rol actualziado correctamente'
                         );
                     });
             }

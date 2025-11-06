@@ -9,7 +9,7 @@ export class AuthService {
     //private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
-    private readonly baseUrl = `${environment.securityService}/auth`;
+    private readonly baseUrl = `${environment.securityService}`;
 
     set accessToken(token: string) {
         localStorage.setItem('accessToken', token);
@@ -39,6 +39,7 @@ export class AuthService {
         //return this._httpClient.post('api/auth/sign-in', credentials).pipe(
         return this._httpClient.post(`${this.baseUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
+                console.log('response login', response);
                 this.accessToken = response.accessToken;
 
                 this.authenticated = "true";
