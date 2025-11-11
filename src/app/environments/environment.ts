@@ -1,8 +1,8 @@
 export const environment = {
     production: false,
 
-    //securityService: 'http://127.0.0.1:8000/api',
-    securityService: 'http://localhost:8080/api',
+    securityService: 'http://127.0.0.1:8000/api',
+   /*  securityService: 'http://localhost:8080/api', */
     HOST: 'http://localhost:8081',
     login: {
         HOST: 'http://localhost:9090',
