@@ -81,8 +81,9 @@ export class RolesComponent {
     loadAllData() {
         this.dataSource.data = null;
         this._roleService.getAll().subscribe({
-            next: (data) => {
-                this.dataSource.data = data;
+            next: (data: any) => {
+                console.log(JSON.stringify(data));
+                this.dataSource.data = data.data;
             },
             error: (err) => {
                 console.error('');
