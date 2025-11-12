@@ -76,7 +76,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         title: 'Gestión de usuarios',
                         type: 'basic',
                         icon: 'heroicons_outline:clipboard-document-check',
-                        link: '/acceso/asignacionrol',
+                        link: '/access-securtiy/users',
                     },
                     {
                         id: '4',

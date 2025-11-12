@@ -82,7 +82,6 @@ export class RolesComponent {
         this.dataSource.data = null;
         this._roleService.getAll().subscribe({
             next: (data: any) => {
-                console.log(JSON.stringify(data));
                 this.dataSource.data = data.data;
             },
             error: (err) => {
@@ -90,7 +89,7 @@ export class RolesComponent {
                 this._notificationService.show(
                     'error',
                     'Operación errónea',
-                    'No se pudo cargar la lista de usuarios'
+                    'No se pudo cargar la lista de roles'
                 );
             },
         });
@@ -143,7 +142,7 @@ export class RolesComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del rol'
                     );
                 },
             });
@@ -157,7 +156,7 @@ export class RolesComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del rol'
                     );
                 },
             });

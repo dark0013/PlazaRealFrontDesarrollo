@@ -128,7 +128,29 @@ export const appRoutes: Route[] = [
             {
                 path: 'roles',
                 loadChildren: () =>
-                    import('app/modules/system/configuration/roles/roles.module').then(m => m.RolesModule),
+                    import(
+                        'app/modules/system/configuration/roles/roles.module'
+                    ).then((m) => m.RolesModule),
+            },
+           
+        ],
+    },
+
+    {
+        path: 'access-securtiy',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver,
+        },
+        children: [
+            {
+                path: 'users',
+                loadChildren: () =>
+                    import(
+                        'app/modules/system/access-securtiy/user/user.module'
+                    ).then((m) => m.UserModule),
             },
         ],
     },

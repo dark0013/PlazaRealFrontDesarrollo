@@ -1,1 +1,208 @@
-<p>user works!</p>
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- esto puede ser un componentes que recibe parametros-->
+    <div
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
+    >
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a class="whitespace-nowrap text-primary-500"
+                        >Administración</a
+                    >
+                </div>
+                <div class="ml-1 flex items-center whitespace-nowrap">
+                    <mat-icon
+                        class="text-secondary icon-size-5"
+                        [svgIcon]="'heroicons_mini:chevron-right'"
+                    ></mat-icon>
+                    <a class="ml-1 text-primary-500">Accesos y Seguridad</a>
+                </div>
+            </div>
+            <div class="mt-2">
+                <h2
+                    class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+                >
+                    Gestión de usuarios
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="max-w-10xl">
+            <div
+                class="relative flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-8"
+            >
+                <div class="text-3xl font-extrabold tracking-tight">Usuarios</div>
+                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+                    <mat-form-field
+                        class="fuse-mat-dense fuse-mat-rounded min-w-64"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-icon
+                            class="icon-size-5"
+                            matPrefix
+                            [svgIcon]="'heroicons_solid:magnifying-glass'"
+                        ></mat-icon>
+                        <input
+                            matInput
+                            [autocomplete]="'off'"
+                            [placeholder]="'Filtrar Tabla'"
+                            (keyup)="applyFilter($event)"
+                        />
+                    </mat-form-field>
+
+                    <button
+                        class="ml-4"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="openDialogCrud(null, 'new-register')"
+                    >
+                        <mat-icon
+                            [svgIcon]="'heroicons_outline:plus'"
+                        ></mat-icon>
+                        <span class="ml-2 mr-1">Nuevo Registro</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-auto">
+                <div
+                    class="mt-8 overflow-x-auto border-b border-gray-200 shadow sm:rounded-lg"
+                >
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef>Id</th>
+                                <td mat-cell *matCellDef="let register">
+                                    {{ register.id }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="columna1">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Nombre
+                                </th>
+                                <td mat-cell *matCellDef="let register">
+                                    {{ register.name }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="columna2">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Descripción
+                                </th>
+                                <td mat-cell *matCellDef="let register">
+                                    {{ register.description }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estado">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Estado
+                                </th>
+                                <td mat-cell *matCellDef="let register">
+                                    <mat-icon
+                                        [ngClass]="{
+                                            activo: register.state == true,
+                                            inactivo: register.state == false,
+                                        }"
+                                    >
+                                        {{
+                                            register.state == true
+                                                ? 'check_circle'
+                                                : 'cancel'
+                                        }}</mat-icon
+                                    >
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="accion">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Acción
+                                </th>
+
+                                <td mat-cell *matCellDef="let element">
+                                    <button
+                                        mat-icon-button
+                                        color="accent"
+                                        title="Ver Más Información"
+                                        (click)="
+                                            openDialogCrud(
+                                                element,
+                                                'information'
+                                            )
+                                        "
+                                    >
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+
+                                    <button
+                                        mat-icon-button
+                                        color="primary"
+                                        title="Editar Registro"
+                                        (click)="
+                                            openDialogCrud(element, 'update')
+                                        "
+                                    >
+                                        <mat-icon>mode_edit</mat-icon>
+                                    </button>
+
+                                    <button
+                                        mat-icon-button
+                                        color="warn"
+                                        *ngIf="element.state === true"
+                                        title="Inactivar Registro"
+                                        (click)="
+                                            openConfirmationDialog(
+                                                element,
+                                                'deactivate'
+                                            )
+                                        "
+                                    >
+                                        <mat-icon>delete_forever</mat-icon>
+                                    </button>
+
+                                    <button
+                                        mat-icon-button
+                                        color="#EA0029"
+                                        *ngIf="element.state === false"
+                                        (click)="
+                                            openConfirmationDialog(
+                                                element,
+                                                'activate'
+                                            )
+                                        "
+                                        title="Activar Registro"
+                                    >
+                                        <mat-icon style="color: green"
+                                            >power_settings_new</mat-icon
+                                        >
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="displayedColumns"
+                            ></tr>
+                            <tr
+                                mat-row
+                                *matRowDef="let row; columns: displayedColumns"
+                            ></tr>
+                        </table>
+
+                        <mat-paginator
+                            [pageSizeOptions]="[5, 10, 15]"
+                            showFirstLastButtons
+                            itemsPerPageLabel="Elementos por página:"
+                            nextPageLabel="Siguiente"
+                            previousPageLabel="Anterior"
+                        >
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
