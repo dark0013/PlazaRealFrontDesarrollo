@@ -33,7 +33,9 @@
             <div
                 class="relative flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-8"
             >
-                <div class="text-3xl font-extrabold tracking-tight">Usuarios</div>
+                <div class="text-3xl font-extrabold tracking-tight">
+                    Usuarios
+                </div>
                 <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
                     <mat-form-field
                         class="fuse-mat-dense fuse-mat-rounded min-w-64"
@@ -81,19 +83,28 @@
 
                             <ng-container matColumnDef="columna1">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Nombre
+                                    Identificación
                                 </th>
                                 <td mat-cell *matCellDef="let register">
-                                    {{ register.name }}
+                                    {{ register.identification_number }}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="columna2">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Descripción
+                                    Nombre
                                 </th>
                                 <td mat-cell *matCellDef="let register">
-                                    {{ register.description }}
+                                    {{ register.first_name }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="columna3">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Apellido
+                                </th>
+                                <td mat-cell *matCellDef="let register">
+                                    {{ register.last_name }}
                                 </td>
                             </ng-container>
 
@@ -104,12 +115,12 @@
                                 <td mat-cell *matCellDef="let register">
                                     <mat-icon
                                         [ngClass]="{
-                                            activo: register.state == true,
-                                            inactivo: register.state == false,
+                                            activo: register.status == true,
+                                            inactivo: register.status == false,
                                         }"
                                     >
                                         {{
-                                            register.state == true
+                                            register.status == true
                                                 ? 'check_circle'
                                                 : 'cancel'
                                         }}</mat-icon
@@ -148,37 +159,39 @@
                                         <mat-icon>mode_edit</mat-icon>
                                     </button>
 
-                                    <button
-                                        mat-icon-button
-                                        color="warn"
-                                        *ngIf="element.state === true"
-                                        title="Inactivar Registro"
-                                        (click)="
-                                            openConfirmationDialog(
-                                                element,
-                                                'deactivate'
-                                            )
-                                        "
-                                    >
-                                        <mat-icon>delete_forever</mat-icon>
-                                    </button>
-
-                                    <button
-                                        mat-icon-button
-                                        color="#EA0029"
-                                        *ngIf="element.state === false"
-                                        (click)="
-                                            openConfirmationDialog(
-                                                element,
-                                                'activate'
-                                            )
-                                        "
-                                        title="Activar Registro"
-                                    >
-                                        <mat-icon style="color: green"
-                                            >power_settings_new</mat-icon
+                                    @if (element.status === true) {
+                                        <button
+                                            mat-icon-button
+                                            color="warn"
+                                            title="Inactivar Registro"
+                                            (click)="
+                                                openConfirmationDialog(
+                                                    element,
+                                                    'deactivate'
+                                                )
+                                            "
                                         >
-                                    </button>
+                                            <mat-icon>delete_forever</mat-icon>
+                                        </button>
+                                    }
+
+                                    @if (element.status === false) {
+                                        <button
+                                            mat-icon-button
+                                            color="#EA0029"
+                                            (click)="
+                                                openConfirmationDialog(
+                                                    element,
+                                                    'activate'
+                                                )
+                                            "
+                                            title="Activar Registro"
+                                        >
+                                            <mat-icon style="color: green"
+                                                >power_settings_new</mat-icon
+                                            >
+                                        </button>
+                                    }
                                 </td>
                             </ng-container>
 

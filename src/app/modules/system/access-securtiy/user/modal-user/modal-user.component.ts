@@ -37,7 +37,6 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatSelectModule,
     ],
     templateUrl: './modal-user.component.html',
-    styleUrl: './modal-user.component.scss',
 })
 export class ModalUserComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
@@ -51,8 +50,13 @@ export class ModalUserComponent implements OnInit {
         private _notificationService: NotificationService
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
-            name: [this.data ? this.data.name : '', Validators.required],
-            description: [this.data ? this.data.description : ''],
+            first_name: [this.data ? this.data.first_name : '', Validators.required],
+            last_name: [this.data ? this.data.last_name : '', Validators.required],
+            identification_number: [this.data ? this.data.identification_number : '', Validators.required],
+            email: [this.data ? this.data.email : '', Validators.required],
+            telephone: [this.data ? this.data.telephone : '', Validators.required],
+            avatar: [this.data ? this.data.avatar : '', Validators.required],
+            role: [this.data ? this.data.role : '', Validators.required]
         });
     }
     ngOnInit(): void {

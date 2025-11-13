@@ -55,6 +55,7 @@ export class UserComponent {
         'id',
         'columna1',
         'columna2',
+        'columna3',
         'estado',
         'accion',
     ];

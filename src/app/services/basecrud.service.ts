@@ -24,11 +24,11 @@ export abstract class BaseCrudService<T> {
     }
 
     activate(id: number): Observable<T> {
-        return this.http.patch<T>(`${this.baseUrl}/${id}/active`, {});
+        return this.http.patch<T>(`${this.baseUrl}/${id}/activate`, {});
     }
 
     deActivate(id: number): Observable<T> {
-        return this.http.patch<T>(`${this.baseUrl}/${id}/deactive`, {});
+        return this.http.patch<T>(`${this.baseUrl}/${id}/deactivate`, {});
     }
 
     delete(id: number): Observable<void> {
