@@ -42,6 +42,19 @@ export class ModalUserComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
 
+    images = [
+        { name: 'Avatar m01', url: 'images/avatars/male-01.png' },
+        { name: 'Avatar m01', url: 'images/avatars/male-01.png' },
+        { name: 'Avatar m02', url: 'images/avatars/male-02.png' },
+        { name: 'Avatar m03', url: 'images/avatars/male-03.png' },
+        { name: 'Avatar m04', url: 'images/avatars/male-04.png' },
+        { name: 'Avatar f05', url: 'images/avatars/female-01.png' },
+        { name: 'Avatar f06', url: 'images/avatars/female-02.png' },
+        { name: 'Avatar f07', url: 'images/avatars/female-03.png' },
+        { name: 'Avatar f08', url: 'images/avatars/female-04.png' },
+    ];
+    selectedImage: any;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dialogRef: MatDialogRef<any>,

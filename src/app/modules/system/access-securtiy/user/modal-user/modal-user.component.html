@@ -136,6 +136,37 @@
                     </mat-form-field>
                 </div>
 
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Selecciona un avatar</mat-label>
+                        <!-- <mat-select [formControlName]="'tipoSexo'"></mat-select> -->
+                        <mat-select [(ngModel)]="selectedImage">
+                            @for (img of images; track $index) {
+                                <mat-option
+                                    [value]="img"
+                                >
+                                    <div class="flex items-center gap-3">
+                                        <img
+                                            [src]="img.url"
+                                            class="h-10 w-10 rounded object-cover"
+                                        />
+                                        <span>{{ img.name }}</span>
+                                    </div>
+                                </mat-option>
+                            }
+                        </mat-select>
+                        @if (
+                            dataFormDinamicModal
+                                .get('avatar')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
                 <div class="sm:col-span-2">
                     <mat-form-field
@@ -153,13 +184,6 @@
                             matInput
                             [readonly]="readonlyMode"
                         />
-                        @if (
-                            dataFormDinamicModal
-                                .get('avatar')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
                     </mat-form-field>
                 </div>
 
@@ -188,8 +212,6 @@
                         }
                     </mat-form-field>
                 </div>
-
-
             </div>
 
             <div class="mb-10 mt-11 border-t"></div>
