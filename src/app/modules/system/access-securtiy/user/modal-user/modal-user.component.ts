@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,7 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatButtonToggleModule,
         MatButtonModule,
         MatSelectModule,
+        MatDialogModule
     ],
     templateUrl: './modal-user.component.html',
 })
@@ -43,7 +44,7 @@ export class ModalUserComponent implements OnInit {
     readonlyMode: boolean = false;
 
     images = [
-        { name: 'Avatar m01', url: 'images/avatars/male-01.png' },
+        { name: 'Ninguno', url: 'images/avatars/ninguno.png' },
         { name: 'Avatar m01', url: 'images/avatars/male-01.png' },
         { name: 'Avatar m02', url: 'images/avatars/male-02.png' },
         { name: 'Avatar m03', url: 'images/avatars/male-03.png' },
@@ -68,7 +69,7 @@ export class ModalUserComponent implements OnInit {
             identification_number: [this.data ? this.data.identification_number : '', Validators.required],
             email: [this.data ? this.data.email : '', Validators.required],
             telephone: [this.data ? this.data.telephone : '', Validators.required],
-            avatar: [this.data ? this.data.avatar : '', Validators.required],
+            avatar: [this.data ? this.data.avatar : 'images/avatars/ninguno.png', Validators.required],
             role: [this.data ? this.data.role : '', Validators.required]
         });
     }
