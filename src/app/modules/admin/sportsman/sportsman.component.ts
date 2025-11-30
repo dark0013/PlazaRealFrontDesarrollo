@@ -17,6 +17,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { SportsmanService } from 'app/services/system/admin/sportsman.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
+import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.component';
 
 @Component({
   selector: 'app-sportsman',
@@ -97,16 +98,14 @@ export class SportsmanComponent {
         });
     }
 
-    openDialogCrud(datoParamOpci?: any, accion?: string){
+  
 
-    }
-
-/*     openDialogCrud(datoParamOpci?: any, accion?: string) {
+    openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {
             datoParamOpci.accion = accion;
         }
 
-        let dialogRef: any = this._dialog.open(ModalUserComponent, {
+        let dialogRef: any = this._dialog.open(ModalSportsmanComponent, {
             width: '50%',
             data: datoParamOpci,
             disableClose: true,
@@ -119,7 +118,7 @@ export class SportsmanComponent {
                 }
             }
         });
-    } */
+    }
 
     openConfirmationDialog(data?: any, action?: string) {
         const actionDes = action === 'AC' ? 'Activar' : 'Inactivar';

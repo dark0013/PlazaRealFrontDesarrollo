@@ -9,6 +9,6 @@ import { BaseCrudService } from 'app/services/basecrud.service';
 })
 export class UserService extends BaseCrudService<User> {
     constructor(http: HttpClient) {
-        super(http, `${environment.securityService}/users`);
+        super(http, `${environment.securityService}/user`);
     }
 }
