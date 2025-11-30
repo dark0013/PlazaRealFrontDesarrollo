@@ -1,1 +1,224 @@
-<p>modal-sports works!</p>
+<div
+    class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
+>
+    <div class="text-lg font-medium">Usuario</div>
+</div>
+
+<hr />
+<mat-dialog-content>
+    <div class="w-full">
+        <form [formGroup]="dataFormDinamicModal">
+            <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Identificación</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'identification_number'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('identification_number')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Nombre</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'first_name'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('first_name')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Apellido</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'last_name'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('last_name')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Correo</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'email'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('email')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Celular</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'telephone'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('telephone')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Selecciona un avatar</mat-label>
+                      <mat-select [formControlName]="'avatar'">
+                       <!--  <mat-select [(ngModel)]="selectedImage"> -->
+                            @for (img of images; track $index) {
+                                <mat-option [value]="img.url">
+                                    <div class="flex items-center gap-3">
+                                        <img
+                                            [src]="img.url"
+                                            class="h-10 w-10 rounded object-cover"
+                                        />
+                                        <span>{{ img.name }}</span>
+                                    </div>
+                                </mat-option>
+                            }
+                        </mat-select>
+                        @if (
+                            dataFormDinamicModal
+                                .get('avatar')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Rol</mat-label>
+
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+
+                        <mat-select
+                            [formControlName]="'role'"
+                            [disabled]="readonlyMode"
+                        >
+                            <mat-option [value]="'admin'">Admin</mat-option>
+                            <mat-option [value]="'user'">User</mat-option>
+                            <mat-option [value]="'manager'">Manager</mat-option>
+                        </mat-select>
+
+                        @if (
+                            dataFormDinamicModal
+                                .get('role')
+                                .hasError('required')
+                        ) {
+                            <mat-error>Campo es requerido</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="mb-10 mt-11 border-t"></div>
+        </form>
+    </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+    <div class="flex items-center justify-end">
+        <button mat-stroked-button type="button" (click)="close()">
+            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
+        </button>
+        <button
+            *ngIf="!readonlyMode"
+            class="ml-4"
+            mat-flat-button
+            type="button"
+            [color]="'primary'"
+            (click)="saveData()"
+        >
+            <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
+        </button>
+    </div>
+</div>
