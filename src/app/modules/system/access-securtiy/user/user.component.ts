@@ -1,11 +1,9 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,7 +32,7 @@ import { ModalUserComponent } from './modal-user/modal-user.component';
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatButtonModule,
-        MatSelectModule
+        MatSelectModule,
     ],
     templateUrl: './user.component.html',
     styleUrl: './user.component.scss',
