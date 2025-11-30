@@ -15,10 +15,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UserService } from 'app/services/system/access-security/user.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
-import { ModalUserComponent } from './modal-user/modal-user.component';
+import { ModalPlayareaComponent } from './modal-playarea/modal-playarea.component';
 
 @Component({
-    selector: 'app-user',
+    selector: 'app-modal-playarea',
     imports: [
         MatSortModule,
         MatTableModule,
@@ -34,10 +34,10 @@ import { ModalUserComponent } from './modal-user/modal-user.component';
         MatButtonModule,
         MatSelectModule,
     ],
-    templateUrl: './user.component.html',
-    styleUrl: './user.component.scss',
+    templateUrl: './playarea.component.html',
+    styleUrl: './playarea.component.scss',
 })
-export class UserComponent {
+export class PlayareaComponent {
     constructor(
         private _dialog: MatDialog,
         private _userService: UserService,
@@ -54,6 +54,7 @@ export class UserComponent {
         'columna1',
         'columna2',
         'columna3',
+        'columna4',
         'estado',
         'accion',
     ];
@@ -94,7 +95,7 @@ export class UserComponent {
             datoParamOpci.accion = accion;
         }
 
-        let dialogRef: any = this._dialog.open(ModalUserComponent, {
+        let dialogRef: any = this._dialog.open(ModalPlayareaComponent, {
             width: '50%',
             data: datoParamOpci,
             disableClose: true,

@@ -1,9 +1,11 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,14 +14,14 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { UserService } from 'app/services/system/access-security/user.service';
+import { SportsmanService } from 'app/services/system/admin/sportsman.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
-import { ModalUserComponent } from './modal-user/modal-user.component';
+import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.component';
 
 @Component({
-    selector: 'app-user',
-    imports: [
+  selector: 'app-sportsman',
+   imports: [
         MatSortModule,
         MatTableModule,
         MatPaginatorModule,
@@ -32,15 +34,15 @@ import { ModalUserComponent } from './modal-user/modal-user.component';
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatButtonModule,
-        MatSelectModule,
+        MatSelectModule
     ],
-    templateUrl: './user.component.html',
-    styleUrl: './user.component.scss',
+  templateUrl: './sportsman.component.html',
+  styleUrl: './sportsman.component.scss'
 })
-export class UserComponent {
-    constructor(
+export class SportsmanComponent {
+ constructor(
         private _dialog: MatDialog,
-        private _userService: UserService,
+        private sportsmanService: SportsmanService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
@@ -53,7 +55,14 @@ export class UserComponent {
         'id',
         'columna1',
         'columna2',
-        'columna3',
+        'columna4',
+        'columna5',
+        'columna6',
+        'columna7',
+        'columna8',
+        'columna9',
+        'columna10',
+        'columna11',
         'estado',
         'accion',
     ];
@@ -74,7 +83,7 @@ export class UserComponent {
 
     loadAllData() {
         this.dataSource.data = null;
-        this._userService.getAll().subscribe({
+        this.sportsmanService.getAll().subscribe({
             next: (data: any) => {
                 this.dataSource.data = data.data;
             },
@@ -89,12 +98,14 @@ export class UserComponent {
         });
     }
 
+  
+
     openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {
             datoParamOpci.accion = accion;
         }
 
-        let dialogRef: any = this._dialog.open(ModalUserComponent, {
+        let dialogRef: any = this._dialog.open(ModalSportsmanComponent, {
             width: '50%',
             data: datoParamOpci,
             disableClose: true,
@@ -127,7 +138,7 @@ export class UserComponent {
 
     updateState(data: any, opcion: string) {
         if (opcion === 'activate') {
-            this._userService.activate(data.id).subscribe({
+            this.sportsmanService.activate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
@@ -141,7 +152,7 @@ export class UserComponent {
                 },
             });
         } else {
-            this._userService.deActivate(data.id).subscribe({
+            this.sportsmanService.deActivate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },

@@ -1,7 +1,7 @@
 <div
     class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
 >
-    <div class="text-lg font-medium">Usuario</div>
+    <div class="text-lg font-medium">Escenario</div>
 </div>
 
 <hr />
@@ -14,7 +14,7 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Identificación</mat-label>
+                        <mat-label>Nombre del escenario</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -39,7 +39,7 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Nombre</mat-label>
+                        <mat-label>Descripción</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -65,7 +65,7 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Apellido</mat-label>
+                        <mat-label>Ubicación</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -90,7 +90,7 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Correo</mat-label>
+                        <mat-label>Tipo de superficie</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -110,12 +110,13 @@
                         }
                     </mat-form-field>
                 </div>
+
                 <div class="sm:col-span-2">
                     <mat-form-field
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Celular</mat-label>
+                        <mat-label>Horario Disponibilidad</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -141,63 +142,26 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Selecciona un avatar</mat-label>
-                      <mat-select [formControlName]="'avatar'">
-                       <!--  <mat-select [(ngModel)]="selectedImage"> -->
-                            @for (img of images; track $index) {
-                                <mat-option [value]="img.url">
-                                    <div class="flex items-center gap-3">
-                                        <img
-                                            [src]="img.url"
-                                            class="h-10 w-10 rounded object-cover"
-                                        />
-                                        <span>{{ img.name }}</span>
-                                    </div>
-                                </mat-option>
-                            }
-                        </mat-select>
+                        <mat-label>Capacidad</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'telephone'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
                         @if (
                             dataFormDinamicModal
-                                .get('avatar')
+                                .get('telephone')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
                         }
                     </mat-form-field>
                 </div>
-
-                <div class="sm:col-span-2">
-                    <mat-form-field
-                        class="w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Rol</mat-label>
-
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:information-circle'"
-                            matPrefix
-                        ></mat-icon>
-
-                        <mat-select
-                            [formControlName]="'role'"
-                            [disabled]="readonlyMode"
-                        >
-                            <mat-option [value]="'admin'">Admin</mat-option>
-                            <mat-option [value]="'user'">User</mat-option>
-                            <mat-option [value]="'manager'">Manager</mat-option>
-                        </mat-select>
-
-                        @if (
-                            dataFormDinamicModal
-                                .get('role')
-                                .hasError('required')
-                        ) {
-                            <mat-error>Campo es requerido</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-
             </div>
 
             <div class="mb-10 mt-11 border-t"></div>

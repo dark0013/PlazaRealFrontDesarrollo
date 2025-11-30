@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,6 @@ import { ModalRolComponent } from './modal-rol/modal-rol.component';
     styleUrl: './roles.component.scss',
     imports: [
         MatSortModule,
-        NgIf,
         MatTableModule,
         MatPaginatorModule,
         MatIconModule,

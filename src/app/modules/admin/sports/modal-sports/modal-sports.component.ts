@@ -1,6 +1,6 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -41,9 +41,9 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatSelectModule,
         MatDialogModule,
     ],
-    templateUrl: './modal-user.component.html',
+    templateUrl: './modal-sports.component.html',
 })
-export class ModalUserComponent implements OnInit {
+export class ModalSportsComponent {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
 
