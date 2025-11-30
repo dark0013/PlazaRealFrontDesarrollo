@@ -99,6 +99,27 @@ export const appRoutes: Route[] = [
     },
 
     // Admin routes
+   /*  {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver,
+        },
+        children: [
+            {
+                path: 'example',
+                loadChildren: () =>
+                    import('app/modules/admin/example/example.routes'),
+            },
+             {
+                path: 'sportsman',
+                loadChildren: () =>
+                    import('app/modules/admin/sportsman/sportsman.module'),
+            }
+        ],
+    }, */
     {
         path: '',
         canActivate: [AuthGuard],
@@ -113,6 +134,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/modules/admin/example/example.routes'),
             },
+             {
+                path: 'sportsman',
+                loadChildren: () =>
+                    import('app/modules/admin/sportsman/sportsman.module').then(m => m.SportsmanModule),
+            }
         ],
     },
 
