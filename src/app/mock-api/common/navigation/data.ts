@@ -111,7 +111,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         title: 'Administración de Deportistas (Socios)',
                         type: 'basic',
                         icon: 'heroicons_outline:list-bullet',
-                        link: '/configuraciones/catalogo',
+                        /* link: '/configuraciones/catalogo', */
+                        link: '/sportsman/catalogo',
                     },
                     {
                         id: '1',

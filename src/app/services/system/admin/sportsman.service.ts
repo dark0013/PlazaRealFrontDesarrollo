@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'app/environments/environment';
-import { User } from 'app/model/user.model';
+import { Sportsman } from 'app/model/Sportsman';
 import { BaseCrudService } from 'app/services/basecrud.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root'
 })
-export class UserService extends BaseCrudService<User> {
+export class SportsmanService extends BaseCrudService<Sportsman> {
     constructor(http: HttpClient) {
-        super(http, `${environment.securityService}/user`);
+        super(http, `${environment.securityService}/sportsman`);
     }
 }
