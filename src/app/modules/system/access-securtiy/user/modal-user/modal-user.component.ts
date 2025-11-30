@@ -10,7 +10,11 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogModule,
+    MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -35,7 +39,7 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatButtonToggleModule,
         MatButtonModule,
         MatSelectModule,
-        MatDialogModule
+        MatDialogModule,
     ],
     templateUrl: './modal-user.component.html',
 })
@@ -64,13 +68,28 @@ export class ModalUserComponent implements OnInit {
         private _notificationService: NotificationService
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
-            first_name: [this.data ? this.data.first_name : '', Validators.required],
-            last_name: [this.data ? this.data.last_name : '', Validators.required],
-            identification_number: [this.data ? this.data.identification_number : '', Validators.required],
+            first_name: [
+                this.data ? this.data.first_name : '',
+                Validators.required,
+            ],
+            last_name: [
+                this.data ? this.data.last_name : '',
+                Validators.required,
+            ],
+            identification_number: [
+                this.data ? this.data.identification_number : '',
+                Validators.required,
+            ],
             email: [this.data ? this.data.email : '', Validators.required],
-            telephone: [this.data ? this.data.telephone : '', Validators.required],
-            avatar: [this.data ? this.data.avatar : 'images/avatars/ninguno.png', Validators.required],
-            role: [this.data ? this.data.role : '', Validators.required]
+            telephone: [
+                this.data ? this.data.telephone : '',
+                Validators.required,
+            ],
+            avatar: [
+                this.data ? this.data.avatar : 'images/avatars/ninguno.png',
+                Validators.required,
+            ],
+            role: [this.data ? this.data.role : '', Validators.required],
         });
     }
     ngOnInit(): void {
@@ -88,30 +107,40 @@ export class ModalUserComponent implements OnInit {
     }
 
     saveData() {
-        if (this.dataFormDinamicModal.valid) {
-            if (this.data == null) {
-                this._userService
-                    .create(this.dataFormDinamicModal.value)
-                    .subscribe((resp) => {
+        if (!this.dataFormDinamicModal.valid) return;
+
+        if (this.data == null) {
+            this._userService
+                .create(this.dataFormDinamicModal.value)
+                .subscribe({
+                    next: (resp) => {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
                             'Usuario creado correctamente'
                         );
-                    });
-            } else {
-                this._userService
-                    .update(this.data.id, this.dataFormDinamicModal.value)
-                    .subscribe((resp) => {
+                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                    },
+                    error: (e) => {
+                        console.log('error:', e);
+                    },
+                });
+        } else {
+            this._userService
+                .update(this.data.id, this.dataFormDinamicModal.value)
+                .subscribe({
+                    next: (resp) => {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario actualziado correctamente'
+                            'Usuario actualizado correctamente'
                         );
-                    });
-            }
-
-            this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                    },
+                    error: (e) => {
+                        console.log('error:', e);
+                    },
+                });
         }
     }
 

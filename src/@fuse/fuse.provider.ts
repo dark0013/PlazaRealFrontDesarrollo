@@ -25,6 +25,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { FusePlatformService } from '@fuse/services/platform';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen';
 import { FuseUtilsService } from '@fuse/services/utils';
+import { businessErrorInterceptor } from 'app/shared/interceptors/businessErrorInterceptor.interceptor';
 
 export type FuseProviderConfig = {
     mockApi?: {
@@ -70,7 +71,9 @@ export const provideFuse = (
         importProvidersFrom(MatDialogModule),
         provideEnvironmentInitializer(() => inject(FuseConfirmationService)),
 
-        provideHttpClient(withInterceptors([fuseLoadingInterceptor])),
+        provideHttpClient(
+            withInterceptors([fuseLoadingInterceptor, businessErrorInterceptor])
+        ),
         provideEnvironmentInitializer(() => inject(FuseLoadingService)),
 
         provideEnvironmentInitializer(() => inject(FuseMediaWatcherService)),

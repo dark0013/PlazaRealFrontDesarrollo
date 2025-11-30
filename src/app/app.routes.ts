@@ -99,7 +99,7 @@ export const appRoutes: Route[] = [
     },
 
     // Admin routes
-   /*  {
+    /*  {
         path: '',
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
@@ -134,11 +134,13 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/modules/admin/example/example.routes'),
             },
-             {
+            {
                 path: 'sportsman',
                 loadChildren: () =>
-                    import('app/modules/admin/sportsman/sportsman.module').then(m => m.SportsmanModule),
-            }
+                    import('app/modules/admin/sportsman/sportsman.module').then(
+                        (m) => m.SportsmanModule
+                    ),
+            },
         ],
     },
 
@@ -158,7 +160,6 @@ export const appRoutes: Route[] = [
                         'app/modules/system/configuration/roles/roles.module'
                     ).then((m) => m.RolesModule),
             },
-           
         ],
     },
 
@@ -177,6 +178,39 @@ export const appRoutes: Route[] = [
                     import(
                         'app/modules/system/access-securtiy/user/user.module'
                     ).then((m) => m.UserModule),
+            },
+        ],
+    },
+
+    {
+        path: 'configuracion-administracion',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver,
+        },
+        children: [
+            {
+                path: 'areas',
+                loadChildren: () =>
+                    import('app/modules/admin/playarea/playarea.module').then(
+                        (m) => m.PlayAreaModule
+                    ),
+            },
+            {
+                path: 'categorias',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/categories/categories.module'
+                    ).then((m) => m.CategoriesModule),
+            },
+            {
+                path: 'deportes',
+                loadChildren: () =>
+                    import('app/modules/admin/sports/sports.module').then(
+                        (m) => m.SportsModule
+                    ),
             },
         ],
     },
