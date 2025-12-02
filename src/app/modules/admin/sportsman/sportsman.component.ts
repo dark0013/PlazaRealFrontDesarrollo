@@ -88,12 +88,7 @@ export class SportsmanComponent {
                 this.dataSource.data = data.data;
             },
             error: (err) => {
-                console.error('');
-                this._notificationService.show(
-                    'error',
-                    'Operación errónea',
-                    'No se pudo cargar la lista de usuarios'
-                );
+               console.error(err);
             },
         });
     }

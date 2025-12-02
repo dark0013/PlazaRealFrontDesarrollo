@@ -78,7 +78,6 @@ export class SportsComponent {
                 this.dataSource.data = data.data;
             },
             error: (err) => {
-                console.error('');
                 this._notificationService.show(
                     'error',
                     'Operación errónea',

@@ -27,6 +27,31 @@ export const businessErrorInterceptor: HttpInterceptorFn = (req, next) => {
                 notification.show('error', 'Error de validación', finalMessage);
             }
 
+            if (error.status === 404) {
+                const backendMessage = error.error?.message;
+                let finalMessage = 'Recurso no encontrado';
+
+                if (backendMessage && typeof backendMessage === 'object') {
+                    finalMessage = Object.values(backendMessage)
+                        .flat()
+                        .map((m) => `• ${m}`)
+                        .join('\n');
+                }
+
+                if (typeof backendMessage === 'string') {
+                    finalMessage = backendMessage;
+                }
+
+                notification.show('warning', 'Sin Datos', finalMessage);
+            }
+
+            if (error.status === 500) {
+                notification.show(
+                    'error',
+                    'Operación errónea',
+                    'Error interno del servidor'
+                );
+            }
             return throwError(() => error);
         })
     );
