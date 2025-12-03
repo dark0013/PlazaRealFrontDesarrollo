@@ -9,7 +9,7 @@ export class AuthService {
     //private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
-    private readonly baseUrl = `${environment.securityService}`;
+    private readonly baseUrl = `${environment.baseUrl}`;
 
     set accessToken(token: string) {
         localStorage.setItem('accessToken', token);

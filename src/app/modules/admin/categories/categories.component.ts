@@ -16,6 +16,7 @@ import { UserService } from 'app/services/system/access-security/user.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalCategoriesComponent } from './modal-categories/modal-categories.component';
+import { CategoriesService } from 'app/services/system/admin/categories.service';
 
 @Component({
     selector: 'app-modal-playarea',
@@ -40,7 +41,7 @@ import { ModalCategoriesComponent } from './modal-categories/modal-categories.co
 export class CategoriesComponent {
     constructor(
         private _dialog: MatDialog,
-        private _userService: UserService,
+        private _userService: CategoriesService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
