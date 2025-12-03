@@ -80,12 +80,7 @@ export class CategoriesComponent {
                 this.dataSource.data = data.data;
             },
             error: (err) => {
-                console.error('');
-                this._notificationService.show(
-                    'error',
-                    'Operación errónea',
-                    'No se pudo cargar la lista de usuarios'
-                );
+                console.error(err);
             },
         });
     }
@@ -137,7 +132,7 @@ export class CategoriesComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
@@ -151,7 +146,7 @@ export class CategoriesComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });

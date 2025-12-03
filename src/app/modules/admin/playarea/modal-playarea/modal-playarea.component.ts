@@ -90,7 +90,7 @@ export class ModalPlayareaComponent {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario creado correctamente'
+                            'Registro creado correctamente'
                         );
                         this._dialogRef.close(this.dataFormDinamicModal.value);
                     },
@@ -106,7 +106,7 @@ export class ModalPlayareaComponent {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario actualizado correctamente'
+                            'Registro actualizado correctamente'
                         );
                         this._dialogRef.close(this.dataFormDinamicModal.value);
                     },

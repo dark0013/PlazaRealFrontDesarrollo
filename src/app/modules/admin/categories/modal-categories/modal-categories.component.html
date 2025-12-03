@@ -1,7 +1,7 @@
 <div
     class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
 >
-    <div class="text-lg font-medium">Usuario</div>
+    <div class="text-lg font-medium">Categoría</div>
 </div>
 
 <hr />
@@ -21,13 +21,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'identification_number'"
+                            [formControlName]="'name'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('identification_number')
+                                .get('name')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -46,17 +46,10 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'first_name'"
+                            [formControlName]="'description'"
                             matInput
                             [readonly]="readonlyMode"
                         />
-                        @if (
-                            dataFormDinamicModal
-                                .get('first_name')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
                     </mat-form-field>
                 </div>
 
@@ -72,17 +65,10 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'last_name'"
+                            [formControlName]="'minimum_age'"
                             matInput
                             [readonly]="readonlyMode"
                         />
-                        @if (
-                            dataFormDinamicModal
-                                .get('last_name')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
                     </mat-form-field>
                 </div>
 
@@ -98,17 +84,11 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'telephone'"
+                            [formControlName]="'maximum_age'"
                             matInput
                             [readonly]="readonlyMode"
                         />
-                        @if (
-                            dataFormDinamicModal
-                                .get('telephone')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
+                        
                     </mat-form-field>
                 </div>
 
@@ -126,21 +106,13 @@
                         ></mat-icon>
 
                         <mat-select
-                            [formControlName]="'role'"
+                            [formControlName]="'applicable_genre'"
                             [disabled]="readonlyMode"
                         >
-                            <mat-option [value]="'admin'">Admin</mat-option>
-                            <mat-option [value]="'user'">User</mat-option>
-                            <mat-option [value]="'manager'">Manager</mat-option>
+                            <mat-option [value]="'admin'">Masculino</mat-option>
+                            <mat-option [value]="'user'">Femenino</mat-option>
+                            <mat-option [value]="'manager'">Otro</mat-option>
                         </mat-select>
-
-                        @if (
-                            dataFormDinamicModal
-                                .get('role')
-                                .hasError('required')
-                        ) {
-                            <mat-error>Campo es requerido</mat-error>
-                        }
                     </mat-form-field>
                 </div>
             </div>

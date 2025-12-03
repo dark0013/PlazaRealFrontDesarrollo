@@ -1,7 +1,7 @@
 <div
     class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
 >
-    <div class="text-lg font-medium">Usuario</div>
+    <div class="text-lg font-medium">Deporte</div>
 </div>
 
 <hr />
@@ -21,13 +21,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'identification_number'"
+                            [formControlName]="'name'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('identification_number')
+                                .get('name')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -46,17 +46,10 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'first_name'"
+                            [formControlName]="'description'"
                             matInput
                             [readonly]="readonlyMode"
                         />
-                        @if (
-                            dataFormDinamicModal
-                                .get('first_name')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
                     </mat-form-field>
                 </div>
             </div>

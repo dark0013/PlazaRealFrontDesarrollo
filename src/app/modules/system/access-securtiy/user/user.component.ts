@@ -136,7 +136,7 @@ export class UserComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
@@ -150,7 +150,7 @@ export class UserComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
