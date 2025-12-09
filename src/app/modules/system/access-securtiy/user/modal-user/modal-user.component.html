@@ -39,7 +39,7 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Nombre</mat-label>
+                        <mat-label>Nombres</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
@@ -65,20 +65,46 @@
                         class="w-full"
                         [subscriptSizing]="'dynamic'"
                     >
-                        <mat-label>Apellido</mat-label>
+                        <mat-label>Apellido Paterno</mat-label>
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:information-circle'"
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'last_name'"
+                            [formControlName]="'primary_surname'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('last_name')
+                                .get('primary_surname')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Apellido Materno</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'secondary_surname'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('secondary_surname')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -110,6 +136,54 @@
                         }
                     </mat-form-field>
                 </div>
+                @if (isNewRegister) {
+                    <div class="sm:col-span-4">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Contraseña Temporal</mat-label>
+
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:information-circle'"
+                                matPrefix
+                            ></mat-icon>
+
+                            <input
+                                matInput
+                                [formControlName]="'password'"
+                                [type]="hidePassword ? 'password' : 'text'"
+                                [readonly]="readonlyMode"
+                            />
+
+                            <button
+                                type="button"
+                                mat-icon-button
+                                matSuffix
+                                (click)="hidePassword = !hidePassword"
+                                [disabled]="readonlyMode"
+                            >
+                                <mat-icon>
+                                    {{
+                                        hidePassword
+                                            ? 'visibility_off'
+                                            : 'visibility'
+                                    }}
+                                </mat-icon>
+                            </button>
+
+                            @if (
+                                dataFormDinamicModal
+                                    .get('password')
+                                    ?.hasError('required')
+                            ) {
+                                <mat-error>Campo es requerido</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                }
+
                 <div class="sm:col-span-2">
                     <mat-form-field
                         class="w-full"
@@ -142,8 +216,7 @@
                         [subscriptSizing]="'dynamic'"
                     >
                         <mat-label>Selecciona un avatar</mat-label>
-                      <mat-select [formControlName]="'avatar'">
-                       <!--  <mat-select [(ngModel)]="selectedImage"> -->
+                        <mat-select [formControlName]="'avatar'">
                             @for (img of images; track $index) {
                                 <mat-option [value]="img.url">
                                     <div class="flex items-center gap-3">
@@ -183,9 +256,11 @@
                             [formControlName]="'role'"
                             [disabled]="readonlyMode"
                         >
-                            <mat-option [value]="'admin'">Admin</mat-option>
-                            <mat-option [value]="'user'">User</mat-option>
-                            <mat-option [value]="'manager'">Manager</mat-option>
+                            @for (item of roles; track $index) {
+                                <mat-option [value]="item.id">
+                                    {{ item.name }}
+                                </mat-option>
+                            }
                         </mat-select>
 
                         @if (
@@ -197,7 +272,6 @@
                         }
                     </mat-form-field>
                 </div>
-
             </div>
 
             <div class="mb-10 mt-11 border-t"></div>

@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { Role } from 'app/model/Role.model';
 import { UserService } from 'app/services/system/access-security/user.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
@@ -46,6 +47,10 @@ import { NotificationService } from 'app/shared/components/notification/notifica
 export class ModalUserComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
+    isNewRegister: boolean = false;
+    hidePassword = true;
+
+    roles: Role[] = [];
 
     images = [
         { name: 'Ninguno', url: 'images/avatars/ninguno.png' },
@@ -67,29 +72,50 @@ export class ModalUserComponent implements OnInit {
         private _userService: UserService,
         private _notificationService: NotificationService
     ) {
+        this.roles = data.roles;
+
         this.dataFormDinamicModal = this._formBuilder.group({
             first_name: [
-                this.data ? this.data.first_name : '',
+                this.data.register ? this.data.register.first_name : '',
                 Validators.required,
             ],
-            last_name: [
-                this.data ? this.data.last_name : '',
+            primary_surname: [
+                this.data.register ? this.data.register.primary_surname : '',
+                Validators.required,
+            ],
+            secondary_surname: [
+                this.data.register ? this.data.register.secondary_surname : '',
                 Validators.required,
             ],
             identification_number: [
-                this.data ? this.data.identification_number : '',
+                this.data.register
+                    ? this.data.register.identification_number
+                    : '',
                 Validators.required,
             ],
-            email: [this.data ? this.data.email : '', Validators.required],
+            email: [
+                this.data.register ? this.data.register.email : '',
+                Validators.required,
+            ],
             telephone: [
-                this.data ? this.data.telephone : '',
+                this.data.register ? this.data.register.telephone : '',
                 Validators.required,
             ],
             avatar: [
-                this.data ? this.data.avatar : 'images/avatars/ninguno.png',
+                this.data.register
+                    ? this.data.register.avatar
+                    : 'images/avatars/ninguno.png',
                 Validators.required,
             ],
-            role: [this.data ? this.data.role : '', Validators.required],
+            role: [
+                this.data.register
+                    ? this.data.register.role
+                    : this.roles.length > 0
+                      ? this.roles[0].id
+                      : '',
+                Validators.required,
+            ],
+            password: [''],
         });
     }
     ngOnInit(): void {
@@ -97,19 +123,23 @@ export class ModalUserComponent implements OnInit {
     }
 
     initAction(data?: any) {
-        if (data != null) {
-            if (data.accion == 'information') {
+        this.isNewRegister = false;
+
+        if (data.register != null) {
+            if (data.register.accion == 'information') {
                 this.readonlyMode = true;
             } else {
                 this.readonlyMode = false;
             }
+        } else {
+            this.isNewRegister = true;
         }
     }
 
     saveData() {
         if (!this.dataFormDinamicModal.valid) return;
 
-        if (this.data == null) {
+        if (this.data.register == null) {
             this._userService
                 .create(this.dataFormDinamicModal.value)
                 .subscribe({
@@ -127,7 +157,7 @@ export class ModalUserComponent implements OnInit {
                 });
         } else {
             this._userService
-                .update(this.data.id, this.dataFormDinamicModal.value)
+                .update(this.data.register.id, this.dataFormDinamicModal.value)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
