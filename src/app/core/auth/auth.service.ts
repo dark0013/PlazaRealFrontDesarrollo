@@ -9,7 +9,7 @@ export class AuthService {
     //private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
-    private readonly baseUrl = `${environment.securityService}`;
+    private readonly baseUrl = `${environment.baseUrl}`;
 
     set accessToken(token: string) {
         localStorage.setItem('accessToken', token);
@@ -39,14 +39,14 @@ export class AuthService {
         //return this._httpClient.post('api/auth/sign-in', credentials).pipe(
         return this._httpClient.post(`${this.baseUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
-                console.log('response login', response);
                 this.accessToken = response.accessToken;
 
-                this.authenticated = "true";
+                this.authenticated = 'true';
 
-                this._userService.user = response.user;
+                if (!response.user.is_temporal) {
+                    this._userService.user = response.user;
+                }
 
-                console.log('response', response);
                 return of(response);
             })
         );
@@ -55,7 +55,7 @@ export class AuthService {
     signOut(): Observable<any> {
         localStorage.removeItem('accessToken');
 
-        this.authenticated = "false";
+        this.authenticated = 'false';
 
         return of(true);
     }

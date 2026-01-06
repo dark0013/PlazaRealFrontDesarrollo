@@ -21,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { UserService } from 'app/services/system/access-security/user.service';
+import { PlayAreaService } from 'app/services/system/admin/playarea.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
 @Component({
@@ -47,49 +47,20 @@ export class ModalPlayareaComponent {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
 
-    images = [
-        { name: 'Ninguno', url: 'images/avatars/ninguno.png' },
-        { name: 'Avatar m01', url: 'images/avatars/male-01.png' },
-        { name: 'Avatar m02', url: 'images/avatars/male-02.png' },
-        { name: 'Avatar m03', url: 'images/avatars/male-03.png' },
-        { name: 'Avatar m04', url: 'images/avatars/male-04.png' },
-        { name: 'Avatar f05', url: 'images/avatars/female-01.png' },
-        { name: 'Avatar f06', url: 'images/avatars/female-02.png' },
-        { name: 'Avatar f07', url: 'images/avatars/female-03.png' },
-        { name: 'Avatar f08', url: 'images/avatars/female-04.png' },
-    ];
-    selectedImage: any;
-
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dialogRef: MatDialogRef<any>,
         private _formBuilder: UntypedFormBuilder,
-        private _userService: UserService,
+        private _playAreaService: PlayAreaService,
         private _notificationService: NotificationService
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
-            first_name: [
-                this.data ? this.data.first_name : '',
-                Validators.required,
-            ],
-            last_name: [
-                this.data ? this.data.last_name : '',
-                Validators.required,
-            ],
-            identification_number: [
-                this.data ? this.data.identification_number : '',
-                Validators.required,
-            ],
-            email: [this.data ? this.data.email : '', Validators.required],
-            telephone: [
-                this.data ? this.data.telephone : '',
-                Validators.required,
-            ],
-            avatar: [
-                this.data ? this.data.avatar : 'images/avatars/ninguno.png',
-                Validators.required,
-            ],
-            role: [this.data ? this.data.role : '', Validators.required],
+            name: [this.data ? this.data.name : '', Validators.required],
+            description: [this.data ? this.data.description : ''],
+            location: [this.data ? this.data.location : ''],
+            surface_type: [this.data ? this.data.surface_type : ''],
+            available_schedule: [this.data ? this.data.available_schedule : ''],
+            ability: [this.data ? this.data.ability : ''],
         });
     }
     ngOnInit(): void {
@@ -107,17 +78,19 @@ export class ModalPlayareaComponent {
     }
 
     saveData() {
+        console.log('this.dataFormDinamicModal.valid', this.dataFormDinamicModal.valid);
+        console.log('this.dataFormDinamicModal', this.dataFormDinamicModal);
         if (!this.dataFormDinamicModal.valid) return;
 
         if (this.data == null) {
-            this._userService
+            this._playAreaService
                 .create(this.dataFormDinamicModal.value)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario creado correctamente'
+                            'Registro creado correctamente'
                         );
                         this._dialogRef.close(this.dataFormDinamicModal.value);
                     },
@@ -126,14 +99,14 @@ export class ModalPlayareaComponent {
                     },
                 });
         } else {
-            this._userService
+            this._playAreaService
                 .update(this.data.id, this.dataFormDinamicModal.value)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario actualizado correctamente'
+                            'Registro actualizado correctamente'
                         );
                         this._dialogRef.close(this.dataFormDinamicModal.value);
                     },

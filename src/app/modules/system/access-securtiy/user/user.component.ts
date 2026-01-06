@@ -12,7 +12,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Role } from 'app/model/Role.model';
 import { UserService } from 'app/services/system/access-security/user.service';
+import { RoleService } from 'app/services/system/configuration/role.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalUserComponent } from './modal-user/modal-user.component';
@@ -38,15 +40,21 @@ import { ModalUserComponent } from './modal-user/modal-user.component';
     styleUrl: './user.component.scss',
 })
 export class UserComponent {
+    roles: Role[] = [];
+
     constructor(
         private _dialog: MatDialog,
         private _userService: UserService,
+        private _roleService: RoleService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
 
     ngOnInit(): void {
         this.loadAllData();
+        this._roleService
+            .getAll()
+            .subscribe((resp: any) => (this.roles = resp.data));
     }
 
     displayedColumns: string[] = [
@@ -93,10 +101,12 @@ export class UserComponent {
         if (accion != 'new-register') {
             datoParamOpci.accion = accion;
         }
-
         let dialogRef: any = this._dialog.open(ModalUserComponent, {
             width: '50%',
-            data: datoParamOpci,
+            data: {
+                register: datoParamOpci,
+                roles: this.roles,
+            },
             disableClose: true,
         });
 
@@ -136,7 +146,7 @@ export class UserComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
@@ -150,7 +160,7 @@ export class UserComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });

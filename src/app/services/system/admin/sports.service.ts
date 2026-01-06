@@ -1,19 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'app/environments/environment';
+import { Sport } from 'app/model/Sport.model';
 import { User } from 'app/model/user.model';
 import { BaseCrudService } from 'app/services/basecrud.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
-export class UserService extends BaseCrudService<User> {
+export class SportsService extends BaseCrudService<Sport> {
     constructor(http: HttpClient) {
-        super(http, `${environment.baseUrl}/users`);
+        super(http, `${environment.baseUrl}/sports`);
     }
-
-    /* updatePartial(id: number, changes: Partial<User>): Observable<User> {
-        return this.http.patch<User>(`${this.baseUrl}/${id}`, changes);
-    } */
 }

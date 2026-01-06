@@ -92,7 +92,7 @@ export class ModalSportsmanComponent implements OnInit {
                         this._notificationService.show(
                             'success',
                             'Transacción exitosa',
-                            'Usuario creado correctamente'
+                            'Registro creado correctamente'
                         );
                     });
             } else {

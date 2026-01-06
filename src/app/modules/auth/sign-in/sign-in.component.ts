@@ -74,12 +74,15 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         this._authService.signIn(this.signInForm.value).subscribe(
-            () => {
-                const redirectURL =
+            (response) => {
+                let redirectURL =
                     this._activatedRoute.snapshot.queryParamMap.get(
                         'redirectURL'
                     ) || '/signed-in-redirect';
 
+                if (response.user.is_temporal) {
+                    redirectURL = '/reset-password';
+                }
                 this._router.navigateByUrl(redirectURL);
             },
             (response) => {

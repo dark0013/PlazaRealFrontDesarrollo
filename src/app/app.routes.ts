@@ -42,13 +42,7 @@ export const appRoutes: Route[] = [
                         'app/modules/auth/forgot-password/forgot-password.routes'
                     ),
             },
-            {
-                path: 'reset-password',
-                loadChildren: () =>
-                    import(
-                        'app/modules/auth/reset-password/reset-password.routes'
-                    ),
-            },
+
             {
                 path: 'sign-in',
                 loadChildren: () =>
@@ -77,6 +71,13 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import(
                         'app/modules/auth/unlock-session/unlock-session.routes'
+                    ),
+            },
+            {
+                path: 'reset-password',
+                loadChildren: () =>
+                    import(
+                        'app/modules/auth/reset-password/reset-password.routes'
                     ),
             },
         ],

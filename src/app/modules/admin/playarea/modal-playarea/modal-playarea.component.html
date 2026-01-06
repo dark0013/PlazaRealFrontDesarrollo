@@ -21,13 +21,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'identification_number'"
+                            [formControlName]="'name'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('identification_number')
+                                .get('name')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -46,13 +46,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'first_name'"
+                            [formControlName]="'description'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('first_name')
+                                .get('description')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -72,13 +72,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'last_name'"
+                            [formControlName]="'location'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('last_name')
+                                .get('location')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -97,13 +97,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'email'"
+                            [formControlName]="'surface_type'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('email')
+                                .get('surface_type')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -123,13 +123,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'telephone'"
+                            [formControlName]="'available_schedule'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('telephone')
+                                .get('available_schedule')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>
@@ -149,13 +149,13 @@
                             matPrefix
                         ></mat-icon>
                         <input
-                            [formControlName]="'telephone'"
+                            [formControlName]="'ability'"
                             matInput
                             [readonly]="readonlyMode"
                         />
                         @if (
                             dataFormDinamicModal
-                                .get('telephone')
+                                .get('ability')
                                 .hasError('required')
                         ) {
                             <mat-error> Campo es requerido </mat-error>

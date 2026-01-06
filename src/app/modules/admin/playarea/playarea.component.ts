@@ -16,6 +16,7 @@ import { UserService } from 'app/services/system/access-security/user.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalPlayareaComponent } from './modal-playarea/modal-playarea.component';
+import { PlayAreaService } from 'app/services/system/admin/playarea.service';
 
 @Component({
     selector: 'app-modal-playarea',
@@ -40,7 +41,7 @@ import { ModalPlayareaComponent } from './modal-playarea/modal-playarea.componen
 export class PlayareaComponent {
     constructor(
         private _dialog: MatDialog,
-        private _userService: UserService,
+        private _playAreaService: PlayAreaService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
@@ -75,17 +76,12 @@ export class PlayareaComponent {
 
     loadAllData() {
         this.dataSource.data = null;
-        this._userService.getAll().subscribe({
+        this._playAreaService.getAll().subscribe({
             next: (data: any) => {
                 this.dataSource.data = data.data;
             },
             error: (err) => {
-                console.error('');
-                this._notificationService.show(
-                    'error',
-                    'Operación errónea',
-                    'No se pudo cargar la lista de usuarios'
-                );
+                console.error(err);
             },
         });
     }
@@ -128,7 +124,7 @@ export class PlayareaComponent {
 
     updateState(data: any, opcion: string) {
         if (opcion === 'activate') {
-            this._userService.activate(data.id).subscribe({
+            this._playAreaService.activate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
@@ -137,12 +133,12 @@ export class PlayareaComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
         } else {
-            this._userService.deActivate(data.id).subscribe({
+            this._playAreaService.deActivate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
@@ -151,7 +147,7 @@ export class PlayareaComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo actualizar el estado del usuario'
+                        'No se pudo actualizar el estado del registro'
                     );
                 },
             });
