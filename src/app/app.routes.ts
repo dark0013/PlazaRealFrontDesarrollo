@@ -215,4 +215,25 @@ export const appRoutes: Route[] = [
             },
         ],
     },
+
+    {
+        path: 'operation-administracion',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver,
+        },
+        children: [
+
+            {
+                path: 'reservaciones',
+                loadChildren: () =>
+                    import(
+                        'app/modules/operation/reservation/reservation.module'
+                    ).then((m) => m.ReservationModule),
+            },
+
+        ],
+    }
 ];

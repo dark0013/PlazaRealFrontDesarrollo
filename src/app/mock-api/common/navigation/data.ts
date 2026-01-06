@@ -161,7 +161,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         title: 'Administración de Reservas',
                         type: 'basic',
                         icon: 'heroicons_outline:document-plus',
-                        link: '/soporte/generacion',
+                        link: '/operation-administracion/reservaciones/reservaciones',
                     },
                     {
                         id: '1',
