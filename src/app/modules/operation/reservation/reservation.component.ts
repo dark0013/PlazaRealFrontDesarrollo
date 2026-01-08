@@ -14,10 +14,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ModalSportsmanComponent } from 'app/modules/admin/sportsman/modal-sportsman/modal-sportsman.component';
-import { SportsmanService } from 'app/services/system/admin/sportsman.service';
+import { ReservationService } from 'app/services/system/control/reservation.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
+import { ModalReservacionComponent } from './modal-reservacion/modal-reservacion.component';
 
 
 @Component({
@@ -43,7 +43,7 @@ import { NotificationService } from 'app/shared/components/notification/notifica
 export class ReservationComponent {
  constructor(
         private _dialog: MatDialog,
-        private sportsmanService: SportsmanService,
+        private reservationService: ReservationService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
@@ -84,7 +84,7 @@ export class ReservationComponent {
 
     loadAllData() {
         this.dataSource.data = null;
-        this.sportsmanService.getAll().subscribe({
+        this.reservationService.getAll().subscribe({
             next: (data: any) => {
                 this.dataSource.data = data.data;
             },
@@ -101,7 +101,7 @@ export class ReservationComponent {
             datoParamOpci.accion = accion;
         }
 
-        let dialogRef: any = this._dialog.open(ModalSportsmanComponent, {
+        let dialogRef: any = this._dialog.open(ModalReservacionComponent, {
             width: '50%',
             data: datoParamOpci,
             disableClose: true,
@@ -134,7 +134,7 @@ export class ReservationComponent {
 
     updateState(data: any, opcion: string) {
         if (opcion === 'activate') {
-            this.sportsmanService.activate(data.id).subscribe({
+            this.reservationService.activate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
@@ -148,7 +148,7 @@ export class ReservationComponent {
                 },
             });
         } else {
-            this.sportsmanService.deActivate(data.id).subscribe({
+            this.reservationService.deActivate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },

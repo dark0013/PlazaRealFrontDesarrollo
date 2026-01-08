@@ -163,13 +163,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:document-plus',
                         link: '/operation-administracion/reservaciones/reservaciones',
                     },
-                    {
+                   /*  {
                         id: '1',
                         title: 'Administración de Cuotas Societarias',
                         type: 'basic',
                         icon: 'heroicons_outline:list-bullet',
                         link: '/soporte/historial',
-                    },
+                    }, */
                 ],
             },
 
