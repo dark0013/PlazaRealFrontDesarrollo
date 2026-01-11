@@ -22,8 +22,8 @@ import { NotificationService } from 'app/shared/components/notification/notifica
 import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-modal-reservacion',
-     imports: [
+    selector: 'app-modal-reservacion',
+    imports: [
         CommonModule,
         MatTableModule,
         MatPaginatorModule,
@@ -36,10 +36,10 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatButtonToggleModule,
         MatButtonModule,
         MatSelectModule,
-         MatDialogModule,
+        MatDialogModule,
     ],
-  templateUrl: './modal-reservacion.component.html',
-  styleUrl: './modal-reservacion.component.scss'
+    templateUrl: './modal-reservacion.component.html',
+    styleUrl: './modal-reservacion.component.scss'
 })
 export class ModalReservacionComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
@@ -58,10 +58,7 @@ export class ModalReservacionComponent implements OnInit {
             reservation_date: [this.data ? this.data.reservation_date : '', Validators.required],
             start_time: [this.data ? this.data.start_time : '', Validators.required],
             end_time: [this.data ? this.data.end_time : '', Validators.required],
-            notes: [this.data ? this.data.notes : '', Validators.required],
-           
-            current_ranking: [this.data ? this.data.current_ranking : '', Validators.required],
-            /* status: [this.data ? this.data.status : '', Validators.required], */
+            notes: [this.data ? this.data.notes : '', Validators.required]
         });
 
     }
@@ -70,7 +67,7 @@ export class ModalReservacionComponent implements OnInit {
     }
 
     initAction(data?: any) {
-        
+
         if (data != null) {
             if (data.accion == 'information') {
                 this.readonlyMode = true;
@@ -81,37 +78,70 @@ export class ModalReservacionComponent implements OnInit {
     }
 
     saveData() {
-        if (this.dataFormDinamicModal.valid) {
-            /* if (this.data == null) { */
-            if (this.data && Object.keys(this.data).length === 0) {
-                this._reservationService
-                    .create(this.dataFormDinamicModal.value)
-                    .subscribe((resp) => {
-                        this._notificationService.show(
-                            'success',
-                            'Transacción exitosa',
-                            'Registro creado correctamente'
-                        );
-                    });
-            } else {
-                this._reservationService
-                    .update(this.data.id, this.dataFormDinamicModal.value)
-                    .subscribe((resp) => {
-                        this._notificationService.show(
-                            'success',
-                            'Transacción exitosa',
-                            'Usuario actualziado correctamente'
-                        );
-                    });
-            }
+        if (!this.dataFormDinamicModal.valid) {
+            this.dataFormDinamicModal.markAllAsTouched();
+            return;
+        }
 
-            this._dialogRef.close(this.dataFormDinamicModal.value);
+        if (!this.data?.id) {
+            // CREATE
+            const payload = this.buildPayload();
+
+            this._reservationService.create(payload).subscribe(() => {
+                this._notificationService.show(
+                    'success',
+                    'Transacción exitosa',
+                    'Registro creado correctamente'
+                );
+                this._dialogRef.close(payload);
+            });
+
+        } else {
+            // RESCHEDULE (PATCH)
+            const payload = this.buildReschedulePayload();
+
+            this._reservationService.reschedule(this.data.id, payload).subscribe(() => {
+                this._notificationService.show(
+                    'success',
+                    'Transacción exitosa',
+                    'Horario reprogramado correctamente'
+                );
+                this._dialogRef.close(payload);
+            });
         }
     }
+
+
+
 
     close() {
         this._dialogRef.close();
     }
+
+
+    private buildPayload() {
+        const formValue = this.dataFormDinamicModal.value;
+
+        return {
+            sportsman_id: Number(formValue.sportman),
+            court_id: Number(formValue.category),
+            reservation_date: formValue.reservation_date,
+            start_time: formValue.start_time,
+            end_time: formValue.end_time,
+            notes: formValue.notes
+        };
+    }
+
+    private buildReschedulePayload() {
+        const formValue = this.dataFormDinamicModal.value;
+
+        return {
+            start_time: formValue.start_time?.substring(0, 5),
+            end_time: formValue.end_time?.substring(0, 5)
+        };
+    }
+
+
 }
 
 
