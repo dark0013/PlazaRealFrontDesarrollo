@@ -22,4 +22,10 @@ export class ReservationService extends BaseCrudService<Reservation> {
         );
     }
 
+ getCatalogs(options: string): Observable<any> {
+    return this.http.get<any>(
+        `${environment.baseUrl}/catalogs/${options}`
+    );
+}
+
 }

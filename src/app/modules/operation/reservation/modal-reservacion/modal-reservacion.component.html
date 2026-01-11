@@ -13,8 +13,9 @@
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Deportista</mat-label>
                         <mat-select formControlName="sportman" [disabled]="readonlyMode">
-                            <mat-option value="1">Alain Campoverde</mat-option>
-                            <mat-option value="2">Kevin Galarza</mat-option>
+                            <mat-option *ngFor="let sportman of sportsmenCatalog" [value]="sportman.id">
+                                {{ sportman.full_name }}
+                            </mat-option>
                         </mat-select>
                         @if (dataFormDinamicModal.get('sportman').hasError('required')) {
                         <mat-error>Campo es requerido</mat-error>
@@ -26,7 +27,9 @@
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>cancha</mat-label>
                         <mat-select formControlName="category" [disabled]="readonlyMode">
-                            <mat-option value="1">Cancha tenis #1</mat-option>
+                            <mat-option *ngFor="let scenario of scenariosCatalog" [value]="scenario.value_key">
+                                {{ scenario.option_value }}
+                            </mat-option>
                         </mat-select>
                         @if (dataFormDinamicModal.get('category').hasError('required')) {
                         <mat-error>Campo es requerido</mat-error>

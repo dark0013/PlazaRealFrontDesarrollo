@@ -44,6 +44,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 export class ModalReservacionComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
+    sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
+    scenariosCatalog: Array<{ value_key: number; option_value: string; }> = [];
+
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -64,6 +67,8 @@ export class ModalReservacionComponent implements OnInit {
     }
     ngOnInit(): void {
         this.initAction(this.data);
+        this.loadGetCatalogoSportman();
+        this.loadGetCatalogoScenario();
     }
 
     initAction(data?: any) {
@@ -111,6 +116,28 @@ export class ModalReservacionComponent implements OnInit {
         }
     }
 
+
+    loadGetCatalogoSportman() {
+        this._reservationService.getCatalogs('sportsmen').subscribe({
+            next: (resp: any) => {
+                this.sportsmenCatalog = resp.data;
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
+    }
+
+    loadGetCatalogoScenario() {
+        this._reservationService.getCatalogs('scenarios').subscribe({
+            next: (resp: any) => {
+                this.scenariosCatalog = resp.data;
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
+    }
 
 
 

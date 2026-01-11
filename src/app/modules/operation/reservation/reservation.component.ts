@@ -50,21 +50,22 @@ export class ReservationComponent {
 
     ngOnInit(): void {
         this.loadAllData();
+   
     }
 
     displayedColumns: string[] = [
         'id',
-        'columna1',
+        /* 'columna1', */
         'columna2',
         'columna4',
-        'columna5',
+        /* 'columna5', */
         'columna6',
         'columna7',
-        'columna8',
+        /* 'columna8', */
         /* 'columna9',
         'columna10', */
         'columna11',
-        'estado',
+        /* 'estado', */
         'accion',
     ];
 
@@ -93,6 +94,7 @@ export class ReservationComponent {
             },
         });
     }
+
 
   
 
