@@ -21,7 +21,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { SportsService } from 'app/services/system/admin/sports.service';
+import { Category } from 'app/model/Category.model';
+import { TournamentService } from 'app/services/system/operation/tournament.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
 @Component({
@@ -46,73 +47,97 @@ import { NotificationService } from 'app/shared/components/notification/notifica
 })
 export class ModalTournamentComponent {
     dataFormDinamicModal: UntypedFormGroup;
-    readonlyMode: boolean = false;
+    readonlyMode = false;
+    isNewRegister: boolean = false;
+    categories: Category[] = [];
+
+    tournamentTypes = ['TENIS', 'FUTBOL', 'BASKET', 'VOLEY'];
+    modes = ['ELIMINATION', 'GROUPS', 'MIXED'];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private _dialogRef: MatDialogRef<any>,
-        private _formBuilder: UntypedFormBuilder,
-        private _sportService: SportsService,
-        private _notificationService: NotificationService
+        private dialogRef: MatDialogRef<any>,
+        private fb: UntypedFormBuilder,
+        private tournamentService: TournamentService,
+        private notificationService: NotificationService
     ) {
-        this.dataFormDinamicModal = this._formBuilder.group({
-            name: [this.data ? this.data.name : '', Validators.required],
-            description: [this.data ? this.data.description : ''],
+        this.categories = data.categories || [];
+        this.dataFormDinamicModal = this.fb.group({
+            name: [data.register?.name || '', Validators.required],
+            start_date: [data.register?.start_date || '', Validators.required],
+            end_date: [data.register?.end_date || '', Validators.required],
+            tournament_type: [
+                data.register?.tournament_type || '',
+                Validators.required,
+            ],
+            //mode: [data.register?.mode || '', Validators.required],
+            mode: [''],
+            category_id: [
+                this.data.register
+                    ? this.data.register.category_id
+                    : this.categories.length > 0
+                      ? this.categories[0].id
+                      : '',
+                Validators.required,
+            ],
+            description: [data.register?.description || ''],
         });
     }
+
     ngOnInit(): void {
         this.initAction(this.data);
     }
 
     initAction(data?: any) {
-        if (data != null) {
-            if (data.accion == 'information') {
+        this.isNewRegister = false;
+
+        if (data.register != null) {
+            if (data.register.accion == 'information') {
                 this.readonlyMode = true;
             } else {
                 this.readonlyMode = false;
             }
+        } else {
+            this.isNewRegister = true;
         }
     }
 
     saveData() {
-        if (!this.dataFormDinamicModal.valid) return;
+        if (this.dataFormDinamicModal.invalid) return;
 
-        if (this.data == null) {
-            this._sportService
-                .create(this.dataFormDinamicModal.value)
-                .subscribe({
-                    next: (resp) => {
-                        this._notificationService.show(
-                            'success',
-                            'Transacción exitosa',
-                            'Registro creado correctamente'
-                        );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
-                    },
-                    error: (e) => {
-                        console.log('error:', e);
-                    },
-                });
+        const payload = this.dataFormDinamicModal.value;
+        if (!this.data.register?.id) {
+            console.log('Creando torneo...');
+            this.tournamentService.create(payload).subscribe({
+                next: () => {
+                    this.notificationService.show(
+                        'success',
+                        'Éxito',
+                        'Torneo creado'
+                    );
+                    this.dialogRef.close(payload);
+                },
+                error: (e) => console.error(e),
+            });
         } else {
-            this._sportService
-                .update(this.data.id, this.dataFormDinamicModal.value)
+            console.log('Actualizando torneo...');
+            this.tournamentService
+                .update(this.data.register.id, payload)
                 .subscribe({
-                    next: (resp) => {
-                        this._notificationService.show(
+                    next: () => {
+                        this.notificationService.show(
                             'success',
-                            'Transacción exitosa',
-                            'Registro actualizado correctamente'
+                            'Éxito',
+                            'Torneo actualizado'
                         );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this.dialogRef.close(payload);
                     },
-                    error: (e) => {
-                        console.log('error:', e);
-                    },
+                    error: (e) => console.error(e),
                 });
         }
     }
 
     close() {
-        this._dialogRef.close();
+        this.dialogRef.close();
     }
 }

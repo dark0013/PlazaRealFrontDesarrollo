@@ -41,7 +41,7 @@ import { CategoriesService } from 'app/services/system/admin/categories.service'
 export class CategoriesComponent {
     constructor(
         private _dialog: MatDialog,
-        private _userService: CategoriesService,
+        private _categoryService: CategoriesService,
         private _alertService: AlertService,
         private _notificationService: NotificationService
     ) {}
@@ -75,7 +75,7 @@ export class CategoriesComponent {
 
     loadAllData() {
         this.dataSource.data = null;
-        this._userService.getAll().subscribe({
+        this._categoryService.getAll().subscribe({
             next: (data: any) => {
                 this.dataSource.data = data.data;
             },
@@ -123,7 +123,7 @@ export class CategoriesComponent {
 
     updateState(data: any, opcion: string) {
         if (opcion === 'activate') {
-            this._userService.activate(data.id).subscribe({
+            this._categoryService.activate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },
@@ -137,7 +137,7 @@ export class CategoriesComponent {
                 },
             });
         } else {
-            this._userService.deActivate(data.id).subscribe({
+            this._categoryService.deActivate(data.id).subscribe({
                 next: (resp) => {
                     this.loadAllData();
                 },

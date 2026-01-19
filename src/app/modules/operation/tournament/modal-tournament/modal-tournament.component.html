@@ -1,78 +1,138 @@
 <div
-    class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
+    class="flex h-16 items-center justify-between bg-primary pl-6 pr-3 text-on-primary"
 >
-    <div class="text-lg font-medium">Deporte</div>
+    <div class="text-lg font-medium">Torneo</div>
 </div>
 
 <hr />
-<mat-dialog-content>
-    <div class="w-full">
-        <form [formGroup]="dataFormDinamicModal">
-            <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
-                <div class="sm:col-span-2">
-                    <mat-form-field
-                        class="w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Nombre del Deporte</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:information-circle'"
-                            matPrefix
-                        ></mat-icon>
-                        <input
-                            [formControlName]="'name'"
-                            matInput
-                            [readonly]="readonlyMode"
-                        />
-                        @if (
-                            dataFormDinamicModal
-                                .get('name')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-                <div class="sm:col-span-2">
-                    <mat-form-field
-                        class="w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Descripción</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:information-circle'"
-                            matPrefix
-                        ></mat-icon>
-                        <input
-                            [formControlName]="'description'"
-                            matInput
-                            [readonly]="readonlyMode"
-                        />
-                    </mat-form-field>
-                </div>
-            </div>
 
-            <div class="mb-10 mt-11 border-t"></div>
-        </form>
-    </div>
+<mat-dialog-content>
+    <form
+        [formGroup]="dataFormDinamicModal"
+        class="mt-6 grid w-full gap-6 sm:grid-cols-4"
+    >
+        <!-- Nombre -->
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Nombre del Torneo</mat-label>
+                <input
+                    matInput
+                    formControlName="name"
+                    [readonly]="readonlyMode"
+                />
+                <mat-error
+                    *ngIf="
+                        dataFormDinamicModal.get('name')?.hasError('required')
+                    "
+                >
+                    Campo requerido
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Tipo -->
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Tipo de Torneo</mat-label>
+                <mat-select
+                    formControlName="tournament_type"
+                    [disabled]="readonlyMode"
+                >
+                    <mat-option *ngFor="let t of tournamentTypes" [value]="t">
+                        {{ t }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Fecha inicio -->
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Fecha Inicio</mat-label>
+                <input
+                    matInput
+                    type="date"
+                    formControlName="start_date"
+                    [readonly]="readonlyMode"
+                />
+            </mat-form-field>
+        </div>
+
+        <!-- Fecha fin -->
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Fecha Fin</mat-label>
+                <input
+                    matInput
+                    type="date"
+                    formControlName="end_date"
+                    [readonly]="readonlyMode"
+                />
+            </mat-form-field>
+        </div>
+
+        <!-- Modalidad 
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Modalidad</mat-label>
+                <mat-select formControlName="mode" [disabled]="readonlyMode">
+                    <mat-option *ngFor="let m of modes" [value]="m">
+                        {{ m }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>-->
+
+        <!-- Categoría -->
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full">
+                <mat-label>Categoría</mat-label>
+                <mat-select
+                    formControlName="category_id"
+                    [disabled]="readonlyMode"
+                >
+                    <mat-option *ngFor="let c of categories" [value]="c.id">
+                        {{ c.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error
+                    *ngIf="
+                        dataFormDinamicModal
+                            .get('category_id')
+                            ?.hasError('required')
+                    "
+                >
+                    Categoría requerida
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Descripción -->
+        <div class="sm:col-span-4">
+            <mat-form-field class="w-full">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                    matInput
+                    rows="3"
+                    formControlName="description"
+                    [readonly]="readonlyMode"
+                ></textarea>
+            </mat-form-field>
+        </div>
+    </form>
 </mat-dialog-content>
 
 <div mat-dialog-actions>
-    <div class="flex items-center justify-end">
-        <button mat-stroked-button type="button" (click)="close()">
-            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
-        </button>
+    <div class="flex justify-end">
+        <button mat-stroked-button (click)="close()">Cancelar</button>
         <button
             *ngIf="!readonlyMode"
             class="ml-4"
             mat-flat-button
-            type="button"
-            [color]="'primary'"
+            color="primary"
             (click)="saveData()"
         >
-            <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
+            Guardar
         </button>
     </div>
 </div>

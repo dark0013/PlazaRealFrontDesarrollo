@@ -12,11 +12,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { SportsService } from 'app/services/system/admin/sports.service';
+import { Category } from 'app/model/Category.model';
+import { CategoriesService } from 'app/services/system/admin/categories.service';
+import { TournamentService } from 'app/services/system/operation/tournament.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalTournamentComponent } from './modal-tournament/modal-tournament.component';
-import { TournamentService } from 'app/services/system/operation/tournament.service';
 
 @Component({
     selector: 'app-tournament',
@@ -39,21 +40,26 @@ import { TournamentService } from 'app/services/system/operation/tournament.serv
     styleUrl: './tournament.component.scss',
 })
 export class TournamentComponent {
+    categories: Category[] = [];
+
     constructor(
         private _dialog: MatDialog,
         private _tournamentService: TournamentService,
         private _alertService: AlertService,
-        private _notificationService: NotificationService
+        private _notificationService: NotificationService,
+        private _categoryService: CategoriesService
     ) {}
 
     ngOnInit(): void {
         this.loadAllData();
+        this.loadCategories();
     }
 
     displayedColumns: string[] = [
         'id',
         'columna1',
         'columna2',
+        'columna3',
         'estado',
         'accion',
     ];
@@ -76,6 +82,7 @@ export class TournamentComponent {
         this.dataSource.data = null;
         this._tournamentService.getAll().subscribe({
             next: (data: any) => {
+                console.log(data);
                 this.dataSource.data = data.data;
             },
             error: (err) => {
@@ -84,6 +91,20 @@ export class TournamentComponent {
         });
     }
 
+    loadCategories() {
+        this._categoryService.getAll().subscribe({
+            next: (resp: any) => {
+                this.categories = resp.data;
+
+                /*if (this.data?.category_id) {
+                    this.dataFormDinamicModal.patchValue({
+                        category_id: this.data.category_id,
+                    });
+                }*/
+            },
+            error: (e) => console.error('Error cargando categorías', e),
+        });
+    }
     openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {
             datoParamOpci.accion = accion;
@@ -91,7 +112,10 @@ export class TournamentComponent {
 
         let dialogRef: any = this._dialog.open(ModalTournamentComponent, {
             width: '50%',
-            data: datoParamOpci,
+            data: {
+                register: datoParamOpci,
+                categories: this.categories,
+            },
             disableClose: true,
         });
 
