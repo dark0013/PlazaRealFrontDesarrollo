@@ -225,7 +225,6 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver,
         },
         children: [
-
             {
                 path: 'reservaciones',
                 loadChildren: () =>
@@ -233,7 +232,13 @@ export const appRoutes: Route[] = [
                         'app/modules/operation/reservation/reservation.module'
                     ).then((m) => m.ReservationModule),
             },
-
+            {
+                path: 'torneos',
+                loadChildren: () =>
+                    import(
+                        'app/modules/operation/tournament/tournament.module'
+                    ).then((m) => m.TournamentModule),
+            },
         ],
-    }
+    },
 ];

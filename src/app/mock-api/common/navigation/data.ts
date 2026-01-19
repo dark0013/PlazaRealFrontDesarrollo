@@ -163,18 +163,29 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:document-plus',
                         link: '/operation-administracion/reservaciones/reservaciones',
                     },
-                   /*  {
-                        id: '1',
-                        title: 'Administración de Cuotas Societarias',
-                        type: 'basic',
-                        icon: 'heroicons_outline:list-bullet',
-                        link: '/soporte/historial',
-                    }, */
                 ],
             },
 
             {
                 id: '2',
+                title: 'Torneos',
+                subtitle: 'Control de Torneos',
+                icon: 'heroicons_outline:banknotes',
+                type: 'collapsable',
+
+                children: [
+                    {
+                        id: '0',
+                        title: 'Administración de Torneos',
+                        type: 'basic',
+                        icon: 'heroicons_outline:document-plus',
+                        link: '/operation-administracion/torneos',
+                    },
+                ],
+            },
+
+            {
+                id: '3',
                 title: 'Reportes',
                 subtitle: 'Informes y reportería',
                 icon: 'heroicons_outline:book-open',
