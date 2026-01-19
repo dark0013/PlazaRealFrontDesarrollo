@@ -33,14 +33,13 @@
         <!-- Tipo -->
         <div class="sm:col-span-2">
             <mat-form-field class="w-full">
-                <mat-label>Tipo de Torneo</mat-label>
-                <mat-select
-                    formControlName="tournament_type"
-                    [disabled]="readonlyMode"
-                >
-                    <mat-option *ngFor="let t of tournamentTypes" [value]="t">
-                        {{ t }}
-                    </mat-option>
+                <mat-label>Deporte</mat-label>
+                <mat-select formControlName="tournament_type">
+                    @for (item of sport; track $index) {
+                        <mat-option [value]="item.option_value">
+                            {{ item.option_value }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
         </div>
@@ -71,39 +70,24 @@
             </mat-form-field>
         </div>
 
-        <!-- Modalidad 
-        <div class="sm:col-span-2">
-            <mat-form-field class="w-full">
-                <mat-label>Modalidad</mat-label>
-                <mat-select formControlName="mode" [disabled]="readonlyMode">
-                    <mat-option *ngFor="let m of modes" [value]="m">
-                        {{ m }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>-->
-
         <!-- Categoría -->
         <div class="sm:col-span-2">
             <mat-form-field class="w-full">
                 <mat-label>Categoría</mat-label>
-                <mat-select
-                    formControlName="category_id"
-                    [disabled]="readonlyMode"
-                >
-                    <mat-option *ngFor="let c of categories" [value]="c.id">
-                        {{ c.name }}
-                    </mat-option>
+                <mat-select formControlName="category_id">
+                    @for (item of categories; track $index) {
+                        <mat-option [value]="item.value_key">
+                            {{ item.option_value }}
+                        </mat-option>
+                    }
                 </mat-select>
-                <mat-error
-                    *ngIf="
-                        dataFormDinamicModal
-                            .get('category_id')
-                            ?.hasError('required')
-                    "
-                >
-                    Categoría requerida
-                </mat-error>
+                @if (
+                    dataFormDinamicModal
+                        .get('category_id')
+                        ?.hasError('required')
+                ) {
+                    <mat-error> Categoría requerida </mat-error>
+                }
             </mat-form-field>
         </div>
 

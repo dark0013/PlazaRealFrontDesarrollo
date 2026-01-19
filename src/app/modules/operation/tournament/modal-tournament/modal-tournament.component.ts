@@ -21,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { Category } from 'app/model/Category.model';
+import { Catalog } from 'app/model/catalog.model';
 import { TournamentService } from 'app/services/system/operation/tournament.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
@@ -49,9 +49,9 @@ export class ModalTournamentComponent {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode = false;
     isNewRegister: boolean = false;
-    categories: Category[] = [];
+    categories: Catalog[] = [];
+    sport: Catalog[] = [];
 
-    tournamentTypes = ['TENIS', 'FUTBOL', 'BASKET', 'VOLEY'];
     modes = ['ELIMINATION', 'GROUPS', 'MIXED'];
 
     constructor(
@@ -62,21 +62,30 @@ export class ModalTournamentComponent {
         private notificationService: NotificationService
     ) {
         this.categories = data.categories || [];
+        this.sport = data.sport || [];
+
+        console.log('Deportes en modal:', this.data.register);
+        console.log('Deportes en modal:', this.sport[0].value_key);
+
         this.dataFormDinamicModal = this.fb.group({
             name: [data.register?.name || '', Validators.required],
             start_date: [data.register?.start_date || '', Validators.required],
             end_date: [data.register?.end_date || '', Validators.required],
             tournament_type: [
-                data.register?.tournament_type || '',
+                this.data.register
+                    ? this.data.register.tournament_type
+                    : (this.sport.length > 0
+                      ? this.sport[0].option_value
+                      : 1),
                 Validators.required,
             ],
-            //mode: [data.register?.mode || '', Validators.required],
-            mode: [''],
+
+            mode: ['NA'],
             category_id: [
                 this.data.register
                     ? this.data.register.category_id
                     : this.categories.length > 0
-                      ? this.categories[0].id
+                      ? this.categories[0].value_key
                       : '',
                 Validators.required,
             ],
@@ -94,6 +103,7 @@ export class ModalTournamentComponent {
         if (data.register != null) {
             if (data.register.accion == 'information') {
                 this.readonlyMode = true;
+                this.dataFormDinamicModal.disable();
             } else {
                 this.readonlyMode = false;
             }

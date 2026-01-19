@@ -1,5 +1,4 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,8 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Category } from 'app/model/Category.model';
-import { CategoriesService } from 'app/services/system/admin/categories.service';
+import { Sport } from 'app/model/Sport.model';
 import { TournamentService } from 'app/services/system/operation/tournament.service';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalTournamentComponent } from './modal-tournament/modal-tournament.component';
@@ -28,7 +28,6 @@ import { ModalTournamentComponent } from './modal-tournament/modal-tournament.co
         MatIconModule,
         FormsModule,
         MatFormFieldModule,
-        NgClass,
         MatInputModule,
         TextFieldModule,
         ReactiveFormsModule,
@@ -41,18 +40,20 @@ import { ModalTournamentComponent } from './modal-tournament/modal-tournament.co
 })
 export class TournamentComponent {
     categories: Category[] = [];
+    sport: Sport[] = [];
 
     constructor(
         private _dialog: MatDialog,
         private _tournamentService: TournamentService,
         private _alertService: AlertService,
         private _notificationService: NotificationService,
-        private _categoryService: CategoriesService
+        private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
         this.loadAllData();
         this.loadCategories();
+        this.loadSport();
     }
 
     displayedColumns: string[] = [
@@ -91,20 +92,22 @@ export class TournamentComponent {
         });
     }
 
-    loadCategories() {
-        this._categoryService.getAll().subscribe({
+    loadSport() {
+        this._catalogService.getSports().subscribe({
             next: (resp: any) => {
-                this.categories = resp.data;
-
-                /*if (this.data?.category_id) {
-                    this.dataFormDinamicModal.patchValue({
-                        category_id: this.data.category_id,
-                    });
-                }*/
+                this.sport = resp.data;
             },
-            error: (e) => console.error('Error cargando categorías', e),
         });
     }
+
+    loadCategories() {
+        this._catalogService.getCategories().subscribe({
+            next: (resp: any) => {
+                this.categories = resp.data;
+            },
+        });
+    }
+
     openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {
             datoParamOpci.accion = accion;
@@ -115,6 +118,7 @@ export class TournamentComponent {
             data: {
                 register: datoParamOpci,
                 categories: this.categories,
+                sport: this.sport,
             },
             disableClose: true,
         });

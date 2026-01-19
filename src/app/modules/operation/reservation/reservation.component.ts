@@ -29,7 +29,6 @@ import { ModalReservacionComponent } from './modal-reservacion/modal-reservacion
         MatIconModule,
         FormsModule,
         MatFormFieldModule,
-        NgClass,
         MatInputModule,
         TextFieldModule,
         ReactiveFormsModule,

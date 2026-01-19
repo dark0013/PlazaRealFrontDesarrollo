@@ -5,9 +5,7 @@
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center font-medium">
                 <div>
-                    <a class="whitespace-nowrap text-primary-500"
-                        >Operación</a
-                    >
+                    <a class="whitespace-nowrap text-primary-500">Operación</a>
                 </div>
                 <div class="ml-1 flex items-center whitespace-nowrap">
                     <mat-icon
@@ -109,21 +107,10 @@
 
                             <ng-container matColumnDef="estado">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Estado
+                                    Estado Torneo
                                 </th>
                                 <td mat-cell *matCellDef="let register">
-                                    <mat-icon
-                                        [ngClass]="{
-                                            activo: register.status == true,
-                                            inactivo: register.status == false,
-                                        }"
-                                    >
-                                        {{
-                                            register.status == true
-                                                ? 'check_circle'
-                                                : 'cancel'
-                                        }}</mat-icon
-                                    >
+                                    {{ register.status }}
                                 </td>
                             </ng-container>
 
