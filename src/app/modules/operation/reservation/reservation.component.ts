@@ -61,13 +61,7 @@ export class ReservationComponent {
         this.loadGetCatalogoSportman();
     }
 
-    displayedColumns: string[] = [
-        'id',
-        'columna2',
-        'columna3',
-        'columna4',
-        'accion',
-    ];
+    displayedColumns: string[] = ['columna2', 'columna3', 'columna4', 'accion'];
 
     dataSource = new MatTableDataSource<any>([]);
 
@@ -172,9 +166,11 @@ export class ReservationComponent {
         if (!this.selectedCancha || !this.selectedFecha) {
             return;
         }
-
+        console.log('se envía fecha');
+        console.log(this.selectedFecha);
         const date = this.formatDate(this.selectedFecha);
-
+        console.log('fecha formateada');
+        console.log(date);
         this.reservationService
             .getSchedulesByDate(this.selectedCancha, date)
             .subscribe({
@@ -193,6 +189,10 @@ export class ReservationComponent {
     }
 
     formatDate(date: Date): string {
-        return date.toISOString().split('T')[0];
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
     }
 }
