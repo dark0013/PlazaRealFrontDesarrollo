@@ -85,57 +85,6 @@
                         }
                     </mat-form-field>
                 </div>
-                <div class="sm:col-span-4">
-                    <mat-form-field
-                        class="w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Tipo de superficie</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:information-circle'"
-                            matPrefix
-                        ></mat-icon>
-                        <input
-                            [formControlName]="'surface_type'"
-                            matInput
-                            [readonly]="readonlyMode"
-                        />
-                        @if (
-                            dataFormDinamicModal
-                                .get('surface_type')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-
-                <div class="sm:col-span-2">
-                    <mat-form-field
-                        class="w-full"
-                        [subscriptSizing]="'dynamic'"
-                    >
-                        <mat-label>Horario Disponibilidad</mat-label>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:information-circle'"
-                            matPrefix
-                        ></mat-icon>
-                        <input
-                            [formControlName]="'available_schedule'"
-                            matInput
-                            [readonly]="readonlyMode"
-                        />
-                        @if (
-                            dataFormDinamicModal
-                                .get('available_schedule')
-                                .hasError('required')
-                        ) {
-                            <mat-error> Campo es requerido </mat-error>
-                        }
-                    </mat-form-field>
-                </div>
 
                 <div class="sm:col-span-2">
                     <mat-form-field
@@ -162,6 +111,60 @@
                         }
                     </mat-form-field>
                 </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field
+                        class="w-full"
+                        [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-label>Descripción de superficie</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:information-circle'"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            [formControlName]="'surface_type'"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('surface_type')
+                                .hasError('required')
+                        ) {
+                            <mat-error> Campo es requerido </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                @if (false) {
+                    <div class="sm:col-span-2">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Horario Disponibilidad</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:information-circle'"
+                                matPrefix
+                            ></mat-icon>
+                            <input
+                                [formControlName]="'available_schedule'"
+                                matInput
+                                [readonly]="readonlyMode"
+                            />
+                            @if (
+                                dataFormDinamicModal
+                                    .get('available_schedule')
+                                    .hasError('required')
+                            ) {
+                                <mat-error> Campo es requerido </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                }
             </div>
 
             <div class="mb-10 mt-11 border-t"></div>

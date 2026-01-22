@@ -1,4 +1,6 @@
-<div class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5">
+<div
+    class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
+>
     <div class="text-lg font-medium">Reservación</div>
 </div>
 
@@ -8,87 +10,139 @@
     <div class="w-full">
         <form [formGroup]="dataFormDinamicModal">
             <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
-
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
+                        <mat-label>Cancha</mat-label>
+
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        >
+                        </mat-icon>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="scenario_name_display"
+                            [readonly]="true"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-2">
+                    <mat-form-field class="w-full" subscriptSizing="dynamic">
+                        <mat-label>Fecha de Reservación</mat-label>
+
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        >
+                        </mat-icon>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="date_reservation_display"
+                            [readonly]="true"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Deportista</mat-label>
-                        <mat-select formControlName="sportman" [disabled]="readonlyMode">
-                            <mat-option *ngFor="let sportman of sportsmenCatalog" [value]="sportman.id">
+                        <mat-select
+                            formControlName="sportman"
+                            [disabled]="readonlyMode"
+                        >
+                            <mat-option
+                                *ngFor="let sportman of sportsmenCatalog"
+                                [value]="sportman.id"
+                            >
                                 {{ sportman.full_name }}
                             </mat-option>
                         </mat-select>
-                        @if (dataFormDinamicModal.get('sportman').hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
+                        @if (
+                            dataFormDinamicModal
+                                .get('sportman')
+                                .hasError('required')
+                        ) {
+                            <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
                 </div>
-
-                <div class="sm:col-span-2">
-                    <mat-form-field class="w-full" subscriptSizing="dynamic">
-                        <mat-label>cancha</mat-label>
-                        <mat-select formControlName="category" [disabled]="readonlyMode">
-                            <mat-option *ngFor="let scenario of scenariosCatalog" [value]="scenario.value_key">
-                                {{ scenario.option_value }}
-                            </mat-option>
-                        </mat-select>
-                        @if (dataFormDinamicModal.get('category').hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-
-
-                <!-- Fecha Reservación -->
-                <div class="sm:col-span-4">
-                    <mat-form-field class="w-full" subscriptSizing="dynamic">
-                        <mat-label>Fecha de Reservación</mat-label>
-                        <input formControlName="reservation_date" matInput type="date" [readonly]="readonlyMode" />
-                        @if (dataFormDinamicModal.get('reservation_date').hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-
 
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Hora Inicio</mat-label>
 
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix>
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        >
                         </mat-icon>
 
-                        <input matInput type="time" formControlName="start_time" [readonly]="readonlyMode" />
+                        <input
+                            matInput
+                            type="time"
+                            formControlName="start_time"
+                            [readonly]="readonlyMode"
+                        />
 
-                        @if (dataFormDinamicModal.get('start_time')?.hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
+                        @if (
+                            dataFormDinamicModal
+                                .get('start_time')
+                                ?.hasError('required')
+                        ) {
+                            <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
                 </div>
-
 
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Hora Fin</mat-label>
 
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix>
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        >
                         </mat-icon>
 
-                        <input matInput type="time" formControlName="end_time" [readonly]="readonlyMode" />
+                        <input
+                            matInput
+                            type="time"
+                            formControlName="end_time"
+                            [readonly]="readonlyMode"
+                        />
 
-                        @if (dataFormDinamicModal.get('end_time')?.hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
+                        @if (
+                            dataFormDinamicModal
+                                .get('end_time')
+                                ?.hasError('required')
+                        ) {
+                            <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
                 </div>
 
-
-                <!-- descripción -->
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Descripción</mat-label>
-                        <input formControlName="notes" type="text" matInput [readonly]="readonlyMode" />
-                        @if (dataFormDinamicModal.get('notes').hasError('required')) {
-                        <mat-error>Campo es requerido</mat-error>
+                        <input
+                            formControlName="notes"
+                            type="text"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('notes')
+                                .hasError('required')
+                        ) {
+                            <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
                 </div>
@@ -104,7 +158,14 @@
         <button mat-stroked-button type="button" (click)="close()">
             <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
         </button>
-        <button *ngIf="!readonlyMode" class="ml-4" mat-flat-button type="button" color="primary" (click)="saveData()">
+        <button
+            *ngIf="!readonlyMode"
+            class="ml-4"
+            mat-flat-button
+            type="button"
+            color="primary"
+            (click)="saveData()"
+        >
             <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
         </button>
     </div>

@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
     FormsModule,
@@ -10,16 +10,20 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogModule,
+    MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { CreateReservationPayload } from 'app/model/CreateReservationPayload.model';
 import { ReservationService } from 'app/services/system/control/reservation.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
-import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-modal-reservacion',
@@ -39,136 +43,90 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
     ],
     templateUrl: './modal-reservacion.component.html',
-    styleUrl: './modal-reservacion.component.scss'
+    styleUrl: './modal-reservacion.component.scss',
+    providers: [DatePipe],
 })
 export class ModalReservacionComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
     sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
-    scenariosCatalog: Array<{ value_key: number; option_value: string; }> = [];
-
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _dialogRef: MatDialogRef<any>,
         private _formBuilder: UntypedFormBuilder,
         private _reservationService: ReservationService,
-        private _notificationService: NotificationService
+        private _notificationService: NotificationService,
+        private datePipe: DatePipe
     ) {
+        this.sportsmenCatalog = this.data.sportsmen;
+        console.log(this.sportsmenCatalog);
         this.dataFormDinamicModal = this._formBuilder.group({
-            sportman: [this.data ? this.data.sportman : '', Validators.required],
-            category: [this.data ? this.data.category : '', Validators.required],
-            reservation_date: [this.data ? this.data.reservation_date : '', Validators.required],
-            start_time: [this.data ? this.data.start_time : '', Validators.required],
-            end_time: [this.data ? this.data.end_time : '', Validators.required],
-            notes: [this.data ? this.data.notes : '', Validators.required]
+            sportman: [this.sportsmenCatalog[0]?.id, Validators.required],
+            scenario_name_display: [this.data.nameScenario],
+            date_reservation_display: [
+                this.datePipe.transform(this.data.dateSelected, 'dd/MM/yyyy'),
+            ],
+            category: [this.data.register ? this.data.register.category : ''],
+            reservation_date: [
+                this.data.register
+                    ? this.datePipe.transform(
+                          this.data.dateSelected,
+                          'yyyy/MM/dd'
+                      )
+                    : '',
+            ],
+            start_time: ['', Validators.required],
+            end_time: [''],
+            notes: [' '],
         });
-
     }
-    ngOnInit(): void {
-        this.initAction(this.data);
-        this.loadGetCatalogoSportman();
-        this.loadGetCatalogoScenario();
-    }
-
-    initAction(data?: any) {
-
-        if (data != null) {
-            if (data.accion == 'information') {
-                this.readonlyMode = true;
-            } else {
-                this.readonlyMode = false;
-            }
-        }
-    }
+    ngOnInit(): void {}
 
     saveData() {
+        console.log(this.dataFormDinamicModal);
+        console.log(this.dataFormDinamicModal.value);
         if (!this.dataFormDinamicModal.valid) {
             this.dataFormDinamicModal.markAllAsTouched();
             return;
         }
 
-        if (!this.data?.id) {
-            // CREATE
-            const payload = this.buildPayload();
+        const formValue = this.dataFormDinamicModal.value;
 
-            this._reservationService.create(payload).subscribe(() => {
+        const payload: CreateReservationPayload = {
+            scenario_id: this.data.idScenario,
+            id_sportmen: formValue.sportman,
+            reservation_date: this.formatDate(this.data.dateSelected),
+            start_time: formValue.start_time,
+            end_time: formValue.end_time || ' ',
+            responsable_person: 'n/a',
+        };
+
+        this._reservationService.createReservation(payload).subscribe({
+            next: () => {
                 this._notificationService.show(
                     'success',
-                    'Transacción exitosa',
-                    'Registro creado correctamente'
+                    'Reserva creada',
+                    'La reserva se registró correctamente'
                 );
-                this._dialogRef.close(payload);
-            });
-
-        } else {
-            // RESCHEDULE (PATCH)
-            const payload = this.buildReschedulePayload();
-
-            this._reservationService.reschedule(this.data.id, payload).subscribe(() => {
-                this._notificationService.show(
-                    'success',
-                    'Transacción exitosa',
-                    'Horario reprogramado correctamente'
-                );
-                this._dialogRef.close(payload);
-            });
-        }
-    }
-
-
-    loadGetCatalogoSportman() {
-        this._reservationService.getCatalogs('sportsmen').subscribe({
-            next: (resp: any) => {
-                this.sportsmenCatalog = resp.data;
+                this._dialogRef.close(true);
             },
             error: (err) => {
                 console.error(err);
+                this._notificationService.show(
+                    'error',
+                    'Error',
+                    'No se pudo registrar la reserva'
+                );
             },
         });
     }
-
-    loadGetCatalogoScenario() {
-        this._reservationService.getCatalogs('scenarios').subscribe({
-            next: (resp: any) => {
-                this.scenariosCatalog = resp.data;
-            },
-            error: (err) => {
-                console.error(err);
-            },
-        });
-    }
-
-
 
     close() {
         this._dialogRef.close();
     }
 
-
-    private buildPayload() {
-        const formValue = this.dataFormDinamicModal.value;
-
-        return {
-            sportsman_id: Number(formValue.sportman),
-            court_id: Number(formValue.category),
-            reservation_date: formValue.reservation_date,
-            start_time: formValue.start_time,
-            end_time: formValue.end_time,
-            notes: formValue.notes
-        };
+    formatDate(date: Date): string {
+        return date.toISOString().split('T')[0];
     }
-
-    private buildReschedulePayload() {
-        const formValue = this.dataFormDinamicModal.value;
-
-        return {
-            start_time: formValue.start_time?.substring(0, 5),
-            end_time: formValue.end_time?.substring(0, 5)
-        };
-    }
-
-
 }
-
-

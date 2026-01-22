@@ -64,9 +64,6 @@ export class ModalTournamentComponent {
         this.categories = data.categories || [];
         this.sport = data.sport || [];
 
-        console.log('Deportes en modal:', this.data.register);
-        console.log('Deportes en modal:', this.sport[0].value_key);
-
         this.dataFormDinamicModal = this.fb.group({
             name: [data.register?.name || '', Validators.required],
             start_date: [data.register?.start_date || '', Validators.required],

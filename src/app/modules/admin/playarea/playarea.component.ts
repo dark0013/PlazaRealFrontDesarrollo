@@ -54,7 +54,6 @@ export class PlayareaComponent {
         'id',
         'columna1',
         'columna2',
-        'columna3',
         'columna4',
         'estado',
         'accion',

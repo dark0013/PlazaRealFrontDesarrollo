@@ -59,7 +59,7 @@ export class ModalPlayareaComponent {
             description: [this.data ? this.data.description : ''],
             location: [this.data ? this.data.location : ''],
             surface_type: [this.data ? this.data.surface_type : ''],
-            available_schedule: [this.data ? this.data.available_schedule : ''],
+            available_schedule: [this.data ? this.data.available_schedule : '0'],
             ability: [this.data ? this.data.ability : ''],
         });
     }

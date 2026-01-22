@@ -1,28 +1,28 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOption } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Catalog } from 'app/model/catalog.model';
 import { ReservationService } from 'app/services/system/control/reservation.service';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalReservacionComponent } from './modal-reservacion/modal-reservacion.component';
 
-
 @Component({
-  selector: 'app-reservation',
-   imports: [
+    selector: 'app-reservation',
+    imports: [
         MatSortModule,
         MatTableModule,
         MatPaginatorModule,
@@ -34,37 +34,38 @@ import { ModalReservacionComponent } from './modal-reservacion/modal-reservacion
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatButtonModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
-  templateUrl: './reservation.component.html',
-  styleUrl: './reservation.component.scss'
+    templateUrl: './reservation.component.html',
+    styleUrl: './reservation.component.scss',
 })
 export class ReservationComponent {
- constructor(
+    selectedCancha: number = 0;
+    selectedCanchaText!: string;
+    selectedFecha: Date | null = new Date();
+    scenario: Catalog[] = [];
+    sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
+
+    constructor(
         private _dialog: MatDialog,
         private reservationService: ReservationService,
         private _alertService: AlertService,
-        private _notificationService: NotificationService
+        private _notificationService: NotificationService,
+        private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
-        this.loadAllData();
-   
+        this.loadScenario();
+        this.loadGetCatalogoSportman();
     }
 
     displayedColumns: string[] = [
         'id',
-        /* 'columna1', */
         'columna2',
+        'columna3',
         'columna4',
-        /* 'columna5', */
-        'columna6',
-        'columna7',
-        /* 'columna8', */
-        /* 'columna9',
-        'columna10', */
-        'columna11',
-        /* 'estado', */
         'accion',
     ];
 
@@ -78,24 +79,30 @@ export class ReservationComponent {
         this.dataSource.sort = this.sort;
     }
 
-    applyFilter(e: any) {
-        this.dataSource.filter = e.target.value.trim().toLowerCase();
-    }
+    loadScenario() {
+        this._catalogService.getScenarios().subscribe({
+            next: (resp: any) => {
+                this.scenario = resp.data;
 
-    loadAllData() {
-        this.dataSource.data = null;
-        this.reservationService.getAll().subscribe({
-            next: (data: any) => {
-                this.dataSource.data = data.data;
-            },
-            error: (err) => {
-               console.error(err);
+                if (this.scenario.length > 0) {
+                    this.selectedCancha = this.scenario[0].value_key;
+                    this.selectedCanchaText = this.scenario[0].option_value;
+                    this.applyAdvancedFilters();
+                }
             },
         });
     }
 
-
-  
+    loadGetCatalogoSportman() {
+        this._catalogService.getSportsmen().subscribe({
+            next: (resp: any) => {
+                this.sportsmenCatalog = resp.data;
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
+    }
 
     openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {
@@ -104,64 +111,88 @@ export class ReservationComponent {
 
         let dialogRef: any = this._dialog.open(ModalReservacionComponent, {
             width: '50%',
-            data: datoParamOpci,
+            data: {
+                register: datoParamOpci,
+                idScenario: this.selectedCancha,
+                nameScenario: this.selectedCanchaText,
+                dateSelected: this.selectedFecha,
+                sportsmen: this.sportsmenCatalog,
+            },
             disableClose: true,
         });
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                if (result) {
-                    this.loadAllData();
-                }
+                this.applyAdvancedFilters();
             }
         });
     }
 
-    openConfirmationDialog(data?: any, action?: string) {
-        const actionDes = action === 'AC' ? 'Activar' : 'Inactivar';
-        const colorAcc = action === 'AC' ? 'primary' : 'warn';
+    deleteReservation(id) {
+        const date = this.formatDate(this.selectedFecha);
 
-        this._alertService
-            .confirmacionSimple(
-                `¿Está seguro que desea ${actionDes} el registro?`,
-                colorAcc
-            )
-            .subscribe((res) => {
-                if (res === 'confirmed') {
-                    this.updateState(data, action);
-                }
+        this.reservationService.deleteByScenarioAndDate(id, date).subscribe({
+            next: () => {
+                this._notificationService.show(
+                    'success',
+                    'Horario liberado',
+                    'La reserva fue liberada correctamente'
+                );
+                this.applyAdvancedFilters();
+            },
+            error: (err) => {
+                console.error(err);
+                this._notificationService.show(
+                    'error',
+                    'Error',
+                    'No se pudo liberar el horario'
+                );
+            },
+        });
+    }
+    onCanchaChange(event: MatSelectChange) {
+        this.selectedCancha = event.value;
+
+        const option = event.source.selected as MatOption;
+
+        this.selectedCanchaText = option.viewValue;
+
+        this.applyAdvancedFilters();
+
+        console.log('ID:', this.selectedCancha);
+        console.log('Texto:', this.selectedCanchaText);
+    }
+
+    onFechaChange(fecha: Date) {
+        this.selectedFecha = fecha;
+        this.applyAdvancedFilters();
+    }
+
+    applyAdvancedFilters() {
+        if (!this.selectedCancha || !this.selectedFecha) {
+            return;
+        }
+
+        const date = this.formatDate(this.selectedFecha);
+
+        this.reservationService
+            .getSchedulesByDate(this.selectedCancha, date)
+            .subscribe({
+                next: (resp) => {
+                    this.dataSource.data = resp.data;
+                },
+                error: (err) => {
+                    console.error(err);
+                    this._notificationService.show(
+                        'error',
+                        'Error',
+                        'No se pudo cargar la disponibilidad'
+                    );
+                },
             });
     }
 
-    updateState(data: any, opcion: string) {
-        if (opcion === 'activate') {
-            this.reservationService.activate(data.id).subscribe({
-                next: (resp) => {
-                    this.loadAllData();
-                },
-                error: (err) => {
-                    console.error(err);
-                    this._notificationService.show(
-                        'error',
-                        'Operación errónea',
-                        'No se pudo actualizar el estado del registro'
-                    );
-                },
-            });
-        } else {
-            this.reservationService.deActivate(data.id).subscribe({
-                next: (resp) => {
-                    this.loadAllData();
-                },
-                error: (err) => {
-                    console.error(err);
-                    this._notificationService.show(
-                        'error',
-                        'Operación errónea',
-                        'No se pudo actualizar el estado del registro'
-                    );
-                },
-            });
-        }
+    formatDate(date: Date): string {
+        return date.toISOString().split('T')[0];
     }
 }
