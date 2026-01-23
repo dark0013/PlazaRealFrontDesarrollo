@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
@@ -41,6 +43,8 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatButtonModule,
         MatSelectModule,
         MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
     templateUrl: './modal-tournament.component.html',
     styleUrl: './modal-tournament.component.scss',
@@ -51,8 +55,27 @@ export class ModalTournamentComponent {
     isNewRegister: boolean = false;
     categories: Catalog[] = [];
     sport: Catalog[] = [];
+    minEndDate?: Date;
 
     modes = ['ELIMINATION', 'GROUPS', 'MIXED'];
+    tournamentTypes = [
+        { value: 0, label: 'INDIVIDUAL' },
+        { value: 1, label: 'EN EQUIPOS' },
+    ];
+
+    teamAmountOptions = [
+        { value: 2, label: '2 equipos (Final directa)' },
+        { value: 4, label: '4 equipos (Semifinales)' },
+        { value: 8, label: '8 equipos (Cuartos de final)' },
+        { value: 16, label: '16 equipos (Tabla completa)' },
+        { value: 32, label: '32 equipos (Torneo grande)' },
+    ];
+
+    tournamentStatusOptions = [
+        { value: 'ACTIVO', label: 'ACTIVO' },
+        { value: 'FINALIZADO', label: 'FINALIZADO' },
+        { value: 'CANCELADO', label: 'CANCELADO' },
+    ];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -71,9 +94,9 @@ export class ModalTournamentComponent {
             tournament_type: [
                 this.data.register
                     ? this.data.register.tournament_type
-                    : (this.sport.length > 0
+                    : this.sport.length > 0
                       ? this.sport[0].option_value
-                      : 1),
+                      : 1,
                 Validators.required,
             ],
 
@@ -87,11 +110,23 @@ export class ModalTournamentComponent {
                 Validators.required,
             ],
             description: [data.register?.description || ''],
+            isTeam: [data.register?.isTeam || 0, Validators.required],
+            partitioning_amount: [
+                data.register?.partitioning_amount || 2,
+                Validators.required,
+            ],
+            status: [data.register?.status || 'ACTIVO', Validators.required],
         });
     }
 
     ngOnInit(): void {
         this.initAction(this.data);
+
+        this.dataFormDinamicModal
+            .get('start_date')
+            ?.valueChanges.subscribe((date: Date) => {
+                this.minEndDate = date;
+            });
     }
 
     initAction(data?: any) {
