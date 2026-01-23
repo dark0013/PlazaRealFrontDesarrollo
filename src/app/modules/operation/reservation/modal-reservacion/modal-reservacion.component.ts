@@ -50,6 +50,12 @@ export class ModalReservacionComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
     sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
+    timeOptions: string[] = [];
+    endTimeOptions: string[] = [];
+    reservationTypeOptions = [
+        { value: 'SINGLE', label: 'Una sola hora' },
+        { value: 'RANGE', label: 'Rango de horas' },
+    ];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -60,7 +66,7 @@ export class ModalReservacionComponent implements OnInit {
         private datePipe: DatePipe
     ) {
         this.sportsmenCatalog = this.data.sportsmen;
-        console.log(this.sportsmenCatalog);
+
         this.dataFormDinamicModal = this._formBuilder.group({
             sportman: [this.sportsmenCatalog[0]?.id, Validators.required],
             scenario_name_display: [this.data.nameScenario],
@@ -76,16 +82,28 @@ export class ModalReservacionComponent implements OnInit {
                       )
                     : '',
             ],
-            start_time: ['', Validators.required],
-            end_time: [''],
+            start_time: [null, Validators.required],
+            end_time: [{ value: null, disabled: true }],
             notes: [' '],
+            time_type: ['SINGLE'],
         });
     }
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.generateTimeOptions();
+        this.dataFormDinamicModal
+            .get('time_type')
+            ?.valueChanges.subscribe((type: string) => {
+                this.handleTimeTypeChange(type);
+            });
+
+        this.dataFormDinamicModal
+            .get('start_time')
+            ?.valueChanges.subscribe((startTime: string) => {
+                this.updateEndTimeOptions(startTime);
+            });
+    }
 
     saveData() {
-        console.log(this.dataFormDinamicModal);
-        console.log(this.dataFormDinamicModal.value);
         if (!this.dataFormDinamicModal.valid) {
             this.dataFormDinamicModal.markAllAsTouched();
             return;
@@ -132,5 +150,43 @@ export class ModalReservacionComponent implements OnInit {
         const day = String(date.getDate()).padStart(2, '0');
 
         return `${year}-${month}-${day}`;
+    }
+
+    private generateTimeOptions(): void {
+        for (let hour = 9; hour <= 19; hour++) {
+            const formattedHour = hour.toString().padStart(2, '0');
+            this.timeOptions.push(`${formattedHour}:00`);
+        }
+    }
+
+    private updateEndTimeOptions(startTime: string): void {
+        if (!startTime) {
+            this.endTimeOptions = [];
+            return;
+        }
+
+        const startHour = parseInt(startTime.split(':')[0], 10);
+
+        this.endTimeOptions = [];
+
+        for (let hour = startHour + 1; hour <= 19; hour++) {
+            const formattedHour = hour.toString().padStart(2, '0');
+            this.endTimeOptions.push(`${formattedHour}:00`);
+        }
+
+        this.dataFormDinamicModal.get('end_time')?.reset();
+    }
+
+    private handleTimeTypeChange(type: string): void {
+        const endTimeControl = this.dataFormDinamicModal.get('end_time');
+
+        if (type === 'SINGLE') {
+            endTimeControl?.disable();
+            endTimeControl?.reset();
+        }
+
+        if (type === 'RANGE') {
+            endTimeControl?.enable();
+        }
     }
 }

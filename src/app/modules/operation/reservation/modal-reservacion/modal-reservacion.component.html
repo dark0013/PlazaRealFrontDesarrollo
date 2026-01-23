@@ -73,62 +73,99 @@
                 </div>
 
                 <div class="sm:col-span-2">
-                    <mat-form-field class="w-full" subscriptSizing="dynamic">
-                        <mat-label>Hora Inicio</mat-label>
+                    <mat-form-field class="w-full">
+                        <mat-label>Tipo de horario</mat-label>
 
-                        <mat-icon
-                            class="icon-size-5"
-                            svgIcon="heroicons_solid:information-circle"
-                            matPrefix
+                        <mat-select
+                            formControlName="time_type"
+                            [disabled]="readonlyMode"
                         >
-                        </mat-icon>
+                            <mat-option
+                                *ngFor="let option of reservationTypeOptions"
+                                [value]="option.value"
+                            >
+                                {{ option.label }}
+                            </mat-option>
+                        </mat-select>
 
-                        <input
-                            matInput
-                            type="time"
-                            formControlName="start_time"
-                            [readonly]="readonlyMode"
-                        />
-
-                        @if (
-                            dataFormDinamicModal
-                                .get('start_time')
-                                ?.hasError('required')
-                        ) {
-                            <mat-error>Campo es requerido</mat-error>
-                        }
+                        <mat-error
+                            *ngIf="
+                                dataFormDinamicModal
+                                    .get('time_type')
+                                    ?.hasError('required')
+                            "
+                        >
+                            Campo requerido
+                        </mat-error>
                     </mat-form-field>
                 </div>
+                <div class="sm:col-span-2"></div>
+                <div class="sm:col-span-2">
+                    <mat-form-field class="w-full">
+                        <mat-label>
+                            {{
+                                dataFormDinamicModal.get('time_type')?.value ===
+                                'RANGE'
+                                    ? 'Hora inicio'
+                                    : 'Hora de reserva'
+                            }}
+                        </mat-label>
+
+                        <mat-select
+                            formControlName="start_time"
+                            [disabled]="readonlyMode"
+                        >
+                            <mat-option
+                                *ngFor="let time of timeOptions"
+                                [value]="time"
+                            >
+                                {{ time }}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error
+                            *ngIf="
+                                dataFormDinamicModal
+                                    .get('start_time')
+                                    ?.hasError('required')
+                            "
+                        >
+                            Campo requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                @if (dataFormDinamicModal.get('time_type')?.value === 'RANGE') {
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="w-full">
+                            <mat-label>Hora fin</mat-label>
+
+                            <mat-select
+                                formControlName="end_time"
+                                [disabled]="readonlyMode"
+                            >
+                                <mat-option
+                                    *ngFor="let time of endTimeOptions"
+                                    [value]="time"
+                                >
+                                    {{ time }}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error
+                                *ngIf="
+                                    dataFormDinamicModal
+                                        .get('end_time')
+                                        ?.hasError('required')
+                                "
+                            >
+                                Campo requerido
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                }
 
                 <div class="sm:col-span-2">
-                    <mat-form-field class="w-full" subscriptSizing="dynamic">
-                        <mat-label>Hora Fin</mat-label>
-
-                        <mat-icon
-                            class="icon-size-5"
-                            svgIcon="heroicons_solid:information-circle"
-                            matPrefix
-                        >
-                        </mat-icon>
-
-                        <input
-                            matInput
-                            type="time"
-                            formControlName="end_time"
-                            [readonly]="readonlyMode"
-                        />
-
-                        @if (
-                            dataFormDinamicModal
-                                .get('end_time')
-                                ?.hasError('required')
-                        ) {
-                            <mat-error>Campo es requerido</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
-
-                <div class="sm:col-span-4">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Descripción</mat-label>
                         <input
