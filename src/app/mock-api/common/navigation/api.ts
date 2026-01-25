@@ -42,8 +42,7 @@ export class NavigationMockApi {
         // -----------------------------------------------------------------------------------------------------
         // @ Navigation - GET
         // -----------------------------------------------------------------------------------------------------
-        const rolId = 1; // luego lo sacas del JWT o AuthService
-        this._fuseMockApiService.onGet(`http://127.0.0.1:8000/api/navigation?rol_id=${rolId}`).reply(() => {
+        this._fuseMockApiService.onGet('api/common/navigation').reply(() => {
             // Fill compact navigation children using the default navigation
             this._compactNavigation.forEach((compactNavItem) => {
                 this._defaultNavigation.forEach((defaultNavItem) => {

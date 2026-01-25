@@ -47,24 +47,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
         private _fusePlatformService: FusePlatformService,
 
         //agregado por alain
-        private _fuseNavigationService: FuseNavigationService,
+        public _fuseNavigationService: FuseNavigationService,
         private _navigationService: NavigationService
     ) { }
 
+    navigation: any = {};
     ngOnInit(): void {
 
 
-
-        const rolId = 2; // luego lo sacas del JWT o AuthService
-
+        // luego lo sacas del JWT o AuthService
+        const dataUser = JSON.parse(localStorage.getItem('user'));
+        let rolId = dataUser.role;
         this._navigationService.getMenuByRol(rolId)
-            .subscribe((navigation: any) => {
-                console.log('Menú recibido en LayoutComponent:');
-                console.log(navigation);
-                const menu = navigation.default ?? navigation;
-
-                // 🔥 ESTA ES LA CLAVE
+            .subscribe((menu: any) => {
                 this._fuseNavigationService.storeNavigation('main', menu);
+                this.navigation = {
+                    default: menu 
+                };
             });
 
 

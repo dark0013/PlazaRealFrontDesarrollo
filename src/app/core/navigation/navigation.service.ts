@@ -28,11 +28,9 @@ export class NavigationService {
      * Get all navigation data
      */
 get(): Observable<Navigation> {
-    const idRol = 1;  // Aquí se debe obtener el rol del usuario logueado
+    const idRol = 2;  // no se pero sin esto la aplicación explota
     return this._httpClient.get<Navigation>(`http://127.0.0.1:8000/api/navigation?rol_id=${idRol}`).pipe(
         tap((navigation) => {
-            console.log('Respuesta del GET /navigation:'); // <-- aquí
-            console.log(navigation); // <-- aquí
             this._navigation.next(navigation);
         })
     );

@@ -4,7 +4,7 @@
     class="dark bg-gray-900 print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation.default"
+    [navigation]="_fuseNavigationService.getNavigation('main')"
     [opened]="!isScreenSmall"
 >
     <ng-container fuseVerticalNavigationContentHeader>

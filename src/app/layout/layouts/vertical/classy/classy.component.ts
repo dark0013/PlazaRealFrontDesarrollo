@@ -49,7 +49,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _navigationService: NavigationService,
         private _userService: UserService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseNavigationService: FuseNavigationService
+        public _fuseNavigationService: FuseNavigationService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
