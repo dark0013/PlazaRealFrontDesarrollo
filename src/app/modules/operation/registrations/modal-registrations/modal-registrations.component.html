@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>
+    {{ isTeam ? 'Inscripción por Equipos' : 'Inscripción Individual' }}
+</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="form" class="flex flex-col gap-6">
+        <!-- Deportista principal -->
+        <mat-form-field class="w-full">
+            <mat-label>Deportista</mat-label>
+            <mat-select formControlName="sportsman_id">
+                <mat-option *ngFor="let s of data.sportsmen" [value]="s.id">
+                    {{ s.full_name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('sportsman_id')?.invalid">
+                Campo obligatorio
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Deportista pareja (solo si es team) -->
+        <mat-form-field *ngIf="isTeam" class="w-full">
+            <mat-label>Pareja</mat-label>
+            <mat-select formControlName="partner_id">
+                <mat-option *ngFor="let s of data.sportsmen" [value]="s.id">
+                    {{ s.full_name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('partner_id')?.invalid">
+                Campo obligatorio
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Cancelar</button>
+
+    <button mat-flat-button color="primary" (click)="save()">Registrar</button>
+</mat-dialog-actions>

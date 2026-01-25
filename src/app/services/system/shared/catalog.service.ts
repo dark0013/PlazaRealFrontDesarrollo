@@ -25,4 +25,8 @@ export class CatalogService {
     getScenarios(): Observable<any[]> {
         return this.http.get<any[]>(`${this.baseUrl}/catalogs/scenarios`);
     }
+
+    getTournament(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.baseUrl}/catalogs/tournaments`);
+    }
 }

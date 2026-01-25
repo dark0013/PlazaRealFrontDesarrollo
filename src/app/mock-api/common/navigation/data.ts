@@ -182,10 +182,10 @@ export const defaultNavigation: FuseNavigationItem[] = [
                     },
                     {
                         id: '1',
-                        title: 'Administración de Deportistas',
+                        title: 'Inscripción de Deportistas',
                         type: 'basic',
                         icon: 'heroicons_outline:user-group',
-                        link: '/operation-administracion/deportistas',
+                        link: '/operation-administracion/registrations',
                     },
                 ],
             },

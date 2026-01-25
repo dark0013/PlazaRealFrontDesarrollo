@@ -239,6 +239,13 @@ export const appRoutes: Route[] = [
                         'app/modules/operation/tournament/tournament.module'
                     ).then((m) => m.TournamentModule),
             },
+            {
+                path: 'registrations',
+                loadChildren: () =>
+                    import(
+                        'app/modules/operation/registrations/registrations.module'
+                    ).then((m) => m.RegistrationsModule),
+            },
         ],
     },
 ];
