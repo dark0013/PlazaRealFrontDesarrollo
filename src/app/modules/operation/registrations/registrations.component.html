@@ -1,23 +1,18 @@
 <div class="flex min-w-0 flex-auto flex-col">
-    <!-- esto puede ser un componentes que recibe parametros-->
     <div
         class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
     >
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center font-medium">
                 <div>
-                    <a class="whitespace-nowrap text-primary-500"
-                        >Operación</a
-                    >
+                    <a class="whitespace-nowrap text-primary-500">Operación</a>
                 </div>
                 <div class="ml-1 flex items-center whitespace-nowrap">
                     <mat-icon
                         class="text-secondary icon-size-5"
                         [svgIcon]="'heroicons_mini:chevron-right'"
                     ></mat-icon>
-                    <a class="ml-1 text-primary-500">
-                        Torneos</a
-                    >
+                    <a class="ml-1 text-primary-500"> Torneos</a>
                 </div>
             </div>
             <div class="mt-2">
@@ -42,7 +37,7 @@
                     class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0"
                 ></div>
             </div>
-          
+
             <div
                 class="mb-6 mt-6 rounded-xl bg-gray-50 p-6 shadow-sm dark:bg-gray-800"
             >
@@ -58,17 +53,16 @@
                     >
                         <mat-label>torneo</mat-label>
                         <mat-select
-                            [(value)]="selectedCancha"
-                            (selectionChange)="onCanchaChange($event)"
+                            [(value)]="selectedTournament"
+                            (selectionChange)="onTournamentChange($event)"
                         >
-                            @for (item of scenario; track $index) {
+                            @for (item of tournament; track $index) {
                                 <mat-option [value]="item.value_key">
                                     {{ item.option_value }}
                                 </mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
-
 
                     <button
                         class="ml-4 ml-auto"
@@ -84,89 +78,182 @@
                 </div>
             </div>
 
-            <div class="flex-auto">
-                <div
-                    class="mt-8 overflow-x-auto border-b border-gray-200 shadow sm:rounded-lg"
-                >
-                    <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataSource">
-                            <ng-container matColumnDef="columna2">
-                                <th mat-header-cell *matHeaderCellDef>Hora</th>
-                                <td mat-cell *matCellDef="let register">
-                                    {{ register.hour }}
-                                </td>
-                            </ng-container>
+            <div
+                class="mb-6 rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900"
+            >
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
+                    <div class="sm:col-span-2">
+                        <div class="text-sm text-gray-500">Torneo</div>
+                        <div class="text-xl font-bold">
+                            {{ tournamentDetail?.name }}
+                        </div>
 
-                            <ng-container matColumnDef="columna3">
-                                <th mat-header-cell *matHeaderCellDef>
-                                    Responsable
-                                </th>
-                                <td mat-cell *matCellDef="let register">
-                                    {{ register.responsable || '-' }}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="columna4">
-                                <th mat-header-cell *matHeaderCellDef>
-                                    Disponibilidad
-                                </th>
-                                <td mat-cell *matCellDef="let register">
-                                    <span
-                                        [ngClass]="
-                                            register.disponibilidad === 'LIBRE'
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
-                                        "
-                                    >
-                                        {{ register.disponibilidad }}
-                                    </span>
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="accion">
-                                <th mat-header-cell *matHeaderCellDef>
-                                    Liberar Horario
-                                </th>
-
-                                <td mat-cell *matCellDef="let element">
-                                    @if (element.disponibilidad !== 'LIBRE') {
-                                        <button
-                                            mat-icon-button
-                                            color="warn"
-                                            title="Cancelar Reservación"
-                                            (click)="
-                                                deleteReservation(
-                                                    element.reservation_id
-                                                )
-                                            "
-                                        >
-                                            <mat-icon>cancel</mat-icon>
-                                        </button>
-                                    }
-                                </td>
-                            </ng-container>
-
-                            <tr
-                                mat-header-row
-                                *matHeaderRowDef="displayedColumns"
-                            ></tr>
-                            <tr
-                                mat-row
-                                *matRowDef="let row; columns: displayedColumns"
-                            ></tr>
-                        </table>
-
-                        <mat-paginator
-                            [pageSizeOptions]="[5, 10, 15]"
-                            showFirstLastButtons
-                            itemsPerPageLabel="Elementos por página:"
-                            nextPageLabel="Siguiente"
-                            previousPageLabel="Anterior"
+                        <div
+                            *ngIf="tournamentDetail?.description"
+                            class="mt-1 text-sm text-gray-600 dark:text-gray-400"
                         >
-                        </mat-paginator>
+                            {{ tournamentDetail?.description }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-sm text-gray-500">Modalidad</div>
+                        <div class="font-semibold">
+                            {{
+                                tournamentDetail?.isTeam === 1
+                                    ? 'Equipos'
+                                    : 'Individual'
+                            }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-sm text-gray-500">Estado</div>
+                        <span
+                            class="inline-flex rounded-full px-3 py-1 text-sm font-medium"
+                            [ngClass]="
+                                tournamentDetail?.status === 'ACTIVE'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'bg-gray-200 text-gray-700'
+                            "
+                        >
+                            {{ tournamentDetail?.status }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Información secundaria -->
+                <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-4">
+                    <!-- Fechas del torneo -->
+                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                        <div class="mb-1 text-sm text-gray-500">
+                            Fechas del torneo
+                        </div>
+
+                        <div class="flex flex-col gap-1 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Inicio</span>
+                                <span class="font-semibold">
+                                    {{
+                                        tournamentDetail?.start_date
+                                            | date: 'dd / MM / yyyy'
+                                    }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Fin</span>
+                                <span class="font-semibold">
+                                    {{
+                                        tournamentDetail?.end_date
+                                            | date: 'dd / MM / yyyy'
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                        <div class="text-sm text-gray-500">Deporte</div>
+                        <div class="font-semibold uppercase">
+                            {{ tournamentDetail?.tournament_type }}
+                        </div>
+                    </div>
+
+                    <!-- Cupos permitidos -->
+                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                        <div class="text-sm text-gray-500">
+                            Cupos permitidos
+                        </div>
+                        <div class="text-2xl font-bold">
+                            {{ tournamentDetail?.partitioning_amount }}
+                        </div>
+                    </div>
+
+                    <!-- Inscritos -->
+                    <div class="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                        <div class="text-sm text-gray-500">Inscritos</div>
+                        <div class="text-2xl font-bold">
+                            {{ participants?.length || 0 }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cupos disponibles -->
+                <div class="mt-6">
+                    <div
+                        class="rounded-lg border border-dashed border-gray-300 p-4 text-center dark:border-gray-700"
+                    >
+                        <div class="text-sm text-gray-500">
+                            Cupos disponibles
+                        </div>
+                        <div
+                            class="text-3xl font-bold"
+                            [ngClass]="
+                                tournamentDetail?.partitioning_amount -
+                                    (participants?.length || 0) >
+                                0
+                                    ? 'text-green-600'
+                                    : 'text-red-600'
+                            "
+                        >
+                            {{
+                                tournamentDetail?.partitioning_amount -
+                                    (participants?.length || 0)
+                            }}
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <table mat-table [dataSource]="participants" class="w-full">
+                <!-- PARTICIPANTE (solo individual) -->
+                <ng-container
+                    matColumnDef="participant"
+                    *ngIf="tournamentDetail?.isTeam === 0"
+                >
+                    <th mat-header-cell *matHeaderCellDef>Participante</th>
+                    <td mat-cell *matCellDef="let item">
+                        {{ item.sportsman_name }}
+                    </td>
+                </ng-container>
+
+                <!-- JUGADOR 1 (solo equipos) -->
+                <ng-container
+                    matColumnDef="player1"
+                    *ngIf="tournamentDetail?.isTeam === 1"
+                >
+                    <th mat-header-cell *matHeaderCellDef>Jugador 1</th>
+                    <td mat-cell *matCellDef="let item">
+                        {{ item.sportsman_name }}
+                    </td>
+                </ng-container>
+
+                <!-- JUGADOR 2 (solo equipos) -->
+                <ng-container
+                    matColumnDef="player2"
+                    *ngIf="tournamentDetail?.isTeam === 1"
+                >
+                    <th mat-header-cell *matHeaderCellDef>Jugador 2</th>
+                    <td mat-cell *matCellDef="let item">
+                        {{ item.partner_name }}
+                    </td>
+                </ng-container>
+
+                <!-- EQUIPO (siempre visible) -->
+                <ng-container matColumnDef="team">
+                    <th mat-header-cell *matHeaderCellDef>Equipo</th>
+                    <td mat-cell *matCellDef="let item">
+                        {{ item.team_name || '-' }}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
         </div>
     </div>
 </div>

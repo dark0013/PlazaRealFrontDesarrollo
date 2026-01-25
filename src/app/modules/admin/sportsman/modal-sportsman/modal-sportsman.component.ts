@@ -62,7 +62,6 @@ export class ModalSportsmanComponent implements OnInit {
             email: [this.data ? this.data.email : '', [Validators.required, Validators.email]],
             category: [this.data ? this.data.category : '', Validators.required],
             current_ranking: [this.data ? this.data.current_ranking : '', Validators.required],
-            /* status: [this.data ? this.data.status : '', Validators.required], */
         });
 
     }
@@ -84,7 +83,6 @@ export class ModalSportsmanComponent implements OnInit {
     saveData() {
         debugger;
         if (this.dataFormDinamicModal.valid) {
-            /* if (this.data == null) { */
             if (this.data && Object.keys(this.data).length === 0) {
                 this._sportsmanService
                     .create(this.dataFormDinamicModal.value)

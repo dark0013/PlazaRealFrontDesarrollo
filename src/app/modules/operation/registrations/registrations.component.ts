@@ -1,4 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +15,6 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Catalog } from 'app/model/catalog.model';
-import { ReservationService } from 'app/services/system/control/reservation.service';
 import { TournamentService } from 'app/services/system/operation/tournament.service';
 import { CatalogService } from 'app/services/system/shared/catalog.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
@@ -37,20 +37,29 @@ import { ModalRegistrationsComponent } from './modal-registrations/modal-registr
         MatSelectModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        CommonModule,
     ],
     templateUrl: './registrations.component.html',
     styleUrl: './registrations.component.scss',
 })
 export class RegistrationsComponent {
-    selectedCancha: number = 0;
-    selectedCanchaText!: string;
-    scenario: Catalog[] = [];
+    selectedTournament: number = 0;
+    selectedTournamentText!: string;
+    tournament: Catalog[] = [];
     sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
     isTeam: boolean = false;
 
+    tournamentDetail: any = null;
+    participants: any[] = [];
+
+    displayedColumns: string[] = [];
+    dataSource = new MatTableDataSource<any>([]);
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
     constructor(
         private _dialog: MatDialog,
-        private reservationService: ReservationService,
         private _notificationService: NotificationService,
         private _catalogService: CatalogService,
         private _tournamentService: TournamentService
@@ -61,13 +70,6 @@ export class RegistrationsComponent {
         this.loadGetCatalogoSportman();
     }
 
-    displayedColumns: string[] = ['columna2', 'columna3', 'columna4', 'accion'];
-
-    dataSource = new MatTableDataSource<any>([]);
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -76,12 +78,13 @@ export class RegistrationsComponent {
     loadTournament() {
         this._catalogService.getTournament().subscribe({
             next: (resp: any) => {
-                this.scenario = resp.data;
+                this.tournament = resp.data;
 
-                if (this.scenario.length > 0) {
-                    this.selectedCancha = this.scenario[0].value_key;
-                    this.selectedCanchaText = this.scenario[0].option_value;
-                    this.applyAdvancedFilters();
+                if (this.tournament.length > 0) {
+                    this.selectedTournament = this.tournament[0].value_key;
+                    this.selectedTournamentText =
+                        this.tournament[0].option_value;
+                    this.loadTournamentById(this.selectedTournament);
                 }
             },
         });
@@ -107,8 +110,8 @@ export class RegistrationsComponent {
             width: '50%',
             data: {
                 register: datoParamOpci,
-                idScenario: this.selectedCancha,
-                nameScenario: this.selectedCanchaText,
+                idScenario: this.selectedTournament,
+                nameScenario: this.selectedTournamentText,
                 sportsmen: this.sportsmenCatalog,
                 isTeam: this.isTeam,
             },
@@ -117,37 +120,34 @@ export class RegistrationsComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.applyAdvancedFilters();
+                this.loadTournamentById(this.selectedTournament);
             }
         });
     }
 
-    onCanchaChange(event: MatSelectChange) {
-        this.selectedCancha = event.value;
+    onTournamentChange(event: MatSelectChange) {
+        this.selectedTournament = event.value;
 
         const option = event.source.selected as MatOption;
+        this.selectedTournamentText = option.viewValue;
 
-        this.selectedCanchaText = option.viewValue;
-
-        this.applyAdvancedFilters();
-
-        console.log('ID:', this.selectedCancha);
-        console.log('Texto:', this.selectedCanchaText);
+        this.loadTournamentById(this.selectedTournament);
     }
 
-    applyAdvancedFilters() {
-        if (!this.selectedCancha) {
+    loadTournamentById(tournamentId: number) {
+        if (!tournamentId) {
             return;
         }
 
-        this._tournamentService.getById(this.selectedCancha).subscribe({
-            next: (resp: any) => {
-                const tournament = resp.data;
+        this._tournamentService.getTournamentDetail(tournamentId).subscribe({
+            next: (tournament) => {
+                this.tournamentDetail = tournament;
+                this.isTeam = tournament.isTeam === 1;
 
-                console.log('Torneo byId:', tournament);
+                this.participants = tournament.participants || [];
+                this.configureTableByMode(tournament.isTeam);
             },
-            error: (err) => {
-                console.error(err);
+            error: () => {
                 this._notificationService.show(
                     'error',
                     'Operación errónea',
@@ -155,5 +155,14 @@ export class RegistrationsComponent {
                 );
             },
         });
+    }
+
+    configureTableByMode(isTeam: number) {
+        this.displayedColumns =
+            isTeam === 1
+                ? ['player1', 'player2', 'team']
+                : ['participant', 'team'];
+
+        this.dataSource.data = this.participants;
     }
 }

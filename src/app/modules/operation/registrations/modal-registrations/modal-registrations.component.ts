@@ -1,82 +1,95 @@
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import {
-    FormBuilder,
-    FormGroup,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
     MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-
-import { TournamentService } from 'app/services/system/operation/tournament.service';
+import { MatTableModule } from '@angular/material/table';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TournamentService } from 'app/services/system/operation/tournament.service';
 @Component({
     selector: 'app-modal-registrations',
     imports: [
         CommonModule,
-        ReactiveFormsModule,
-        MatDialogModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatIconModule,
+        FormsModule,
         MatFormFieldModule,
-        MatSelectModule,
+        MatInputModule,
+        TextFieldModule,
+        ReactiveFormsModule,
+        MatButtonToggleModule,
         MatButtonModule,
+        MatSelectModule,
+        MatDialogModule,
     ],
     templateUrl: './modal-registrations.component.html',
     styleUrl: './modal-registrations.component.scss',
 })
 export class ModalRegistrationsComponent {
-    form: FormGroup;
+    dataFormDinamicModal: FormGroup;
+    readonlyMode: boolean = false;
     isTeam: boolean = false;
+    sportsmenCatalog: Array<{ id: number; full_name: string }> = [];
 
     constructor(
         private fb: FormBuilder,
-        private tournamentService: TournamentService,
+        private _tournamentService: TournamentService,
         private _notificationService: NotificationService,
         private dialogRef: MatDialogRef<ModalRegistrationsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.isTeam = data.isTeam;
+        this.sportsmenCatalog = data.sportsmen;
 
-        this.form = this.fb.group({
-            sportsman_id: [null, Validators.required],
-            partner_id: [null],
+        this.dataFormDinamicModal = this.fb.group({
+            sportman: [null, Validators.required],
+            partner: [null],
         });
 
         if (this.isTeam) {
-            this.form.get('partner_id')?.setValidators(Validators.required);
+            this.dataFormDinamicModal
+                .get('partner')
+                ?.setValidators(Validators.required);
         }
     }
 
-    save(): void {
-        if (this.form.invalid) {
-            this.form.markAllAsTouched();
+    saveData(): void {
+        if (this.dataFormDinamicModal.invalid) {
+            this.dataFormDinamicModal.markAllAsTouched();
             return;
         }
 
-        const { sportsman_id, partner_id } = this.form.value;
+        const sportman = this.dataFormDinamicModal.value.sportman;
+        const partner = this.dataFormDinamicModal.value.partner;
 
-        // Validación: no mismo deportista
-        if (this.isTeam && sportsman_id === partner_id) {
+        if (this.isTeam && sportman === partner) {
             this._notificationService.show(
-                'error',
+                'warning',
                 'Operación errónea',
                 'Los deportistas no pueden ser el mismo'
             );
             return;
         }
 
-        this.tournamentService
+        this._tournamentService
             .addParticipant(
                 this.data.idScenario,
-                sportsman_id,
-                this.isTeam ? partner_id : undefined
+                sportman,
+                this.isTeam ? partner : undefined
             )
             .subscribe({
                 next: () => {
@@ -91,7 +104,7 @@ export class ModalRegistrationsComponent {
                     this._notificationService.show(
                         'error',
                         'Operación errónea',
-                        'No se pudo registrar el deportista'
+                        'No se pudo crear el registro'
                     );
                 },
             });
