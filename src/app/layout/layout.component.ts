@@ -16,6 +16,9 @@ import { Subject, combineLatest, filter, map, takeUntil } from 'rxjs';
 import { SettingsComponent } from './common/settings/settings.component';
 import { EmptyLayoutComponent } from './layouts/empty/empty.component';
 import { ClassyLayoutComponent } from './layouts/vertical/classy/classy.component';
+import { NavigationService } from 'app/services/system/navigation/navigation.service';
+import { FuseNavigationService } from '@fuse/components/navigation/public-api';
+
 
 @Component({
     selector: 'layout',
@@ -41,10 +44,31 @@ export class LayoutComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fusePlatformService: FusePlatformService
-    ) {}
+        private _fusePlatformService: FusePlatformService,
+
+        //agregado por alain
+        private _fuseNavigationService: FuseNavigationService,
+        private _navigationService: NavigationService
+    ) { }
 
     ngOnInit(): void {
+
+
+
+        const rolId = 2; // luego lo sacas del JWT o AuthService
+
+        this._navigationService.getMenuByRol(rolId)
+            .subscribe((navigation: any) => {
+                console.log('Menú recibido en LayoutComponent:');
+                console.log(navigation);
+                const menu = navigation.default ?? navigation;
+
+                // 🔥 ESTA ES LA CLAVE
+                this._fuseNavigationService.storeNavigation('main', menu);
+            });
+
+
+
         combineLatest([
             this._fuseConfigService.config$,
             this._fuseMediaWatcherService.onMediaQueryChange$([

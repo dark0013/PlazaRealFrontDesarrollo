@@ -24,7 +24,7 @@ export class MockApiService {
     financeMockApi = inject(FinanceMockApi);
     helpCenterMockApi = inject(HelpCenterMockApi);
     iconsMockApi = inject(IconsMockApi);
-    messagesMockApi = inject(MessagesMockApi);
+    messagesMockApi = inject(MessagesMockApi); 
     navigationMockApi = inject(NavigationMockApi);
     notesMockApi = inject(NotesMockApi);
     notificationsMockApi = inject(NotificationsMockApi);
