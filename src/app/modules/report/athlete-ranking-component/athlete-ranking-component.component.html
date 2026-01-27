@@ -4,12 +4,12 @@
     >
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center font-medium">
-                <a class="text-primary-500">Reportes</a>
+                <a class="text-primary-500">Operación</a>
                 <mat-icon
                     class="text-secondary mx-1 icon-size-5"
                     svgIcon="heroicons_mini:chevron-right"
                 ></mat-icon>
-                <span class="text-primary-500">Ranking de Deportistas</span>
+                <span class="text-primary-500">Reportes</span>
             </div>
 
             <h2
@@ -32,9 +32,11 @@
                             [(value)]="selectedCategory"
                             (selectionChange)="onFilterChange()"
                         >
-                            <mat-option value="">Todas</mat-option>
-                            @for (c of categories; track c) {
-                                <mat-option [value]="c">{{ c }}</mat-option>
+                            <mat-option value="0">Todas</mat-option>
+                            @for (item of categories; track $index) {
+                                <mat-option [value]="item.value_key">{{
+                                    item.option_value
+                                }}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
@@ -45,7 +47,7 @@
                             [(value)]="selectedGender"
                             (selectionChange)="onFilterChange()"
                         >
-                            <mat-option value="">Todos</mat-option>
+                            <mat-option value="0">Todos</mat-option>
                             <mat-option value="M">Masculino</mat-option>
                             <mat-option value="F">Femenino</mat-option>
                             <mat-option value="O">Otro</mat-option>

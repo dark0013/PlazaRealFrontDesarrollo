@@ -11,7 +11,9 @@ export class AthleteRankingServiceService {
         {
             position: 1,
             name: 'Juan Pérez',
+            categoryId: 2,
             category: 'Senior',
+            genderId: 'M',
             gender: 'Masculino',
             points: 1200,
             tournaments: 6,
@@ -19,23 +21,29 @@ export class AthleteRankingServiceService {
         {
             position: 2,
             name: 'Carlos Gómez',
+            categoryId: 2,
             category: 'Senior',
+            genderId: 'M',
             gender: 'Masculino',
             points: 980,
             tournaments: 5,
         },
         {
-            position: 1,
+            position: 3,
             name: 'María López',
+            categoryId: 2,
             category: 'Senior',
+            genderId: 'F',
             gender: 'Femenino',
             points: 1100,
             tournaments: 6,
         },
         {
-            position: 1,
+            position: 4,
             name: 'Ana Torres',
+            categoryId: 1,
             category: 'Junior',
+            genderId: 'F',
             gender: 'Femenino',
             points: 900,
             tournaments: 4,
@@ -43,6 +51,7 @@ export class AthleteRankingServiceService {
     ];
 
     getRanking(filters: RankingFilters): Observable<AthleteRanking[]> {
+        console.log('Filters applied:', filters);
         return of(this.MOCK_DATA).pipe(
             delay(400), // simula latencia
             map((data) => this.applyFilters(data, filters)),
@@ -56,25 +65,24 @@ export class AthleteRankingServiceService {
     ): AthleteRanking[] {
         let result = [...data];
 
-        if (filters.category) {
-            result = result.filter((r) => r.category === filters.category);
+        if (filters.category !== '0') {
+            result = result.filter(
+                (r) => r.categoryId === Number(filters.category)
+            );
         }
 
-        if (filters.gender) {
-            result = result.filter((r) => r.gender === filters.gender);
+        if (filters.gender !== '0') {
+            result = result.filter((r) => r.genderId === filters.gender);
         }
 
         return result;
     }
 
-    /**
-     * Recalcula posiciones por categoría + género
-     */
     private recalculatePositions(data: AthleteRanking[]): AthleteRanking[] {
         const grouped = new Map<string, AthleteRanking[]>();
 
         data.forEach((item) => {
-            const key = `${item.category}-${item.gender}`;
+            const key = `${item.categoryId}-${item.genderId}`;
             if (!grouped.has(key)) {
                 grouped.set(key, []);
             }
@@ -100,6 +108,8 @@ export class AthleteRankingServiceService {
 
 export interface AthleteRanking {
     position: number;
+    categoryId: number;
+    genderId: string;
     name: string;
     category: string;
     gender: string;

@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { Category } from 'app/model/Category.model';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -38,22 +40,33 @@ export class AthleteRankingComponentComponent implements OnInit {
         'tournaments',
     ];
 
-    selectedCategory: string | null = null;
-    selectedGender: string | null = null;
+    selectedCategory: string = '0';
+    selectedGender: string = '0';
 
-    categories = ['Junior', 'Senior'];
-
-    constructor(private _rankingService: AthleteRankingServiceService) {}
+    categories: Category[] = [];
+    constructor(
+        private _rankingService: AthleteRankingServiceService,
+        private _catalogService: CatalogService
+    ) {}
 
     ngOnInit(): void {
         this.loadRanking();
+        this.loadCategories();
+    }
+
+    loadCategories() {
+        this._catalogService.getCategories().subscribe({
+            next: (resp: any) => {
+                this.categories = resp.data;
+            },
+        });
     }
 
     loadRanking(): void {
         this._rankingService
             .getRanking({
-                category: this.selectedCategory || undefined,
-                gender: this.selectedGender || undefined,
+                category: this.selectedCategory || '0',
+                gender: this.selectedGender || '0',
             })
             .subscribe((data) => {
                 this.rankings = data;
