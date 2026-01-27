@@ -1,12 +1,10 @@
 <div class="flex min-w-0 flex-auto flex-col">
-    <!-- Header -->
     <div
         class="bg-card flex flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
     >
         <h2 class="text-3xl font-extrabold">Generación de Encuentros</h2>
     </div>
 
-    <!-- Selector -->
     <div class="p-6 sm:p-10">
         <div class="mb-6 flex items-center gap-4">
             <mat-form-field class="min-w-72">
@@ -26,7 +24,6 @@
             </button>
         </div>
 
-        <!-- Brackets -->
         @if (rounds.length > 0) {
             <div class="flex gap-12 overflow-x-auto">
                 @for (round of rounds; track $index) {

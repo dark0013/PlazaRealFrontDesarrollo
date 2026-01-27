@@ -12,7 +12,6 @@
         }"
         [matTooltip]="item.tooltip || ''"
     >
-        <!-- Icon -->
         @if (item.icon) {
             <mat-icon
                 class="fuse-vertical-navigation-item-icon"
@@ -21,7 +20,6 @@
             ></mat-icon>
         }
 
-        <!-- Title & Subtitle -->
         <div class="fuse-vertical-navigation-item-title-wrapper">
             <div class="fuse-vertical-navigation-item-title">
                 <span [ngClass]="item.classes?.title">
@@ -37,7 +35,6 @@
             }
         </div>
 
-        <!-- Badge -->
         @if (item.badge) {
             <div class="fuse-vertical-navigation-item-badge">
                 <div
@@ -54,9 +51,7 @@
 @if (!skipChildren) {
     <div class="fuse-vertical-navigation-item-children">
         @for (item of item.children; track trackByFn($index, item)) {
-            <!-- Skip the hidden items -->
             @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
-                <!-- Basic -->
                 @if (item.type === 'basic') {
                     <fuse-vertical-navigation-basic-item
                         [item]="item"
@@ -64,7 +59,6 @@
                     ></fuse-vertical-navigation-basic-item>
                 }
 
-                <!-- Collapsable -->
                 @if (item.type === 'collapsable') {
                     <fuse-vertical-navigation-collapsable-item
                         [item]="item"
@@ -73,7 +67,6 @@
                     ></fuse-vertical-navigation-collapsable-item>
                 }
 
-                <!-- Divider -->
                 @if (item.type === 'divider') {
                     <fuse-vertical-navigation-divider-item
                         [item]="item"
@@ -81,7 +74,6 @@
                     ></fuse-vertical-navigation-divider-item>
                 }
 
-                <!-- Group -->
                 @if (item.type === 'group') {
                     <fuse-vertical-navigation-group-item
                         [item]="item"
@@ -89,7 +81,6 @@
                     ></fuse-vertical-navigation-group-item>
                 }
 
-                <!-- Spacer -->
                 @if (item.type === 'spacer') {
                     <fuse-vertical-navigation-spacer-item
                         [item]="item"

@@ -1,10 +1,8 @@
-<!-- Item wrapper -->
 <div
     class="fuse-vertical-navigation-item-wrapper"
     [class.fuse-vertical-navigation-item-has-subtitle]="!!item.subtitle"
     [ngClass]="item.classes?.wrapper"
 >
-    <!-- Item with an internal link -->
     @if (item.link && !item.externalLink && !item.function && !item.disabled) {
         <a
             class="fuse-vertical-navigation-item"
@@ -24,7 +22,6 @@
         </a>
     }
 
-    <!-- Item with an external link -->
     @if (item.link && item.externalLink && !item.function && !item.disabled) {
         <a
             class="fuse-vertical-navigation-item"
@@ -36,7 +33,6 @@
         </a>
     }
 
-    <!-- Item with a function -->
     @if (!item.link && item.function && !item.disabled) {
         <div
             class="fuse-vertical-navigation-item"
@@ -50,7 +46,6 @@
         </div>
     }
 
-    <!-- Item with an internal link and function -->
     @if (item.link && !item.externalLink && item.function && !item.disabled) {
         <a
             class="fuse-vertical-navigation-item"
@@ -71,7 +66,6 @@
         </a>
     }
 
-    <!-- Item with an external link and function -->
     @if (item.link && item.externalLink && item.function && !item.disabled) {
         <a
             class="fuse-vertical-navigation-item"
@@ -97,7 +91,6 @@
         </div>
     }
 
-    <!-- Item is disabled -->
     @if (item.disabled) {
         <div
             class="fuse-vertical-navigation-item fuse-vertical-navigation-item-disabled"

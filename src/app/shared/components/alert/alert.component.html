@@ -1,5 +1,4 @@
 <div class="relative flex h-full w-full flex-col">
-    <!-- Dismiss button -->
     <ng-container *ngIf="data.dismissible">
         <div class="absolute right-0 top-0 pr-4 pt-4">
             <button mat-icon-button [matDialogClose]="undefined">
@@ -11,11 +10,9 @@
         </div>
     </ng-container>
 
-    <!-- Content -->
     <div
         class="flex flex-auto flex-col items-center p-8 pb-6 sm:flex-row sm:items-start sm:pb-8"
     >
-        <!-- Icon -->
         <ng-container *ngIf="data.icon.show">
             <div
                 class="flex h-10 w-10 flex-0 items-center justify-center rounded-full sm:mr-4"
@@ -49,7 +46,6 @@
             <div
                 class="mt-4 flex flex-col items-center space-y-1 text-center sm:mt-0 sm:items-start sm:pr-8 sm:text-left"
             >
-                <!-- Title -->
                 <ng-container *ngIf="data.title">
                     <div
                         class="text-xl font-medium leading-6"
@@ -57,7 +53,6 @@
                     ></div>
                 </ng-container>
 
-                <!-- Message -->
                 <ng-container *ngIf="data.message">
                     <div
                         class="text-secondary"
@@ -68,19 +63,16 @@
         </ng-container>
     </div>
 
-    <!-- Actions -->
     <ng-container *ngIf="data.actions.confirm.show || data.actions.cancel.show">
         <div
             class="flex items-center justify-center space-x-3 bg-gray-50 px-6 py-4 sm:justify-end dark:bg-black dark:bg-opacity-10"
         >
-            <!-- Cancel -->
             <ng-container *ngIf="data.actions.cancel.show">
                 <button mat-stroked-button [matDialogClose]="'cancelled'">
                     {{ data.actions.cancel.label }}
                 </button>
             </ng-container>
 
-            <!-- Confirm -->
             <ng-container *ngIf="data.actions.confirm.show">
                 <button
                     mat-flat-button
