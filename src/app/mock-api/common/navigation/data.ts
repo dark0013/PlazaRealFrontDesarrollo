@@ -151,7 +151,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: '1',
                 title: 'Control y Reservas',
                 subtitle: 'Control de reservaciones',
-                icon: 'heroicons_outline:banknotes',
+                icon: 'heroicons_outline:calendar',
                 type: 'collapsable',
 
                 children: [
@@ -187,6 +187,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:user-group',
                         link: '/operation-administracion/registrations',
                     },
+                    {
+                        id: '1',
+                        title: 'Generación de Enfrentamientos',
+                        type: 'basic',
+                        icon: 'heroicons_outline:rectangle-group',
+                        link: '/operation-administracion/matches',
+                    },
                 ],
             },
 
@@ -199,17 +206,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 children: [
                     {
                         id: '3',
-                        title: 'Reporte de Deportistas',
+                        title: 'Clasificación de Deportistas',
                         type: 'basic',
-                        icon: 'heroicons_outline:phone',
-                        link: '/seguimiento/soporte',
+                        icon: 'heroicons_outline:trophy',
+                        link: '/reportes/ranking-deportistas',
                     },
                     {
-                        id: '3',
-                        title: 'Reporte de Escenarios',
+                        id: '4',
+                        title: 'Reservas de Escenarios',
                         type: 'basic',
-                        icon: 'heroicons_outline:document-check',
-                        link: '/seguimiento/asignacion',
+                        icon: 'heroicons_outline:calendar-days',
+                        link: '/reportes/reservas-escenarios',
+                    },
+                    {
+                        id: '5',
+                        title: 'Fases y Resultados de Torneos',
+                        type: 'basic',
+                        icon: 'heroicons_outline:squares-2x2',
+                        link: '/reportes/resultados-torneos',
                     },
                 ],
             },

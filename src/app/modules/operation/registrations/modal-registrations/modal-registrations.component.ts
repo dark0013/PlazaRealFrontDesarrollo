@@ -56,14 +56,16 @@ export class ModalRegistrationsComponent {
         this.sportsmenCatalog = data.sportsmen;
 
         this.dataFormDinamicModal = this.fb.group({
-            sportman: [null, Validators.required],
-            partner: [null],
+            teamName: ['', Validators.required],
+            sportman: ['', Validators.required],
+            partner: [''],
         });
 
         if (this.isTeam) {
             this.dataFormDinamicModal
                 .get('partner')
                 ?.setValidators(Validators.required);
+            this.dataFormDinamicModal.get('partner')?.updateValueAndValidity();
         }
     }
 

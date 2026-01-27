@@ -1,0 +1,61 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div
+        class="bg-card flex flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    >
+        <h2 class="text-3xl font-extrabold">Generación de Encuentros</h2>
+    </div>
+
+    <!-- Selector -->
+    <div class="p-6 sm:p-10">
+        <div class="mb-6 flex items-center gap-4">
+            <mat-form-field class="min-w-72">
+                <mat-label>Torneo</mat-label>
+                <mat-select [(value)]="selectedTournament">
+                    <mat-option value="1">Torneo 2026</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button
+                mat-flat-button
+                color="primary"
+                (click)="generateMatches()"
+            >
+                <mat-icon svgIcon="heroicons_outline:play"></mat-icon>
+                Generar encuentros
+            </button>
+        </div>
+
+        <!-- Brackets -->
+        @if (rounds.length > 0) {
+            <div class="flex gap-12 overflow-x-auto">
+                @for (round of rounds; track $index) {
+                    <div class="flex flex-col gap-6">
+                        <div class="text-center font-semibold text-gray-600">
+                            {{ round.name }}
+                        </div>
+
+                        @for (match of round.matches; track match.id) {
+                            <div
+                                class="w-56 cursor-pointer rounded-lg border bg-white p-4 shadow hover:border-primary hover:shadow-md"
+                                (click)="openMatch(match)"
+                            >
+                                <div class="text-sm font-semibold">
+                                    {{ match.player1 || 'Por definir' }}
+                                </div>
+                                <div
+                                    class="my-1 text-center text-xs text-gray-400"
+                                >
+                                    VS
+                                </div>
+                                <div class="text-sm font-semibold">
+                                    {{ match.player2 || 'Por definir' }}
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -10,14 +10,25 @@
     <div class="w-full">
         <form [formGroup]="dataFormDinamicModal">
             <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
-
                 <!-- Identificación -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Identificación</mat-label>
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix></mat-icon>
-                        <input formControlName="identification" matInput [readonly]="readonlyMode"/>
-                        @if (dataFormDinamicModal.get('identification').hasError('required')) {
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            formControlName="identification"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('identification')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -27,9 +38,21 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Nombre</mat-label>
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix></mat-icon>
-                        <input formControlName="name" matInput [readonly]="readonlyMode"/>
-                        @if (dataFormDinamicModal.get('name').hasError('required')) {
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            formControlName="name"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('name')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -39,9 +62,21 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Apellido</mat-label>
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix></mat-icon>
-                        <input formControlName="surname" matInput [readonly]="readonlyMode"/>
-                        @if (dataFormDinamicModal.get('surname').hasError('required')) {
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            formControlName="surname"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('surname')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -51,9 +86,21 @@
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Email</mat-label>
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix></mat-icon>
-                        <input formControlName="email" matInput [readonly]="readonlyMode"/>
-                        @if (dataFormDinamicModal.get('email').hasError('required')) {
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            formControlName="email"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('email')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -63,9 +110,21 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Teléfono</mat-label>
-                        <mat-icon class="icon-size-5" svgIcon="heroicons_solid:information-circle" matPrefix></mat-icon>
-                        <input formControlName="telephone" matInput [readonly]="readonlyMode"/>
-                        @if (dataFormDinamicModal.get('telephone').hasError('required')) {
+                        <mat-icon
+                            class="icon-size-5"
+                            svgIcon="heroicons_solid:information-circle"
+                            matPrefix
+                        ></mat-icon>
+                        <input
+                            formControlName="telephone"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('telephone')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -75,8 +134,17 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Fecha de nacimiento</mat-label>
-                        <input formControlName="birthdate" matInput type="date" [readonly]="readonlyMode" />
-                        @if (dataFormDinamicModal.get('birthdate').hasError('required')) {
+                        <input
+                            formControlName="birthdate"
+                            matInput
+                            type="date"
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('birthdate')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -86,12 +154,19 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Género</mat-label>
-                        <mat-select formControlName="gender" [disabled]="readonlyMode">
+                        <mat-select
+                            formControlName="gender"
+                            [disabled]="readonlyMode"
+                        >
                             <mat-option value="M">Masculino</mat-option>
                             <mat-option value="F">Femenino</mat-option>
                             <mat-option value="O">Otro</mat-option>
                         </mat-select>
-                        @if (dataFormDinamicModal.get('gender').hasError('required')) {
+                        @if (
+                            dataFormDinamicModal
+                                .get('gender')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -101,12 +176,19 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Categoría</mat-label>
-                        <mat-select formControlName="category" [disabled]="readonlyMode">
+                        <mat-select
+                            formControlName="category"
+                            [disabled]="readonlyMode"
+                        >
                             <mat-option value="Junior">Junior</mat-option>
                             <mat-option value="Senior">Senior</mat-option>
                             <mat-option value="Master">Master</mat-option>
                         </mat-select>
-                        @if (dataFormDinamicModal.get('category').hasError('required')) {
+                        @if (
+                            dataFormDinamicModal
+                                .get('category')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -116,8 +198,17 @@
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Ranking Actual</mat-label>
-                        <input formControlName="current_ranking" type="number" matInput [readonly]="readonlyMode" />
-                        @if (dataFormDinamicModal.get('current_ranking').hasError('required')) {
+                        <input
+                            formControlName="current_ranking"
+                            type="number"
+                            matInput
+                            [readonly]="readonlyMode"
+                        />
+                        @if (
+                            dataFormDinamicModal
+                                .get('current_ranking')
+                                .hasError('required')
+                        ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
                     </mat-form-field>
@@ -134,11 +225,16 @@
         <button mat-stroked-button type="button" (click)="close()">
             <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
         </button>
-          <button mat-stroked-button type="button" (click)="close()">
-            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
-        </button>
-        <button *ngIf="!readonlyMode" class="ml-4" mat-flat-button type="button" color="primary" (click)="saveData()">
-            <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
-        </button>
+        @if (!readonlyMode) {
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                color="primary"
+                (click)="saveData()"
+            >
+                <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
+            </button>
+        }
     </div>
 </div>

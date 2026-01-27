@@ -72,7 +72,7 @@ export class ModalTournamentComponent {
     ];
 
     tournamentStatusOptions = [
-        { value: 'ACTIVO', label: 'ACTIVO' },
+        { value: 'ACTIVADO', label: 'ACTIVO' },
         { value: 'FINALIZADO', label: 'FINALIZADO' },
         { value: 'CANCELADO', label: 'CANCELADO' },
     ];

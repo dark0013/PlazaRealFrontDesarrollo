@@ -12,7 +12,29 @@
     <div class="w-full">
         <form [formGroup]="dataFormDinamicModal">
             <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
-                <!-- Deportista principal -->
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-full" subscriptSizing="dynamic">
+                        <mat-label>Nombre del equipo</mat-label>
+
+                        <input
+                            matInput
+                            formControlName="teamName"
+                            [readonly]="readonlyMode"
+                            placeholder="Ej: Los Tigres / Juan Pérez"
+                        />
+
+                        <mat-error
+                            *ngIf="
+                                dataFormDinamicModal
+                                    .get('teamName')
+                                    ?.hasError('required')
+                            "
+                        >
+                            Campo requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Deportista</mat-label>
@@ -41,7 +63,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Pareja (solo si es team) -->
                 @if (isTeam) {
                     <div class="sm:col-span-4">
                         <mat-form-field

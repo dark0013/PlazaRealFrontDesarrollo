@@ -1,11 +1,9 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,8 +18,8 @@ import { NotificationService } from 'app/shared/components/notification/notifica
 import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.component';
 
 @Component({
-  selector: 'app-sportsman',
-   imports: [
+    selector: 'app-sportsman',
+    imports: [
         MatSortModule,
         MatTableModule,
         MatPaginatorModule,
@@ -34,13 +32,14 @@ import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.compo
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatButtonModule,
-        MatSelectModule
+        MatSelectModule,
+        CommonModule,
     ],
-  templateUrl: './sportsman.component.html',
-  styleUrl: './sportsman.component.scss'
+    templateUrl: './sportsman.component.html',
+    styleUrl: './sportsman.component.scss',
 })
 export class SportsmanComponent {
- constructor(
+    constructor(
         private _dialog: MatDialog,
         private sportsmanService: SportsmanService,
         private _alertService: AlertService,
@@ -52,17 +51,10 @@ export class SportsmanComponent {
     }
 
     displayedColumns: string[] = [
-        'id',
         'columna1',
         'columna2',
         'columna4',
-        'columna5',
-        'columna6',
-        'columna7',
-        'columna8',
         'columna9',
-        'columna10',
-        'columna11',
         'estado',
         'accion',
     ];
@@ -88,12 +80,10 @@ export class SportsmanComponent {
                 this.dataSource.data = data.data;
             },
             error: (err) => {
-               console.error(err);
+                console.error(err);
             },
         });
     }
-
-  
 
     openDialogCrud(datoParamOpci?: any, accion?: string) {
         if (accion != 'new-register') {

@@ -246,6 +246,46 @@ export const appRoutes: Route[] = [
                         'app/modules/operation/registrations/registrations.module'
                     ).then((m) => m.RegistrationsModule),
             },
+            {
+                path: 'matches',
+                loadChildren: () =>
+                    import('app/modules/operation/matches/matches.module').then(
+                        (m) => m.MatchesComponentModule
+                    ),
+            },
+        ],
+    },
+
+    {
+        path: 'reportes',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver,
+        },
+        children: [
+            {
+                path: 'ranking-deportistas',
+                loadChildren: () =>
+                    import(
+                        'app/modules/report/athlete-ranking-component/athlete-ranking-component.module'
+                    ).then((m) => m.AthleteRankingModule),
+            },
+            {
+                path: 'reservas-escenarios',
+                loadChildren: () =>
+                    import(
+                        'app/modules/report/venue-reservation-report-component/venue-reservation-report-component.module'
+                    ).then((m) => m.VenueReservationReportModule),
+            },
+             {
+                path: 'resultados-torneos',
+                loadChildren: () =>
+                    import(
+                        'app/modules/report/tournament-results-bracket-component/tournament-results-bracket-component.module'
+                    ).then((m) => m.TournamentResultsBracketModule),
+            },
         ],
     },
 ];
