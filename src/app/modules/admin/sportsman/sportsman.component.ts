@@ -12,7 +12,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Category } from 'app/model/Category.model';
 import { SportsmanService } from 'app/services/system/admin/sportsman.service';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 import { AlertService } from 'app/shared/components/alert/alert.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.component';
@@ -39,17 +41,27 @@ import { ModalSportsmanComponent } from './modal-sportsman/modal-sportsman.compo
     styleUrl: './sportsman.component.scss',
 })
 export class SportsmanComponent {
+    categories: Category[] = [];
     constructor(
         private _dialog: MatDialog,
         private sportsmanService: SportsmanService,
         private _alertService: AlertService,
-        private _notificationService: NotificationService
+        private _notificationService: NotificationService,
+        private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
         this.loadAllData();
+        this.loadCategories();
     }
 
+    loadCategories() {
+        this._catalogService.getCategories().subscribe({
+            next: (resp: any) => {
+                this.categories = resp.data;
+            },
+        });
+    }
     displayedColumns: string[] = [
         'columna1',
         'columna2',
@@ -92,7 +104,10 @@ export class SportsmanComponent {
 
         let dialogRef: any = this._dialog.open(ModalSportsmanComponent, {
             width: '50%',
-            data: datoParamOpci,
+            data: {
+                register: datoParamOpci,
+                categories: this.categories,
+            },
             disableClose: true,
         });
 

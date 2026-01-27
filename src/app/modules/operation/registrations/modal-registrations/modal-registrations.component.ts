@@ -89,6 +89,7 @@ export class ModalRegistrationsComponent {
 
         this._tournamentService
             .addParticipant(
+                this.dataFormDinamicModal.value.teamName,
                 this.data.idScenario,
                 sportman,
                 this.isTeam ? partner : undefined

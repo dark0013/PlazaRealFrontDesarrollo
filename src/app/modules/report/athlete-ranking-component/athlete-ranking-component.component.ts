@@ -42,7 +42,6 @@ export class AthleteRankingComponentComponent implements OnInit {
     selectedGender: string | null = null;
 
     categories = ['Junior', 'Senior'];
-    genders = ['Masculino', 'Femenino'];
 
     constructor(private _rankingService: AthleteRankingServiceService) {}
 
@@ -90,5 +89,4 @@ export class AthleteRankingComponentComponent implements OnInit {
             `ranking_deportistas_${new Date().toISOString().slice(0, 10)}.xlsx`
         );
     }
-
 }

@@ -10,7 +10,6 @@
     <div class="w-full">
         <form [formGroup]="dataFormDinamicModal">
             <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
-                <!-- Identificación -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Identificación</mat-label>
@@ -34,7 +33,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Nombre -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Nombre</mat-label>
@@ -58,7 +56,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Apellido -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Apellido</mat-label>
@@ -82,7 +79,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Email -->
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Email</mat-label>
@@ -106,7 +102,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Teléfono -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Teléfono</mat-label>
@@ -130,7 +125,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Fecha nacimiento -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Fecha de nacimiento</mat-label>
@@ -150,7 +144,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Género -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Género</mat-label>
@@ -172,7 +165,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Categoría -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Categoría</mat-label>
@@ -180,9 +172,11 @@
                             formControlName="category"
                             [disabled]="readonlyMode"
                         >
-                            <mat-option value="Junior">Junior</mat-option>
-                            <mat-option value="Senior">Senior</mat-option>
-                            <mat-option value="Master">Master</mat-option>
+                            @for (item of categories; track $index) {
+                                <mat-option [value]="item.value_key">{{
+                                    item.option_value
+                                }}</mat-option>
+                            }
                         </mat-select>
                         @if (
                             dataFormDinamicModal
@@ -194,7 +188,6 @@
                     </mat-form-field>
                 </div>
 
-                <!-- Ranking actual -->
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Ranking Actual</mat-label>

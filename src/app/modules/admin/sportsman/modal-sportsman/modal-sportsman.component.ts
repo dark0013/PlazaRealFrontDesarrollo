@@ -10,16 +10,20 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogModule,
+    MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { Catalog } from 'app/model/catalog.model';
 import { SportsmanService } from 'app/services/system/admin/sportsman.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
-import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-modal-sportsman',
@@ -36,14 +40,15 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatButtonToggleModule,
         MatButtonModule,
         MatSelectModule,
-         MatDialogModule,
+        MatDialogModule,
     ],
     templateUrl: './modal-sportsman.component.html',
-    styleUrl: 'modal-sportsman.component.scss'
+    styleUrl: 'modal-sportsman.component.scss',
 })
 export class ModalSportsmanComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
+    categories: Catalog[] = [];
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -52,25 +57,56 @@ export class ModalSportsmanComponent implements OnInit {
         private _sportsmanService: SportsmanService,
         private _notificationService: NotificationService
     ) {
-        this.dataFormDinamicModal = this._formBuilder.group({
-            name: [this.data ? this.data.name : '', Validators.required],
-            surname: [this.data ? this.data.surname : '', Validators.required],
-            identification: [this.data ? this.data.identification : '', Validators.required],
-            birthdate: [this.data ? this.data.birthdate : '', Validators.required],
-            gender: [this.data ? this.data.gender : '', Validators.required],
-            telephone: [this.data ? this.data.telephone : '', Validators.required],
-            email: [this.data ? this.data.email : '', [Validators.required, Validators.email]],
-            category: [this.data ? this.data.category : '', Validators.required],
-            current_ranking: [this.data ? this.data.current_ranking : '', Validators.required],
-        });
+        this.categories = data.categories || [];
 
+        this.dataFormDinamicModal = this._formBuilder.group({
+            name: [
+                this.data.register ? this.data.register.name : '',
+                Validators.required,
+            ],
+            surname: [
+                this.data.register ? this.data.register.surname : '',
+                Validators.required,
+            ],
+            identification: [
+                this.data.register ? this.data.register.identification : '',
+                Validators.required,
+            ],
+            birthdate: [
+                this.data.register ? this.data.register.birthdate : '',
+                Validators.required,
+            ],
+            gender: [
+                this.data.register ? this.data.register.gender : '',
+                Validators.required,
+            ],
+            telephone: [
+                this.data.register ? this.data.register.telephone : '',
+                Validators.required,
+            ],
+            email: [
+                this.data.register ? this.data.register.email : '',
+                [Validators.required, Validators.email],
+            ],
+
+            category: [
+                this.data.register?.category_id
+                    ? Number(this.data.register.category_id)
+                    : (this.categories?.[0]?.value_key ?? null),
+                Validators.required,
+            ],
+
+            current_ranking: [
+                this.data.register ? this.data.register.current_ranking : '',
+                Validators.required,
+            ],
+        });
     }
     ngOnInit(): void {
-        this.initAction(this.data);
+        this.initAction(this.data.register);
     }
 
     initAction(data?: any) {
-        
         if (data != null) {
             if (data.accion == 'information') {
                 this.readonlyMode = true;
@@ -81,9 +117,11 @@ export class ModalSportsmanComponent implements OnInit {
     }
 
     saveData() {
-        debugger;
         if (this.dataFormDinamicModal.valid) {
-            if (this.data && Object.keys(this.data).length === 0) {
+            if (
+                this.data.register &&
+                Object.keys(this.data.register).length === 0
+            ) {
                 this._sportsmanService
                     .create(this.dataFormDinamicModal.value)
                     .subscribe((resp) => {
@@ -95,7 +133,10 @@ export class ModalSportsmanComponent implements OnInit {
                     });
             } else {
                 this._sportsmanService
-                    .update(this.data.id, this.dataFormDinamicModal.value)
+                    .update(
+                        this.data.register.id,
+                        this.dataFormDinamicModal.value
+                    )
                     .subscribe((resp) => {
                         this._notificationService.show(
                             'success',
@@ -113,4 +154,3 @@ export class ModalSportsmanComponent implements OnInit {
         this._dialogRef.close();
     }
 }
-

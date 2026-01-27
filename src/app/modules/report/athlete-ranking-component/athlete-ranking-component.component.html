@@ -46,9 +46,9 @@
                             (selectionChange)="onFilterChange()"
                         >
                             <mat-option value="">Todos</mat-option>
-                            @for (g of genders; track g) {
-                                <mat-option [value]="g">{{ g }}</mat-option>
-                            }
+                            <mat-option value="M">Masculino</mat-option>
+                            <mat-option value="F">Femenino</mat-option>
+                            <mat-option value="O">Otro</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
