@@ -57,6 +57,27 @@
                 </div>
             </div>
 
+            <div
+                class="relative flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-8"
+            >
+                <div class="text-3xl font-extrabold tracking-tight">
+                    Ranking de Deportistas
+                </div>
+
+                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+                    <button
+                        mat-flat-button
+                        color="accent"
+                        (click)="exportToExcel()"
+                    >
+                        <mat-icon
+                            svgIcon="heroicons_outline:arrow-down-tray"
+                        ></mat-icon>
+                        <span class="ml-2">Exportar Excel</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Table -->
             <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
                 <table mat-table [dataSource]="rankings" class="w-full">

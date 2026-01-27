@@ -1,1 +1,129 @@
-<p>tournament-results-bracket-component works!</p>
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    >
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center font-medium">
+                <a class="text-primary-500">Reportes</a>
+                <mat-icon
+                    class="text-secondary mx-1 icon-size-5"
+                    svgIcon="heroicons_mini:chevron-right"
+                ></mat-icon>
+                <span class="text-primary-500">Resultados de Torneos</span>
+            </div>
+
+            <h2
+                class="mt-2 text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+                Cuadro de Resultados del Torneo
+            </h2>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="max-w-10xl">
+            <!-- Filters -->
+            <div
+                class="mb-6 rounded-xl bg-gray-50 p-6 shadow-sm dark:bg-gray-800"
+            >
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    <mat-form-field class="w-full">
+                        <mat-label>Torneo</mat-label>
+                        <mat-select
+                            [(value)]="filters.tournamentId"
+                            (selectionChange)="loadBracket()"
+                        >
+                            @for (t of tournaments; track t.id) {
+                                <mat-option [value]="t.id">
+                                    {{ t.name }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Categoría</mat-label>
+                        <mat-select
+                            [(value)]="filters.category"
+                            (selectionChange)="loadBracket()"
+                        >
+                            <mat-option value="ALL">Todas</mat-option>
+                            <mat-option value="U18">U18</mat-option>
+                            <mat-option value="Senior">Senior</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Section header -->
+            <div
+                class="relative flex flex-0 flex-col border-b px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-8"
+            >
+                <div class="text-3xl font-extrabold tracking-tight">
+                    Resultados por Fase
+                </div>
+
+                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+                    <button
+                        mat-flat-button
+                        color="accent"
+                        (click)="exportToExcel()"
+                    >
+                        <mat-icon
+                            svgIcon="heroicons_outline:arrow-down-tray"
+                        ></mat-icon>
+                        <span class="ml-2">Exportar Excel</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
+                <table mat-table [dataSource]="matches" class="w-full">
+                    <ng-container matColumnDef="round">
+                        <th mat-header-cell *matHeaderCellDef>Fase</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.round }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="player1">
+                        <th mat-header-cell *matHeaderCellDef>Jugador 1</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.player1 }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="player2">
+                        <th mat-header-cell *matHeaderCellDef>Jugador 2</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.player2 }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="score">
+                        <th mat-header-cell *matHeaderCellDef>Marcador</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.score }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="winner">
+                        <th mat-header-cell *matHeaderCellDef>Ganador</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.winner }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -207,7 +207,7 @@
                     <ng-container matColumnDef="participant">
                         <th mat-header-cell *matHeaderCellDef>Participante</th>
                         <td mat-cell *matCellDef="let item">
-                            {{ item.sportsman_name }}
+                            {{ item.sportsman_name + ' ' + item.sportsman_surname }}
                         </td>
                     </ng-container>
                 }
@@ -216,7 +216,7 @@
                     <ng-container matColumnDef="player1">
                         <th mat-header-cell *matHeaderCellDef>Jugador 1</th>
                         <td mat-cell *matCellDef="let item">
-                            {{ item.sportsman_name }}
+                            {{ item.sportsman_name + ' ' + item.sportsman_surname }}
                         </td>
                     </ng-container>
                 }
@@ -225,7 +225,7 @@
                     <ng-container matColumnDef="player2">
                         <th mat-header-cell *matHeaderCellDef>Jugador 2</th>
                         <td mat-cell *matCellDef="let item">
-                            {{ item.partner_name }}
+                            {{ item.partner_name + ' ' + item.partner_surname }}
                         </td>
                     </ng-container>
                 }

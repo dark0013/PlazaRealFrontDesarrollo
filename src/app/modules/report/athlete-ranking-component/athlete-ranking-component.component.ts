@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'app-athlete-ranking-component',
@@ -63,4 +64,31 @@ export class AthleteRankingComponentComponent implements OnInit {
     onFilterChange(): void {
         this.loadRanking();
     }
+
+    exportToExcel(): void {
+        if (!this.rankings || this.rankings.length === 0) {
+            return;
+        }
+
+        const data = this.rankings.map((item, index) => ({
+            '#': index + 1,
+            Deportista: item.name,
+            Categoría: item.category,
+            Género: item.gender,
+            Puntos: item.points,
+            Posición: index + 1,
+        }));
+
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+        const workbook: XLSX.WorkBook = {
+            Sheets: { Ranking: worksheet },
+            SheetNames: ['Ranking'],
+        };
+
+        XLSX.writeFile(
+            workbook,
+            `ranking_deportistas_${new Date().toISOString().slice(0, 10)}.xlsx`
+        );
+    }
+
 }
