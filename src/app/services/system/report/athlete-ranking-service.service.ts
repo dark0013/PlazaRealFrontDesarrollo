@@ -42,11 +42,6 @@ export class AthleteRankingServiceService {
         },
     ];
 
-    /**
-     * ✔ Método definitivo
-     * ✔ Backend-ready
-     * ✔ Solo este método cambiará cuando exista API real
-     */
     getRanking(filters: RankingFilters): Observable<AthleteRanking[]> {
         return of(this.MOCK_DATA).pipe(
             delay(400), // simula latencia
@@ -54,10 +49,6 @@ export class AthleteRankingServiceService {
             map((data) => this.recalculatePositions(data))
         );
     }
-
-    // =========================
-    // Helpers (no tocarán en prod)
-    // =========================
 
     private applyFilters(
         data: AthleteRanking[],
@@ -78,7 +69,6 @@ export class AthleteRankingServiceService {
 
     /**
      * Recalcula posiciones por categoría + género
-     * (igual que lo hará el backend)
      */
     private recalculatePositions(data: AthleteRanking[]): AthleteRanking[] {
         const grouped = new Map<string, AthleteRanking[]>();

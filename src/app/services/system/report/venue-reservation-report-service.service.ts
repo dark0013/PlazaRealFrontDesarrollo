@@ -15,7 +15,6 @@ export class VenueReservationReportServiceService {
     }
 
     getReservations(filters: any): Observable<any[]> {
-        // 🔥 aquí luego solo conectas backend con filtros
         return of([
             {
                 venue: 'Cancha Central',

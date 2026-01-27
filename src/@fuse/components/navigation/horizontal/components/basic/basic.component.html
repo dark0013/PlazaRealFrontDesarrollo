@@ -1,10 +1,8 @@
-<!-- Item wrapper -->
 <div
     class="fuse-horizontal-navigation-item-wrapper"
     [class.fuse-horizontal-navigation-item-has-subtitle]="!!item.subtitle"
     [ngClass]="item.classes?.wrapper"
 >
-    <!-- Item with an internal link -->
     @if (item.link && !item.externalLink && !item.function && !item.disabled) {
         <div
             class="fuse-horizontal-navigation-item"
@@ -24,7 +22,6 @@
         </div>
     }
 
-    <!-- Item with an external link -->
     @if (item.link && item.externalLink && !item.function && !item.disabled) {
         <a
             class="fuse-horizontal-navigation-item"
@@ -36,7 +33,6 @@
         </a>
     }
 
-    <!-- Item with a function -->
     @if (!item.link && item.function && !item.disabled) {
         <div
             class="fuse-horizontal-navigation-item"
@@ -50,7 +46,6 @@
         </div>
     }
 
-    <!-- Item with an internal link and function -->
     @if (item.link && !item.externalLink && item.function && !item.disabled) {
         <div
             class="fuse-horizontal-navigation-item"
@@ -71,7 +66,6 @@
         </div>
     }
 
-    <!-- Item with an external link and function -->
     @if (item.link && item.externalLink && item.function && !item.disabled) {
         <a
             class="fuse-horizontal-navigation-item"
@@ -85,7 +79,6 @@
         </a>
     }
 
-    <!-- Item with a no link and no function -->
     @if (!item.link && !item.function && !item.disabled) {
         <div
             class="fuse-horizontal-navigation-item"
@@ -98,7 +91,6 @@
         </div>
     }
 
-    <!-- Item is disabled -->
     @if (item.disabled) {
         <div
             class="fuse-horizontal-navigation-item fuse-horizontal-navigation-item-disabled"
@@ -108,9 +100,7 @@
     }
 </div>
 
-<!-- Item template -->
 <ng-template #itemTemplate>
-    <!-- Icon -->
     @if (item.icon) {
         <mat-icon
             class="fuse-horizontal-navigation-item-icon"
@@ -119,7 +109,6 @@
         ></mat-icon>
     }
 
-    <!-- Title & Subtitle -->
     <div class="fuse-horizontal-navigation-item-title-wrapper">
         <div class="fuse-horizontal-navigation-item-title">
             <span [ngClass]="item.classes?.title">
@@ -135,7 +124,6 @@
         }
     </div>
 
-    <!-- Badge -->
     @if (item.badge) {
         <div class="fuse-horizontal-navigation-item-badge">
             <div

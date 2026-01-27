@@ -4,20 +4,16 @@
         [@fadeIn]="!dismissed"
         [@fadeOut]="!dismissed"
     >
-        <!-- Border -->
         @if (appearance === 'border') {
             <div class="fuse-alert-border"></div>
         }
 
-        <!-- Icon -->
         @if (showIcon) {
             <div class="fuse-alert-icon">
-                <!-- Custom icon -->
                 <div class="fuse-alert-custom-icon">
                     <ng-content select="[fuseAlertIcon]"></ng-content>
                 </div>
 
-                <!-- Default icons -->
                 <div class="fuse-alert-default-icon">
                     @if (type === 'primary') {
                         <mat-icon
@@ -70,7 +66,6 @@
             </div>
         }
 
-        <!-- Content -->
         <div class="fuse-alert-content">
             <div class="fuse-alert-title">
                 <ng-content select="[fuseAlertTitle]"></ng-content>
@@ -81,7 +76,6 @@
             </div>
         </div>
 
-        <!-- Dismiss button -->
         <button
             class="fuse-alert-dismiss-button"
             mat-icon-button
