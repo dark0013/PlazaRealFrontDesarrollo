@@ -56,7 +56,7 @@ export class ModalRegistrationsComponent {
         this.sportsmenCatalog = data.sportsmen;
 
         this.dataFormDinamicModal = this.fb.group({
-            teamName: ['', Validators.required],
+            team_Name: ['', Validators.required],
             sportman: ['', Validators.required],
             partner: [''],
         });
@@ -89,7 +89,7 @@ export class ModalRegistrationsComponent {
 
         this._tournamentService
             .addParticipant(
-                this.dataFormDinamicModal.value.teamName,
+                this.dataFormDinamicModal.value.team_Name,
                 this.data.idScenario,
                 sportman,
                 this.isTeam ? partner : undefined

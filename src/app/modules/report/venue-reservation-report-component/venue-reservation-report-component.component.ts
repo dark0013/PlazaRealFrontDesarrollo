@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
-import { VenueReservationReportServiceService } from 'app/services/system/report/venue-reservation-report-service.service';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Catalog } from 'app/model/catalog.model';
+import { VenueReservationReportServiceService } from 'app/services/system/report/venue-reservation-report-service.service';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 
 @Component({
     selector: 'app-venue-reservation-report-component',
@@ -24,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
         MatButtonModule,
         MatIconModule,
         MatTableModule,
+        MatPaginatorModule,
     ],
     templateUrl: './venue-reservation-report-component.component.html',
     styleUrl: './venue-reservation-report-component.component.scss',
@@ -31,27 +35,37 @@ import { MatInputModule } from '@angular/material/input';
 export class VenueReservationReportComponentComponent implements OnInit {
     venues: any[] = [];
     reservations: any[] = [];
+    scenarios: Catalog[] = [];
+    displayedColumns: string[] = ['venue', 'date', 'time', 'match'];
 
-    displayedColumns: string[] = ['venue', 'date', 'time', 'match', 'category'];
+    dataSource = new MatTableDataSource<any>([]);
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     filters = {
         venueId: '',
-        fromDate: null,
-        toDate: null,
+        fromDate: new Date(),
+        toDate: new Date(),
     };
 
     constructor(
-        private _reservationService: VenueReservationReportServiceService
+        private _reservationService: VenueReservationReportServiceService,
+        private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
-        this.loadVenues();
+        this.loadScenarios();
         this.loadReservations();
     }
 
-    loadVenues(): void {
-        this._reservationService.getVenues().subscribe((data) => {
-            this.venues = data;
+    ngAfterViewInit(): void {
+        this.dataSource.paginator = this.paginator;
+    }
+
+    loadScenarios() {
+        this._catalogService.getScenarios().subscribe({
+            next: (resp: any) => {
+                this.scenarios = resp.data;
+            },
         });
     }
 
@@ -59,11 +73,11 @@ export class VenueReservationReportComponentComponent implements OnInit {
         this._reservationService
             .getReservations(this.filters)
             .subscribe((data) => {
-                this.reservations = data;
+                this.dataSource.data = data;
             });
     }
 
     exportToExcel(): void {
-        this._reservationService.exportToExcel(this.reservations);
+        this._reservationService.exportToExcel(this.dataSource.data);
     }
 }

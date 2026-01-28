@@ -25,7 +25,7 @@ export class TournamentService extends BaseCrudService<Tournament> {
         const body: any = {
             tournament_id: tournamentId,
             sportsman_id: sportsmanId,
-            teamName: teamName,
+            team_Name: teamName,
         };
 
         if (partnerId) {

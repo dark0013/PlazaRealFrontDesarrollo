@@ -32,9 +32,10 @@
                             [(value)]="filters.tournamentId"
                             (selectionChange)="loadBracket()"
                         >
-                            @for (t of tournaments; track t.id) {
-                                <mat-option [value]="t.id">
-                                    {{ t.name }}
+                            <mat-option value="0">Todas</mat-option>
+                            @for (t of tournament; track t.value_key) {
+                                <mat-option [value]="t.value_key">
+                                    {{ t.option_value }}
                                 </mat-option>
                             }
                         </mat-select>
@@ -46,9 +47,12 @@
                             [(value)]="filters.category"
                             (selectionChange)="loadBracket()"
                         >
-                            <mat-option value="ALL">Todas</mat-option>
-                            <mat-option value="U18">U18</mat-option>
-                            <mat-option value="Senior">Senior</mat-option>
+                            <mat-option value="0">Todas</mat-option>
+                            @for (t of category; track t.value_key) {
+                                <mat-option [value]="t.value_key">
+                                    {{ t.option_value }}
+                                </mat-option>
+                            }
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -76,7 +80,7 @@
             </div>
 
             <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-900">
-                <table mat-table [dataSource]="matches" class="w-full">
+                <table mat-table [dataSource]="dataSource" class="w-full">
                     <ng-container matColumnDef="round">
                         <th mat-header-cell *matHeaderCellDef>Fase</th>
                         <td mat-cell *matCellDef="let row">
@@ -118,6 +122,12 @@
                         *matRowDef="let row; columns: displayedColumns"
                     ></tr>
                 </table>
+                <mat-paginator
+                    [pageSizeOptions]="[5, 10, 20]"
+                    [pageSize]="10"
+                    showFirstLastButtons
+                >
+                </mat-paginator>
             </div>
         </div>
     </div>

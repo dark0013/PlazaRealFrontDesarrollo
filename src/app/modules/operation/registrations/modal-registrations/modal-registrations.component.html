@@ -18,7 +18,7 @@
 
                         <input
                             matInput
-                            formControlName="teamName"
+                            formControlName="team_Name"
                             [readonly]="readonlyMode"
                             placeholder="Ej: Los FullStack / Juan Pérez"
                         />
@@ -26,7 +26,7 @@
                         <mat-error
                             *ngIf="
                                 dataFormDinamicModal
-                                    .get('teamName')
+                                    .get('team_Name')
                                     ?.hasError('required')
                             "
                         >

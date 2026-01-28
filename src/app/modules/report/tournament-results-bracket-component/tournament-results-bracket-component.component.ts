@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Catalog } from 'app/model/catalog.model';
 import { TournamentResultsBracketServiceService } from 'app/services/system/report/tournament-results-bracket-service.service';
+import { CatalogService } from 'app/services/system/shared/catalog.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -20,6 +23,7 @@ import * as XLSX from 'xlsx';
         MatFormFieldModule,
         MatIconModule,
         MatButtonModule,
+        MatPaginatorModule,
     ],
     templateUrl: './tournament-results-bracket-component.component.html',
     styleUrl: './tournament-results-bracket-component.component.scss',
@@ -27,6 +31,8 @@ import * as XLSX from 'xlsx';
 export class TournamentResultsBracketComponentComponent implements OnInit {
     tournaments: any[] = [];
     matches: any[] = [];
+    tournament: Catalog[] = [];
+    category: Catalog[] = [];
 
     displayedColumns: string[] = [
         'round',
@@ -36,34 +42,53 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
         'winner',
     ];
 
+    dataSource = new MatTableDataSource<any>([]);
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+
     filters = {
         tournamentId: null,
         category: 'ALL',
     };
 
     constructor(
-        private _bracketService: TournamentResultsBracketServiceService
+        private _bracketService: TournamentResultsBracketServiceService,
+        private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
         this.loadTournaments();
+        this.loadCategories();
         this.loadBracket();
     }
 
+    ngAfterViewInit(): void {
+        this.dataSource.paginator = this.paginator;
+    }
+
     loadTournaments(): void {
-        this._bracketService.getTournaments().subscribe((data) => {
-            this.tournaments = data;
+        this._catalogService.getScenarios().subscribe({
+            next: (resp: any) => {
+                this.tournament = resp.data;
+            },
+        });
+    }
+
+    loadCategories(): void {
+        this._catalogService.getCategories().subscribe({
+            next: (resp: any) => {
+                this.category = resp.data;
+            },
         });
     }
 
     loadBracket(): void {
         this._bracketService.getBracket(this.filters).subscribe((data) => {
-            this.matches = data;
+            this.dataSource.data = data;
         });
     }
 
     exportToExcel(): void {
-        const data = this.matches.map((m, i) => ({
+        const data = this.dataSource.data.map((m, i) => ({
             '#': i + 1,
             Round: m.round,
             Player1: m.player1,

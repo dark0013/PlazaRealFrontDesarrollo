@@ -6,12 +6,6 @@ import { Observable, of } from 'rxjs';
 })
 export class TournamentResultsBracketServiceService {
     constructor() {}
-    getTournaments(): Observable<any[]> {
-        return of([
-            { id: 1, name: 'Open Tennis 2025' },
-            { id: 2, name: 'City Championship' },
-        ]);
-    }
 
     getBracket(filters: any): Observable<any[]> {
         return of([

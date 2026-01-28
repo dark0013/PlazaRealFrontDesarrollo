@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import {
     FormsModule,
@@ -48,6 +48,7 @@ import { NotificationService } from 'app/shared/components/notification/notifica
     ],
     templateUrl: './modal-tournament.component.html',
     styleUrl: './modal-tournament.component.scss',
+    providers: [DatePipe],
 })
 export class ModalTournamentComponent {
     dataFormDinamicModal: UntypedFormGroup;
@@ -82,7 +83,8 @@ export class ModalTournamentComponent {
         private dialogRef: MatDialogRef<any>,
         private fb: UntypedFormBuilder,
         private tournamentService: TournamentService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private datePipe: DatePipe
     ) {
         this.categories = data.categories || [];
         this.sport = data.sport || [];
@@ -147,9 +149,15 @@ export class ModalTournamentComponent {
     saveData() {
         if (this.dataFormDinamicModal.invalid) return;
 
-        const payload = this.dataFormDinamicModal.value;
+        const raw = this.dataFormDinamicModal.value;
+
+        const payload = {
+            ...raw,
+            start_date: this.datePipe.transform(raw.start_date, 'yyyy-MM-dd'),
+            end_date: this.datePipe.transform(raw.end_date, 'yyyy-MM-dd'),
+        };
+
         if (!this.data.register?.id) {
-            console.log('Creando torneo...');
             this.tournamentService.create(payload).subscribe({
                 next: () => {
                     this.notificationService.show(
@@ -162,7 +170,6 @@ export class ModalTournamentComponent {
                 error: (e) => console.error(e),
             });
         } else {
-            console.log('Actualizando torneo...');
             this.tournamentService
                 .update(this.data.register.id, payload)
                 .subscribe({
