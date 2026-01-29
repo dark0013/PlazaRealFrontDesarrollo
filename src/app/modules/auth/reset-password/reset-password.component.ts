@@ -11,10 +11,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { FuseValidators } from '@fuse/validators';
+import { AuthService } from 'app/core/auth/auth.service';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
     selector: 'reset-password-classic',
@@ -40,10 +42,27 @@ export class ResetPasswordClassicComponent implements OnInit {
     };
     resetPasswordForm: UntypedFormGroup;
     showAlert: boolean = false;
-
-    constructor(private _formBuilder: UntypedFormBuilder) {}
+    userId!: number;
+    email!: string;
+    oldPassword!: string;
+    constructor(
+        private _formBuilder: UntypedFormBuilder,
+        private _authService: AuthService,
+        private _router: Router,
+        private _userService: UserService
+    ) {}
 
     ngOnInit(): void {
+        const nav = history.state;
+
+        this.userId = nav.userId;
+        this.email = nav.email;
+        this.oldPassword = nav.password;
+
+        if (!this.userId || !this.oldPassword) {
+            this._router.navigate(['/sign-in']);
+        }
+
         this.resetPasswordForm = this._formBuilder.group(
             {
                 password: ['', Validators.required],
@@ -58,5 +77,24 @@ export class ResetPasswordClassicComponent implements OnInit {
         );
     }
 
-    resetPassword(): void {}
+    resetPassword(): void {
+        if (this.resetPasswordForm.invalid) return;
+
+        this._authService
+            .changePassword(
+                this.userId,
+                this.email,
+                this.oldPassword,
+                this.resetPasswordForm.value.password
+            )
+            .subscribe({
+                next: () => {
+                    localStorage.clear();
+                    this._router.navigate(['/sign-in']);
+                },
+                error: (err) => {
+                    console.error(err);
+                },
+            });
+    }
 }

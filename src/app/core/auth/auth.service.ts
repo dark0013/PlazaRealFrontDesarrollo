@@ -35,8 +35,21 @@ export class AuthService {
         return this._httpClient.post('api/auth/reset-password', password);
     }
 
+    changePassword(
+        userId: number,
+        email: string,
+        oldPassword: string,
+        newPassword: string
+    ): Observable<any> {
+        return this._httpClient.post(`${this.baseUrl}/change-password`, {
+            usuario_id: userId,
+            email,
+            password: oldPassword,
+            new_password: newPassword,
+        });
+    }
+
     signIn(credentials: { email: string; password: string }): Observable<any> {
-        //return this._httpClient.post('api/auth/sign-in', credentials).pipe(
         return this._httpClient.post(`${this.baseUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
                 this.accessToken = response.accessToken;

@@ -81,7 +81,14 @@ export class AuthSignInComponent implements OnInit {
                     ) || '/signed-in-redirect';
 
                 if (response.user.is_temporal) {
-                    redirectURL = '/reset-password';
+                    this._router.navigate(['/reset-password'], {
+                        state: {
+                            email: this.signInForm.value.email,
+                            password: this.signInForm.value.password,
+                            userId: response.user.id,
+                        },
+                    });
+                    return;
                 }
                 this._router.navigateByUrl(redirectURL);
             },

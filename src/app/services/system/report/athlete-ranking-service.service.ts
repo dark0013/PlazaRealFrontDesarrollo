@@ -1,11 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'app/environments/environment';
 import { delay, map, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AthleteRankingServiceService {
-    constructor() {}
+    private readonly baseUrl = environment.baseUrl;
+
+    constructor(private _http: HttpClient) {}
 
     private readonly MOCK_DATA: AthleteRanking[] = [
         {
@@ -50,59 +54,27 @@ export class AthleteRankingServiceService {
         },
     ];
 
-    getRanking(filters: RankingFilters): Observable<AthleteRanking[]> {
+    getRanking_(filters: RankingFilters): Observable<any[]> {
         console.log('Filters applied:', filters);
         return of(this.MOCK_DATA).pipe(
-            delay(400), // simula latencia
-            map((data) => this.applyFilters(data, filters)),
-            map((data) => this.recalculatePositions(data))
+            delay(400),
+            map((data) => null)
         );
     }
 
-    private applyFilters(
-        data: AthleteRanking[],
-        filters: RankingFilters
-    ): AthleteRanking[] {
-        let result = [...data];
+    getAthleteClassification(
+        category: string,
+        gender: string
+    ): Observable<any> {
+        const payload = {
+            category,
+            gender,
+        };
 
-        if (filters.category !== '0') {
-            result = result.filter(
-                (r) => r.categoryId === Number(filters.category)
-            );
-        }
-
-        if (filters.gender !== '0') {
-            result = result.filter((r) => r.genderId === filters.gender);
-        }
-
-        return result;
-    }
-
-    private recalculatePositions(data: AthleteRanking[]): AthleteRanking[] {
-        const grouped = new Map<string, AthleteRanking[]>();
-
-        data.forEach((item) => {
-            const key = `${item.categoryId}-${item.genderId}`;
-            if (!grouped.has(key)) {
-                grouped.set(key, []);
-            }
-            grouped.get(key)!.push(item);
-        });
-
-        const result: AthleteRanking[] = [];
-
-        grouped.forEach((group) => {
-            group
-                .sort((a, b) => b.points - a.points)
-                .forEach((item, index) => {
-                    result.push({
-                        ...item,
-                        position: index + 1,
-                    });
-                });
-        });
-
-        return result;
+        return this._http.post(
+            `${this.baseUrl}/reporteria/reporte-clasificacion-deportistas`,
+            payload
+        );
     }
 }
 
