@@ -45,13 +45,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:check-circle',
                 type: 'collapsable',
                 children: [
-                    {
+                    /*{
                         id: '2',
                         title: 'Gestión de accesos',
                         type: 'basic',
                         icon: 'heroicons_outline:x-mark',
                         link: '/acceso/asignacionrol',
-                    },
+                    },*/
                     {
                         id: '3',
                         title: 'Gestión de usuarios',
@@ -59,13 +59,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:users',
                         link: '/access-securtiy/users',
                     },
-                    {
+                    /* {
                         id: '4',
                         title: 'Bloqueos y contraseñas',
                         type: 'basic',
                         icon: 'heroicons_outline:x-mark',
                         link: '/acceso/asignacionmodulo',
-                    },
+                    },*/
                 ],
             },
         ],
@@ -175,13 +175,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:rectangle-group',
                         link: '/operation-administracion/matches',
                     },
-                    {
+                    /*{
                         id: '1',
                         title: 'Programación de Partidos',
                         type: 'basic',
                         icon: 'heroicons_outline:calendar-days',
                         link: '/operation-administracion/match-scheduling',
-                    },
+                    },*/
                     {
                         id: '2',
                         title: 'Registrar Resultado',
