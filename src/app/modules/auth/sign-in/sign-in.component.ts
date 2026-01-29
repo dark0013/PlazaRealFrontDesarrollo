@@ -62,6 +62,7 @@ export class AuthSignInComponent implements OnInit {
             password: ['Password123!', Validators.required],
             rememberMe: [''],
         });
+        localStorage.clear();
     }
 
     signIn(): void {
