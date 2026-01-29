@@ -56,7 +56,7 @@ export class ModalSportsComponent {
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
             name: [this.data ? this.data.name : '', Validators.required],
-            description: [this.data ? this.data.description : 'na'],
+            description: [this.data ? this.data.description : ' '],
         });
     }
     ngOnInit(): void {

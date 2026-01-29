@@ -136,7 +136,7 @@ export class ModalPlayareaComponent {
                 normalized[key] === undefined ||
                 normalized[key] === ''
             ) {
-                normalized[key] = 'N/A';
+                normalized[key] = ' ';
             }
         });
 
