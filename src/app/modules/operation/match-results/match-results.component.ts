@@ -85,8 +85,7 @@ export class MatchResultsComponent {
     private mapBackendRoundsToUI(apiRounds: any[]): UIRound[] {
         const totalRounds = apiRounds.length;
 
-        return apiRounds.map((roundData, index) => {
-            console.log('Mapping round data:', roundData);
+        return apiRounds.map((roundData) => {
             const roundNumber = roundData.round;
 
             return {
@@ -98,6 +97,9 @@ export class MatchResultsComponent {
                     player2: m.player2_team,
                     player1_id: m.id_player1,
                     player2_id: m.id_player2,
+
+                    punto_player1: m.punto_player1,
+                    punto_player2: m.punto_player2,
 
                     winner: m.winner_team,
                     loser: m.loser_team,
@@ -160,6 +162,9 @@ interface Match {
     player2_id: number | null;
     date?: string;
     court?: string;
+
+    punto_player1?: number;
+    punto_player2?: number;
 
     winner?: string;
     loser?: string;

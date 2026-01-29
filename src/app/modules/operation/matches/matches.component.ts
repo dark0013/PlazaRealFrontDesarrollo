@@ -180,9 +180,9 @@ export class MatchesComponent {
             error: (err) => {
                 console.error(err);
                 this._notificationService.show(
-                    'error',
-                    'Error',
-                    'No se pudieron confirmar los encuentros'
+                    'warning',
+                    'Atención',
+                    'Encuentros ya habían sido confirmados'
                 );
                 this.isConfirming = false;
             },

@@ -36,6 +36,8 @@ export class MatchesService {
             id_round: number;
             winner_id: number;
             loser_id: number;
+            punto_player1: number;
+            punto_player2: number;
         }
     ): Observable<any> {
         return this.http.put(

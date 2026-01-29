@@ -51,22 +51,28 @@ export class ModalResultsComponent {
         console.log('data received in modal:', data);
         this.dataFormDinamicModal = this._formBuilder.group({
             winner_id: [null, Validators.required],
+            punto_player1: [null, [Validators.required, Validators.min(0)]],
+            punto_player2: [null, [Validators.required, Validators.min(0)]],
         });
     }
 
     saveData(): void {
         if (!this.dataFormDinamicModal.valid) return;
 
-        const winnerId = this.dataFormDinamicModal.value.winner_id;
-        const loserId =
-            winnerId === this.data.player1_id
+        const { winner_id, punto_player1, punto_player2 } =
+            this.dataFormDinamicModal.value;
+
+        const loser_id =
+            winner_id === this.data.player1_id
                 ? this.data.player2_id
                 : this.data.player1_id;
 
         const payload = {
-            id_round: this.data.id,
-            winner_id: winnerId,
-            loser_id: loserId,
+            id_round: this.data.id, // match_id
+            winner_id,
+            loser_id,
+            punto_player1,
+            punto_player2,
         };
 
         this._matchesService
@@ -87,7 +93,7 @@ export class ModalResultsComponent {
                     this._notificationService.show(
                         'success',
                         'Resultado registrado',
-                        'El ganador fue guardado correctamente'
+                        'El resultado fue guardado correctamente'
                     );
                     this._dialogRef.close(true);
                 },
