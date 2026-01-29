@@ -33,8 +33,6 @@ import { CatalogService } from 'app/services/system/shared/catalog.service';
     styleUrl: './venue-reservation-report-component.component.scss',
 })
 export class VenueReservationReportComponentComponent implements OnInit {
-    venues: any[] = [];
-    reservations: any[] = [];
     scenarios: Catalog[] = [];
     displayedColumns: string[] = ['venue', 'date', 'time', 'match'];
 
@@ -42,7 +40,7 @@ export class VenueReservationReportComponentComponent implements OnInit {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     filters = {
-        venueId: '',
+        venueId: 0,
         fromDate: new Date(),
         toDate: new Date(),
     };
@@ -54,7 +52,6 @@ export class VenueReservationReportComponentComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadScenarios();
-        this.loadReservations();
     }
 
     ngAfterViewInit(): void {
@@ -65,19 +62,42 @@ export class VenueReservationReportComponentComponent implements OnInit {
         this._catalogService.getScenarios().subscribe({
             next: (resp: any) => {
                 this.scenarios = resp.data;
+
+                if (this.scenarios.length > 0) {
+                    this.filters.venueId = this.scenarios[0].value_key;
+                    this.loadReservations();
+                }
             },
         });
     }
 
     loadReservations(): void {
+        this.dataSource.data = [];
+
         this._reservationService
-            .getReservations(this.filters)
-            .subscribe((data) => {
-                this.dataSource.data = data;
+            .getReservationReport(
+                this.filters.venueId,
+                this.formatDate(this.filters.fromDate),
+                this.formatDate(this.filters.toDate)
+            )
+            .subscribe({
+                next: (resp) => {
+                    this.dataSource.data = resp.data;
+                },
+                error: (err) => {
+                    console.error(
+                        'Error al obtener reporte de reservaciones',
+                        err
+                    );
+                },
             });
     }
 
     exportToExcel(): void {
         this._reservationService.exportToExcel(this.dataSource.data);
+    }
+
+    private formatDate(date: Date): string {
+        return date.toISOString().split('T')[0];
     }
 }

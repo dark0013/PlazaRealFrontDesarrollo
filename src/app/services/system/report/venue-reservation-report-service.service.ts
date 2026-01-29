@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'app/environments/environment';
 import { Observable, of } from 'rxjs';
 import * as XLSX from 'xlsx';
 
@@ -6,7 +8,9 @@ import * as XLSX from 'xlsx';
     providedIn: 'root',
 })
 export class VenueReservationReportServiceService {
-    constructor() {}
+    private readonly baseUrl = environment.baseUrl;
+
+    constructor(private _http: HttpClient) {}
 
     getReservations(filters: any): Observable<any[]> {
         return of([
@@ -83,7 +87,6 @@ export class VenueReservationReportServiceService {
                 responsable_person: 'Andrea Paz',
             },
 
-            // 🔴 HOY
             {
                 reservation_id: 10,
                 scenario_id: 1,
@@ -101,7 +104,6 @@ export class VenueReservationReportServiceService {
                 responsable_person: 'Fernando Mora',
             },
 
-            // 🔵 FUTURAS
             {
                 reservation_id: 12,
                 scenario_id: 3,
@@ -193,16 +195,31 @@ export class VenueReservationReportServiceService {
         ]);
     }
 
+    getReservationReport(
+        scenarioId: number,
+        startDate: string,
+        endDate: string
+    ): Observable<any> {
+        return this._http.post(
+            `${this.baseUrl}/reporteria/reporte-reservacion`,
+            {
+                scenario_id: scenarioId,
+                start_date: startDate,
+                end_date: endDate,
+            }
+        );
+    }
+
     exportToExcel(data: any[]): void {
         const today = new Date();
-        const formattedDate = today.toISOString().split('T')[0]; 
+        const formattedDate = today.toISOString().split('T')[0];
 
         const worksheet = XLSX.utils.json_to_sheet(
             data.map((r) => ({
                 Cancha: r.scenario_name,
                 Fecha: new Date(r.reservation_date).toLocaleDateString('es-ES'),
-                Horario: r.time,
-                Responsable: r.responsable_person ?? '—',
+                Horario: r.reservation_time,
+                Responsable: r.sportsman_name ?? '—',
             }))
         );
 
