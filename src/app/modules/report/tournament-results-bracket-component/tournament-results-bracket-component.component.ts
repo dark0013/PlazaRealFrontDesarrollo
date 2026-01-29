@@ -55,7 +55,6 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadTournaments();
-        this.loadBracket();
     }
 
     ngAfterViewInit(): void {
@@ -68,25 +67,34 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
                 this.tournament = resp.data;
                 if (this.tournament.length > 0) {
                     this.filters.tournamentId = this.tournament[0].value_key;
+                    this.loadBracket();
                 }
             },
         });
     }
 
     loadBracket(): void {
-        this._bracketService.getBracket(this.filters).subscribe((data) => {
-            this.dataSource.data = data;
-        });
+        this.dataSource.data = [];
+        this._bracketService
+            .getBracketResults(this.filters.tournamentId)
+            .subscribe({
+                next: (resp) => {
+                    this.dataSource.data = resp.data;
+                },
+                error: (err) => {
+                    console.error('Error al obtener cuadro de resultados', err);
+                },
+            });
     }
 
     exportToExcel(): void {
         const data = this.dataSource.data.map((m, i) => ({
             '#': i + 1,
-            Round: m.round,
-            Player1: m.player1,
-            Player2: m.player2,
-            Score: m.score,
-            Winner: m.winner,
+            Round: m.fase,
+            Player1: m.jugador_1,
+            Player2: m.jugador_2,
+            Score: m.marcador,
+            Winner: m.ganador,
         }));
 
         const worksheet = XLSX.utils.json_to_sheet(data);

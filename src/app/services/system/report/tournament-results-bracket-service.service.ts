@@ -1,37 +1,22 @@
-import { Injectable } from '@angular/core';
-import signOutRoutes from 'app/modules/auth/sign-out/sign-out.routes';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { environment } from 'app/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TournamentResultsBracketServiceService {
+    private _http = inject(HttpClient);
+    private baseUrl = environment.baseUrl;
     constructor() {}
 
-    getBracket(filters: any): Observable<any[]> {
-        console.log('Filters received in service:', filters);
-        return of([
+    getBracketResults(tournamentId: number): Observable<any> {
+        return this._http.post(
+            `${this.baseUrl}/reporteria/reporte-cuadro-resultados`,
             {
-                round: 'Quarterfinal',
-                player1: 'Equipo 1',
-                player2: 'Equipo 2',
-                score: '6-4 / 6-3',
-                winner: 'Equipo 1',
-            },
-            {
-                round: 'Semifinal',
-                player1: 'Equipo 1',
-                player2: 'Equipo 3',
-                score: '7-5 / 6-2',
-                winner: 'Equipo 1',
-            },
-            {
-                round: 'Final',
-                player1: 'Equipo 1',
-                player2: 'Equipo 4',
-                score: '6-3 / 6-4',
-                winner: 'Equipo 1',
-            },
-        ]);
+                tournament_id: tournamentId,
+            }
+        );
     }
 }
