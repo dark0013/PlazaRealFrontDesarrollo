@@ -32,7 +32,6 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
     tournaments: any[] = [];
     matches: any[] = [];
     tournament: Catalog[] = [];
-    category: Catalog[] = [];
 
     displayedColumns: string[] = [
         'round',
@@ -47,7 +46,6 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
 
     filters = {
         tournamentId: null,
-        category: 'ALL',
     };
 
     constructor(
@@ -57,7 +55,6 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadTournaments();
-        this.loadCategories();
         this.loadBracket();
     }
 
@@ -66,17 +63,12 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
     }
 
     loadTournaments(): void {
-        this._catalogService.getScenarios().subscribe({
+        this._catalogService.getTournament().subscribe({
             next: (resp: any) => {
                 this.tournament = resp.data;
-            },
-        });
-    }
-
-    loadCategories(): void {
-        this._catalogService.getCategories().subscribe({
-            next: (resp: any) => {
-                this.category = resp.data;
+                if (this.tournament.length > 0) {
+                    this.filters.tournamentId = this.tournament[0].value_key;
+                }
             },
         });
     }

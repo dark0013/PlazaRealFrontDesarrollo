@@ -13,25 +13,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     */
 
     {
-        id: '0',
-        title: 'Inicio',
-        subtitle: 'Inicio del sistema',
-        type: 'group',
-        icon: 'heroicons_outline:home',
-
-        children: [
-            {
-                id: '1',
-                title: 'Perfil', //Panel Control
-                subtitle: 'Información relevante',
-                icon: 'heroicons_outline:home',
-                type: 'basic',
-                link: '/home',
-            },
-        ],
-    },
-
-    {
         id: '1',
         title: 'SISTEMA',
         subtitle: 'Seguridad, accesos y configuraciones del sistema',
@@ -193,6 +174,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:rectangle-group',
                         link: '/operation-administracion/matches',
+                    },
+                    {
+                        id: '1',
+                        title: 'Programación de Partidos',
+                        type: 'basic',
+                        icon: 'heroicons_outline:calendar-days',
+                        link: '/operation-administracion/match-scheduling',
+                    },
+                    {
+                        id: '2',
+                        title: 'Registrar Resultado',
+                        type: 'basic',
+                        icon: 'heroicons_outline:trophy',
+                        link: '/operation-administracion/match-results',
                     },
                 ],
             },

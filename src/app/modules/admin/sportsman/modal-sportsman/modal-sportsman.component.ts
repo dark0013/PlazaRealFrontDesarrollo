@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
     MAT_DIALOG_DATA,
     MatDialogModule,
@@ -41,14 +43,31 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         MatButtonModule,
         MatSelectModule,
         MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
     templateUrl: './modal-sportsman.component.html',
     styleUrl: 'modal-sportsman.component.scss',
+    providers: [
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: {
+                parse: { dateInput: 'DD/MM/YYYY' },
+                display: {
+                    dateInput: 'DD/MM/YYYY',
+                    monthYearLabel: 'MMM YYYY',
+                    dateA11yLabel: 'LL',
+                    monthYearA11yLabel: 'MMMM YYYY',
+                },
+            },
+        },
+    ],
 })
 export class ModalSportsmanComponent implements OnInit {
     dataFormDinamicModal: UntypedFormGroup;
     readonlyMode: boolean = false;
     categories: Catalog[] = [];
+    today = new Date();
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -96,10 +115,7 @@ export class ModalSportsmanComponent implements OnInit {
                 Validators.required,
             ],
 
-            current_ranking: [
-                this.data.register ? this.data.register.current_ranking : '',
-                Validators.required,
-            ],
+            current_ranking: ['99'],
         });
     }
     ngOnInit(): void {

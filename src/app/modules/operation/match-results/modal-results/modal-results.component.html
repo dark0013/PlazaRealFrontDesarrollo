@@ -1,0 +1,86 @@
+<!-- Header -->
+<div
+    class="flex h-16 items-center justify-between bg-primary pl-6 pr-3 text-on-primary"
+>
+    <div class="text-lg font-medium">
+        Registrar resultado – Ronda {{ data.id_round }}
+    </div>
+</div>
+
+<hr />
+
+<mat-dialog-content>
+    <form [formGroup]="dataFormDinamicModal">
+        <div class="mt-6 grid w-full gap-6 sm:grid-cols-4">
+            <!-- Equipo 1 -->
+            <div class="sm:col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>Equipo 1</mat-label>
+                    <input matInput [value]="data.player1" disabled />
+                </mat-form-field>
+            </div>
+
+            <!-- Equipo 2 -->
+            <div class="sm:col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>Equipo 2</mat-label>
+                    <input matInput [value]="data.player2" disabled />
+                </mat-form-field>
+            </div>
+
+            <!-- Selector de ganador -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="w-full">
+                    <mat-label>Ganador</mat-label>
+                    <!-- Icono prefix -->
+                    <mat-icon
+                        matPrefix
+                        svgIcon="heroicons_outline:trophy"
+                    ></mat-icon>
+
+                    <!-- Mat-select con formControlName -->
+                    <mat-select formControlName="winner_id">
+                        <mat-option [value]="data.player1_id">{{
+                            data.player1
+                        }}</mat-option>
+                        <mat-option [value]="data.player2_id">{{
+                            data.player2
+                        }}</mat-option>
+                    </mat-select>
+
+                    <!-- Error si no se selecciona -->
+                    <mat-error
+                        *ngIf="
+                            dataFormDinamicModal
+                                .get('winner_id')
+                                ?.hasError('required')
+                        "
+                    >
+                        Debe seleccionar un ganador
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<!-- Footer / Botones -->
+<div mat-dialog-actions>
+    <div class="flex justify-end">
+        <button mat-stroked-button type="button" (click)="close()">
+            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
+            Cancelar
+        </button>
+
+        <button
+            class="ml-4"
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="saveData()"
+        >
+            <mat-icon svgIcon="heroicons_outline:check-circle"></mat-icon>
+            Guardar resultado
+        </button>
+    </div>
+</div>

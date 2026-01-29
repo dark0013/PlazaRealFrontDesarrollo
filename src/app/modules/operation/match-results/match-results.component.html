@@ -19,7 +19,7 @@
                 <h2
                     class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
                 >
-                    Generación de Enfrentamientos
+                    Registrar Resultados
                 </h2>
             </div>
         </div>
@@ -53,10 +53,12 @@
                     <button
                         mat-flat-button
                         [color]="'accent'"
-                        (click)="generateMatches()"
+                        (click)="loadBrackets()"
                     >
-                        <mat-icon svgIcon="heroicons_outline:play"></mat-icon>
-                        Generar encuentros
+                        <mat-icon
+                            svgIcon="heroicons_outline:magnifying-glass"
+                        ></mat-icon>
+                        Consultar encuentros
                     </button>
                 </div>
             </div>
@@ -85,10 +87,26 @@
                                         ) {
                                             <div
                                                 class="cursor-pointer rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md"
-                                                (click)="openMatch(match)"
+                                                (click)="
+                                                    openMatch(
+                                                        match,
+                                                        round.id_round
+                                                    )
+                                                "
                                             >
+                                                <!-- JUGADOR 1 -->
                                                 <div
                                                     class="text-sm font-semibold"
+                                                    [ngClass]="{
+                                                        'font-bold text-green-600':
+                                                            match.winner &&
+                                                            match.player1 ===
+                                                                match.winner,
+                                                        'text-red-600':
+                                                            match.loser &&
+                                                            match.player1 ===
+                                                                match.loser,
+                                                    }"
                                                 >
                                                     {{
                                                         match.player1 ||
@@ -99,36 +117,52 @@
                                                 <div
                                                     class="my-2 text-center text-xs text-gray-400"
                                                 >
-                                                    — VS —
+                                                    @if (
+                                                        match.winner &&
+                                                        match.loser
+                                                    ) {
+                                                        Resultado
+                                                    } @else {
+                                                        — VS —
+                                                    }
                                                 </div>
 
+                                                <!-- JUGADOR 2 -->
                                                 <div
                                                     class="text-sm font-semibold"
+                                                    [ngClass]="{
+                                                        'font-bold text-green-600':
+                                                            match.winner &&
+                                                            match.player2 ===
+                                                                match.winner,
+                                                        'text-red-600':
+                                                            match.loser &&
+                                                            match.player2 ===
+                                                                match.loser,
+                                                    }"
                                                 >
                                                     {{
                                                         match.player2 ||
                                                             'Por definir'
                                                     }}
                                                 </div>
+
+                                                <!-- SOLO SI YA EXISTE RESULTADO -->
+                                                @if (
+                                                    match.winner && match.loser
+                                                ) {
+                                                    <div
+                                                        class="mt-3 rounded-md bg-green-50 px-2 py-1 text-center text-xs font-bold text-green-700"
+                                                    >
+                                                        🏆 Ganador:
+                                                        {{ match.winner }}
+                                                    </div>
+                                                }
                                             </div>
                                         }
                                     </div>
                                 </div>
                             }
-                        </div>
-
-                        <div class="mt-6 flex justify-end border-t pt-4">
-                            <button
-                                mat-flat-button
-                                color="primary"
-                                (click)="confirmMatches()"
-                                [disabled]="!rounds.length || isConfirming"
-                            >
-                                <mat-icon
-                                    svgIcon="heroicons_outline:check-circle"
-                                ></mat-icon>
-                                Confirmar encuentros
-                            </button>
                         </div>
                     }
                 </div>

@@ -24,7 +24,7 @@ export const businessErrorInterceptor: HttpInterceptorFn = (req, next) => {
                     finalMessage = backendMessage;
                 }
 
-                notification.show('error', 'Error de validación', finalMessage);
+                notification.show('warning', 'Error de validación', finalMessage);
             }
 
             if (error.status === 404) {

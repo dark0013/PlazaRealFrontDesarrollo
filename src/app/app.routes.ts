@@ -253,6 +253,20 @@ export const appRoutes: Route[] = [
                         (m) => m.MatchesComponentModule
                     ),
             },
+            {
+                path: 'match-scheduling',
+                loadChildren: () =>
+                    import(
+                        'app/modules/operation/match-scheduling/matches-scheduling.module'
+                    ).then((m) => m.MatchesSchedulingComponentModule),
+            },
+            {
+                path: 'match-results',
+                loadChildren: () =>
+                    import(
+                        'app/modules/operation/match-results/matches-results.module'
+                    ).then((m) => m.MatchesResultsComponentModule),
+            },
         ],
     },
 
@@ -279,7 +293,7 @@ export const appRoutes: Route[] = [
                         'app/modules/report/venue-reservation-report-component/venue-reservation-report-component.module'
                     ).then((m) => m.VenueReservationReportModule),
             },
-             {
+            {
                 path: 'resultados-torneos',
                 loadChildren: () =>
                     import(

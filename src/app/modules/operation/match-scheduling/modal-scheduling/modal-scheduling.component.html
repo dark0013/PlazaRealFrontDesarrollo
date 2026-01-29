@@ -1,0 +1,220 @@
+<div
+    class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
+>
+    <div class="text-lg font-medium">Reservación</div>
+</div>
+
+<hr />
+
+<div mat-dialog-content>
+    <form [formGroup]="dataFormDinamicModal" class="w-full">
+        <div class="mt-6 grid grid-cols-4 gap-6">
+            <div class="col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>Cancha</mat-label>
+                    <mat-select
+                        formControlName="scenario"
+                        (selectionChange)="onCanchaChange($event)"
+                    >
+                        @for (item of scenario; track $index) {
+                            <mat-option [value]="item.value_key">
+                                {{ item.option_value }}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>Fecha</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="picker"
+                        formControlName="date"
+                        (dateChange)="onFechaChange($event.value)"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-span-4">
+                <table mat-table [dataSource]="dataSource" class="w-full">
+                    <ng-container matColumnDef="hora">
+                        <th mat-header-cell *matHeaderCellDef>Hora</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.hour }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="disponible">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Disponibilidad
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span
+                                [class.text-green-600]="row.disponibilidad"
+                                [class.text-red-600]="!row.disponibilidad"
+                            >
+                                {{
+                                    row.disponibilidad
+                                        ? 'Disponible'
+                                        : 'Ocupado'
+                                }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accion">
+                        <th mat-header-cell *matHeaderCellDef>Acción</th>
+                        <td mat-cell *matCellDef="let element">
+                            @if (element.disponibilidad !== 'LIBRE') {
+                                <button
+                                    mat-icon-button
+                                    color="warn"
+                                    title="Cancelar Reservación"
+                                    (click)="
+                                        deleteReservation(
+                                            element.reservation_id
+                                        )
+                                    "
+                                >
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            }
+                        </td>
+                    </ng-container>
+
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="['hora', 'disponible', 'accion']"
+                    ></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="
+                            let row;
+                            columns: ['hora', 'disponible', 'accion']
+                        "
+                    ></tr>
+                </table>
+            </div>
+
+            
+            <div class="sm:col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>Tipo de horario</mat-label>
+
+                    <mat-select
+                        formControlName="time_type"
+                        [disabled]="readonlyMode"
+                    >
+                        <mat-option
+                            *ngFor="let option of reservationTypeOptions"
+                            [value]="option.value"
+                        >
+                            {{ option.label }}
+                        </mat-option>
+                    </mat-select>
+
+                    <mat-error
+                        *ngIf="
+                            dataFormDinamicModal
+                                .get('time_type')
+                                ?.hasError('required')
+                        "
+                    >
+                        Campo requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2"></div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="w-full">
+                    <mat-label>
+                        {{
+                            dataFormDinamicModal.get('time_type')?.value ===
+                            'RANGE'
+                                ? 'Hora inicio'
+                                : 'Hora de reserva'
+                        }}
+                    </mat-label>
+
+                    <mat-select
+                        formControlName="start_time"
+                        [disabled]="readonlyMode"
+                    >
+                        <mat-option
+                            *ngFor="let time of timeOptions"
+                            [value]="time"
+                        >
+                            {{ time }}
+                        </mat-option>
+                    </mat-select>
+
+                    <mat-error
+                        *ngIf="
+                            dataFormDinamicModal
+                                .get('start_time')
+                                ?.hasError('required')
+                        "
+                    >
+                        Campo requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            @if (dataFormDinamicModal.get('time_type')?.value === 'RANGE') {
+                <div class="sm:col-span-2">
+                    <mat-form-field class="w-full">
+                        <mat-label>Hora fin</mat-label>
+
+                        <mat-select
+                            formControlName="end_time"
+                            [disabled]="readonlyMode"
+                        >
+                            <mat-option
+                                *ngFor="let time of endTimeOptions"
+                                [value]="time"
+                            >
+                                {{ time }}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error
+                            *ngIf="
+                                dataFormDinamicModal
+                                    .get('end_time')
+                                    ?.hasError('required')
+                            "
+                        >
+                            Campo requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            }
+
+        </div>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <div class="flex items-center justify-end">
+        <button mat-stroked-button type="button" (click)="close()">
+            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>Cancelar
+        </button>
+        <button
+            *ngIf="!readonlyMode"
+            class="ml-4"
+            mat-flat-button
+            type="button"
+            color="primary"
+            (click)="saveData()"
+        >
+            <mat-icon svgIcon="mat_outline:save"></mat-icon>Guardar
+        </button>
+    </div>
+</div>

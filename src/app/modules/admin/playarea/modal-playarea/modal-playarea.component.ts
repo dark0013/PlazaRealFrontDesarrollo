@@ -59,7 +59,9 @@ export class ModalPlayareaComponent {
             description: [this.data ? this.data.description : ''],
             location: [this.data ? this.data.location : ''],
             surface_type: [this.data ? this.data.surface_type : ''],
-            available_schedule: [this.data ? this.data.available_schedule : '0'],
+            available_schedule: [
+                this.data ? this.data.available_schedule : '0',
+            ],
             ability: [this.data ? this.data.ability : ''],
         });
     }
@@ -78,13 +80,17 @@ export class ModalPlayareaComponent {
     }
 
     saveData() {
-        console.log('this.dataFormDinamicModal.valid', this.dataFormDinamicModal.valid);
-        console.log('this.dataFormDinamicModal', this.dataFormDinamicModal);
         if (!this.dataFormDinamicModal.valid) return;
 
+        const payload = this.normalizeEmptyFields(
+            this.dataFormDinamicModal.value
+        );
+
+        console.log(payload);
+        console.log("----");
         if (this.data == null) {
             this._playAreaService
-                .create(this.dataFormDinamicModal.value)
+                .create(payload)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
@@ -92,7 +98,7 @@ export class ModalPlayareaComponent {
                             'Transacción exitosa',
                             'Registro creado correctamente'
                         );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this._dialogRef.close(payload);
                     },
                     error: (e) => {
                         console.log('error:', e);
@@ -100,7 +106,7 @@ export class ModalPlayareaComponent {
                 });
         } else {
             this._playAreaService
-                .update(this.data.id, this.dataFormDinamicModal.value)
+                .update(this.data.id, payload)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
@@ -108,7 +114,7 @@ export class ModalPlayareaComponent {
                             'Transacción exitosa',
                             'Registro actualizado correctamente'
                         );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this._dialogRef.close(payload);
                     },
                     error: (e) => {
                         console.log('error:', e);
@@ -119,5 +125,21 @@ export class ModalPlayareaComponent {
 
     close() {
         this._dialogRef.close();
+    }
+
+    private normalizeEmptyFields(data: any): any {
+        const normalized = { ...data };
+
+        Object.keys(normalized).forEach((key) => {
+            if (
+                normalized[key] === null ||
+                normalized[key] === undefined ||
+                normalized[key] === ''
+            ) {
+                normalized[key] = 'N/A';
+            }
+        });
+
+        return normalized;
     }
 }

@@ -21,7 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { UserService } from 'app/services/system/access-security/user.service';
 import { SportsService } from 'app/services/system/admin/sports.service';
 import { NotificationService } from 'app/shared/components/notification/notification.service';
 
@@ -57,7 +56,7 @@ export class ModalSportsComponent {
     ) {
         this.dataFormDinamicModal = this._formBuilder.group({
             name: [this.data ? this.data.name : '', Validators.required],
-            description: [this.data ? this.data.description : ''],
+            description: [this.data ? this.data.description : 'na'],
         });
     }
     ngOnInit(): void {
@@ -77,9 +76,12 @@ export class ModalSportsComponent {
     saveData() {
         if (!this.dataFormDinamicModal.valid) return;
 
+        const payload = this.normalizeEmptyFields(
+            this.dataFormDinamicModal.value
+        );
         if (this.data == null) {
             this._sportService
-                .create(this.dataFormDinamicModal.value)
+                .create(payload)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
@@ -87,7 +89,7 @@ export class ModalSportsComponent {
                             'Transacción exitosa',
                             'Registro creado correctamente'
                         );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this._dialogRef.close(payload);
                     },
                     error: (e) => {
                         console.log('error:', e);
@@ -95,7 +97,7 @@ export class ModalSportsComponent {
                 });
         } else {
             this._sportService
-                .update(this.data.id, this.dataFormDinamicModal.value)
+                .update(this.data.id, payload)
                 .subscribe({
                     next: (resp) => {
                         this._notificationService.show(
@@ -103,7 +105,7 @@ export class ModalSportsComponent {
                             'Transacción exitosa',
                             'Registro actualizado correctamente'
                         );
-                        this._dialogRef.close(this.dataFormDinamicModal.value);
+                        this._dialogRef.close(payload);
                     },
                     error: (e) => {
                         console.log('error:', e);
@@ -114,5 +116,21 @@ export class ModalSportsComponent {
 
     close() {
         this._dialogRef.close();
+    }
+
+    private normalizeEmptyFields(data: any): any {
+        const normalized = { ...data };
+
+        Object.keys(normalized).forEach((key) => {
+            if (
+                normalized[key] === null ||
+                normalized[key] === undefined ||
+                normalized[key] === ''
+            ) {
+                normalized[key] = ' ';
+            }
+        });
+
+        return normalized;
     }
 }

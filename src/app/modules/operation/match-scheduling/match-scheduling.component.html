@@ -19,7 +19,7 @@
                 <h2
                     class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
                 >
-                    Generación de Enfrentamientos
+                    Programación de Partidos
                 </h2>
             </div>
         </div>
@@ -53,10 +53,12 @@
                     <button
                         mat-flat-button
                         [color]="'accent'"
-                        (click)="generateMatches()"
+                        (click)="loadBrackets()"
                     >
-                        <mat-icon svgIcon="heroicons_outline:play"></mat-icon>
-                        Generar encuentros
+                        <mat-icon
+                            svgIcon="heroicons_outline:magnifying-glass"
+                        ></mat-icon>
+                        Consultar encuentros
                     </button>
                 </div>
             </div>
@@ -115,20 +117,6 @@
                                     </div>
                                 </div>
                             }
-                        </div>
-
-                        <div class="mt-6 flex justify-end border-t pt-4">
-                            <button
-                                mat-flat-button
-                                color="primary"
-                                (click)="confirmMatches()"
-                                [disabled]="!rounds.length || isConfirming"
-                            >
-                                <mat-icon
-                                    svgIcon="heroicons_outline:check-circle"
-                                ></mat-icon>
-                                Confirmar encuentros
-                            </button>
                         </div>
                     }
                 </div>

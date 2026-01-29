@@ -124,20 +124,32 @@
                         }
                     </mat-form-field>
                 </div>
-
                 <div class="sm:col-span-2">
                     <mat-form-field class="w-full" subscriptSizing="dynamic">
                         <mat-label>Fecha de nacimiento</mat-label>
+
                         <input
-                            formControlName="birthdate"
                             matInput
-                            type="date"
+                            [matDatepicker]="picker"
+                            formControlName="birthdate"
                             [readonly]="readonlyMode"
                         />
+
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+
+                        <mat-datepicker
+                            #picker
+                            [disabled]="readonlyMode"
+                            startView="multi-year"
+                        ></mat-datepicker>
+
                         @if (
                             dataFormDinamicModal
                                 .get('birthdate')
-                                .hasError('required')
+                                ?.hasError('required')
                         ) {
                             <mat-error>Campo es requerido</mat-error>
                         }
@@ -188,24 +200,29 @@
                     </mat-form-field>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <mat-form-field class="w-full" subscriptSizing="dynamic">
-                        <mat-label>Ranking Actual</mat-label>
-                        <input
-                            formControlName="current_ranking"
-                            type="number"
-                            matInput
-                            [readonly]="readonlyMode"
-                        />
-                        @if (
-                            dataFormDinamicModal
-                                .get('current_ranking')
-                                .hasError('required')
-                        ) {
-                            <mat-error>Campo es requerido</mat-error>
-                        }
-                    </mat-form-field>
-                </div>
+                @if (false) {
+                    <div class="sm:col-span-2">
+                        <mat-form-field
+                            class="w-full"
+                            subscriptSizing="dynamic"
+                        >
+                            <mat-label>Ranking Actual</mat-label>
+                            <input
+                                formControlName="current_ranking"
+                                type="number"
+                                matInput
+                                [readonly]="readonlyMode"
+                            />
+                            @if (
+                                dataFormDinamicModal
+                                    .get('current_ranking')
+                                    .hasError('required')
+                            ) {
+                                <mat-error>Campo es requerido</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                }
             </div>
 
             <div class="mb-10 mt-11 border-t"></div>
