@@ -52,9 +52,8 @@ export class AuthService {
     signIn(credentials: { email: string; password: string }): Observable<any> {
         return this._httpClient.post(`${this.baseUrl}/login`, credentials).pipe(
             switchMap((response: any) => {
-                this.accessToken = response.accessToken;
-
                 this.authenticated = 'true';
+                this.accessToken = response.accessToken;
 
                 if (!response.user.is_temporal) {
                     this._userService.user = response.user;

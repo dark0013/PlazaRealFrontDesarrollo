@@ -75,6 +75,7 @@ export class ResetPasswordClassicComponent implements OnInit {
                 ),
             }
         );
+        localStorage.clear();
     }
 
     resetPassword(): void {
