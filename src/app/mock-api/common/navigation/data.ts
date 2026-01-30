@@ -34,6 +34,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:identification',
                         link: '/configuracion/roles',
+                        roles: [1], 
                     },
                 ],
             },
@@ -51,6 +52,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:shield-check',
                         link: '/access-securtiy/asignacionrol',
+                        roles: [1], 
                     },
 
                     {
@@ -59,6 +61,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:users',
                         link: '/access-securtiy/users',
+                        roles: [1], 
                     },
                     {
                         id: '4',
@@ -66,6 +69,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:key',
                         link: '/access-securtiy/reset-password',
+                        roles: [1], 
                     },
                 ],
             },
@@ -94,6 +98,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:user-group',
                         link: '/sportsman/catalogo',
+                        roles: [1, 2], 
                     },
                     {
                         id: '1',
@@ -101,6 +106,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:building-office',
                         link: '/configuracion-administracion/areas',
+                        roles: [1, 2], 
                     },
                     {
                         id: '2',
@@ -108,6 +114,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:squares-2x2',
                         link: '/configuracion-administracion/categorias',
+                        roles: [1, 2], 
                     },
                     {
                         id: '3',
@@ -115,6 +122,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:trophy',
                         link: '/configuracion-administracion/deportes',
+                        roles: [1, 2], 
                     },
                 ],
             },
@@ -143,6 +151,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:calendar-days',
                         link: '/operation-administracion/reservaciones/reservaciones',
+                        roles: [1, 2, 3], 
                     },
                 ],
             },
@@ -161,6 +170,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:cube-transparent',
                         link: '/operation-administracion/torneos',
+                        roles: [1, 2], 
                     },
                     {
                         id: '1',
@@ -168,6 +178,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:user-group',
                         link: '/operation-administracion/registrations',
+                        roles: [1, 2], 
                     },
                     {
                         id: '1',
@@ -175,6 +186,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:rectangle-group',
                         link: '/operation-administracion/matches',
+                        roles: [1, 2], 
                     },
                     /*{
                         id: '1',
@@ -189,6 +201,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:trophy',
                         link: '/operation-administracion/match-results',
+                        roles: [1, 2], 
                     },
                 ],
             },
@@ -206,6 +219,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:trophy',
                         link: '/reportes/ranking-deportistas',
+                        roles: [1, 2, 3], 
                     },
                     {
                         id: '4',
@@ -213,6 +227,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:calendar-days',
                         link: '/reportes/reservas-escenarios',
+                        roles: [1, 2, 3], 
                     },
                     {
                         id: '5',
@@ -220,6 +235,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         type: 'basic',
                         icon: 'heroicons_outline:squares-2x2',
                         link: '/reportes/resultados-torneos',
+                        roles: [1, 2, 3], 
                     },
                 ],
             },

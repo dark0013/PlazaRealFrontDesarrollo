@@ -36,6 +36,7 @@ export interface FuseNavigationItem {
     };
     children?: FuseNavigationItem[];
     meta?: any;
+    roles?: number[]; // IDs de roles que tienen acceso a este item
 }
 
 export type FuseVerticalNavigationAppearance =
