@@ -45,13 +45,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:check-circle',
                 type: 'collapsable',
                 children: [
-                    /*{
+                    {
                         id: '2',
-                        title: 'Gestión de accesos',
+                        title: 'Asignación de pantallas por rol',
                         type: 'basic',
-                        icon: 'heroicons_outline:x-mark',
-                        link: '/acceso/asignacionrol',
-                    },*/
+                        icon: 'heroicons_outline:shield-check',
+                        link: '/access-securtiy/asignacionrol',
+                    },
+
                     {
                         id: '3',
                         title: 'Gestión de usuarios',
@@ -59,13 +60,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:users',
                         link: '/access-securtiy/users',
                     },
-                    /* {
+                    {
                         id: '4',
-                        title: 'Bloqueos y contraseñas',
+                        title: 'Restablecer contraseña',
                         type: 'basic',
-                        icon: 'heroicons_outline:x-mark',
-                        link: '/acceso/asignacionmodulo',
-                    },*/
+                        icon: 'heroicons_outline:key',
+                        link: '/access-securtiy/reset-password',
+                    },
                 ],
             },
         ],

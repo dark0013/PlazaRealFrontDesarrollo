@@ -139,6 +139,20 @@ export const appRoutes: Route[] = [
                         'app/modules/system/access-securtiy/user/user.module'
                     ).then((m) => m.UserModule),
             },
+            {
+                path: 'reset-password',
+                loadChildren: () =>
+                    import(
+                        'app/modules/system/access-securtiy/resetpassword/resetpassword.module'
+                    ).then((m) => m.ResetPasswordModule),
+            },
+            {
+                path: 'asignacionrol',
+                loadChildren: () =>
+                    import(
+                        'app/modules/system/access-securtiy/accesstorol/accesstorol.module'
+                    ).then((m) => m.AccesstorolModule),
+            },
         ],
     },
 
