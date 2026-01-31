@@ -73,6 +73,7 @@ export class AuthForgotPasswordComponent implements OnInit {
      * Send the reset link
      */
     sendResetLink(): void {
+       // debugger;
         // Return if the form is invalid
         if (this.forgotPasswordForm.invalid) {
             return;
@@ -86,7 +87,7 @@ export class AuthForgotPasswordComponent implements OnInit {
 
         // Forgot password
         this._authService
-            .forgotPassword(this.forgotPasswordForm.get('email').value)
+            .olvideContrasena(this.forgotPasswordForm.get('email').value)
             .pipe(
                 finalize(() => {
                     // Re-enable the form
@@ -105,7 +106,7 @@ export class AuthForgotPasswordComponent implements OnInit {
                     this.alert = {
                         type: 'success',
                         message:
-                            "Password reset sent! You'll receive an email if you are registered on our system.",
+                            "¡Restablecimiento de contraseña enviado! Recibirás un correo electrónico si estás registrado en nuestro sistema.",
                     };
                 },
                 (response) => {
@@ -113,7 +114,7 @@ export class AuthForgotPasswordComponent implements OnInit {
                     this.alert = {
                         type: 'error',
                         message:
-                            'Email does not found! Are you sure you are already a member?',
+                            'Email no encontrado! ¿Estás seguro de que ya eres miembro de nuestro sistema?',
                     };
                 }
             );

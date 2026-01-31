@@ -46,14 +46,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:check-circle',
                 type: 'collapsable',
                 children: [
-                    {
+                  /*   {
                         id: '2',
                         title: 'Asignación de pantallas por rol',
                         type: 'basic',
                         icon: 'heroicons_outline:shield-check',
                         link: '/access-securtiy/asignacionrol',
                         roles: [1], 
-                    },
+                    }, */
 
                     {
                         id: '3',

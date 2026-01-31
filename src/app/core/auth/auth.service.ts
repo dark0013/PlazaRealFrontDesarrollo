@@ -30,6 +30,11 @@ export class AuthService {
     forgotPassword(email: string): Observable<any> {
         return this._httpClient.post('api/auth/forgot-password', email);
     }
+    olvideContrasena(email: string): Observable<any> {
+        return this._httpClient.post(`${this.baseUrl}/olvide-contrasena`, {
+            email: email
+        });
+    }
 
     resetPassword(password: string): Observable<any> {
         return this._httpClient.post('api/auth/reset-password', password);
