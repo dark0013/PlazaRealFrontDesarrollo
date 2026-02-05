@@ -53,6 +53,49 @@
                             <mat-option value="O">Otro</mat-option>
                         </mat-select>
                     </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Torneo</mat-label>
+                        <mat-select
+                            [(value)]="selectedTournamentId"
+                            (selectionChange)="onFilterChange()"
+                        >
+                            @for (item of tournaments; track $index) {
+                                <mat-option [value]="item.value_key">
+                                    {{ item.option_value }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Fecha inicio</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="pickerStart"
+                            (dateChange)="onStartDateChange($event.value)"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="pickerStart"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #pickerStart></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Fecha fin</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="pickerEnd"
+                            (dateChange)="onEndDateChange($event.value)"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="pickerEnd"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #pickerEnd></mat-datepicker>
+                    </mat-form-field>
+                    
                 </div>
             </div>
 

@@ -4,8 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AthleteRankingServiceService } from 'app/services/system/report/athlete-ranking-service.service';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { Catalog } from 'app/model/catalog.model';
@@ -23,6 +26,9 @@ import * as XLSX from 'xlsx';
         MatFormFieldModule,
         MatIconModule,
         MatButtonModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
     ],
     templateUrl: './athlete-ranking-component.component.html',
     styleUrl: './athlete-ranking-component.component.scss',
@@ -41,16 +47,35 @@ export class AthleteRankingComponentComponent implements OnInit {
     selectedCategory: string = '0';
     selectedGender: string = '0';
     categoryMap: Record<string, string> = {};
-
     categories: Category[] = [];
+
+    tournaments: any[] = [];
+    selectedTournamentId!: number;
+
+    startDate!: string;
+    endDate!: string;
+
     constructor(
         private _rankingService: AthleteRankingServiceService,
         private _catalogService: CatalogService
     ) {}
 
     ngOnInit(): void {
-        this.loadRanking();
         this.loadCategories();
+        this.loadTournaments();
+    }
+
+    loadTournaments(): void {
+        this._catalogService.getTournament().subscribe({
+            next: (resp: any) => {
+                this.tournaments = resp.data;
+
+                if (this.tournaments.length > 0) {
+                    this.selectedTournamentId = this.tournaments[0].value_key;
+                    this.loadRanking();
+                }
+            },
+        });
     }
 
     loadCategories() {
@@ -71,39 +96,43 @@ export class AthleteRankingComponentComponent implements OnInit {
     }
 
     loadRanking(): void {
-        this.rankings = [];
+        if (!this.selectedTournamentId || !this.startDate || !this.endDate) {
+            return;
+        }
 
-        this._rankingService
-            .getAthleteClassification(
-                this.selectedCategory,
-                this.selectedGender
-            )
-            .subscribe({
-                next: (resp) => {
-                    this.rankings = resp.data
-                        .sort((a, b) => {
-                            const puntosDiff =
-                                Number(b.puntos_totales) -
-                                Number(a.puntos_totales);
+        const request = {
+            category: this.selectedCategory,
+            gender: this.selectedGender,
+            tournamentId: this.selectedTournamentId,
+            startDate: this.startDate,
+            endDate: this.endDate,
+        };
 
-                            if (puntosDiff !== 0) {
-                                return puntosDiff;
-                            }
+        this._rankingService.getAthleteClassification(request).subscribe({
+            next: (resp) => {
+                this.rankings = resp.data
+                    .sort((a, b) => {
+                        const puntosDiff =
+                            Number(b.puntos_totales) - Number(a.puntos_totales);
 
-                            return (
-                                Number(b.torneos_participados) -
-                                Number(a.torneos_participados)
-                            );
-                        })
-                        .map((item, index) => ({
-                            ...item,
-                            position: index + 1,
-                        }));
-                },
-                error: (err) => {
-                    console.error('Error al obtener reporte', err);
-                },
-            });
+                        if (puntosDiff !== 0) {
+                            return puntosDiff;
+                        }
+
+                        return (
+                            Number(b.torneos_participados) -
+                            Number(a.torneos_participados)
+                        );
+                    })
+                    .map((item, index) => ({
+                        ...item,
+                        position: index + 1,
+                    }));
+            },
+            error: (err) => {
+                console.error('Error al obtener reporte', err);
+            },
+        });
     }
 
     onFilterChange(): void {
@@ -139,5 +168,19 @@ export class AthleteRankingComponentComponent implements OnInit {
             workbook,
             `ranking_deportistas_${new Date().toISOString().slice(0, 10)}.xlsx`
         );
+    }
+
+    onStartDateChange(date: Date): void {
+        this.startDate = this.formatDate(date);
+        this.loadRanking();
+    }
+
+    onEndDateChange(date: Date): void {
+        this.endDate = this.formatDate(date);
+        this.loadRanking();
+    }
+
+    private formatDate(date: Date): string {
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD
     }
 }
