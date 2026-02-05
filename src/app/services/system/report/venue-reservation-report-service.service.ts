@@ -37,6 +37,7 @@ export class VenueReservationReportServiceService {
                 Fecha: new Date(r.reservation_date).toLocaleDateString('es-ES'),
                 Horario: r.reservation_time,
                 Responsable: r.sportsman_name ?? '—',
+                availability: r.availability ,
             }))
         );
 

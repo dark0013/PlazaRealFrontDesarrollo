@@ -34,7 +34,7 @@ import { CatalogService } from 'app/services/system/shared/catalog.service';
 })
 export class VenueReservationReportComponentComponent implements OnInit {
     scenarios: Catalog[] = [];
-    displayedColumns: string[] = ['venue', 'date', 'time', 'match'];
+    displayedColumns: string[] = ['venue', 'date', 'time', 'match', 'availability'];
 
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator!: MatPaginator;
