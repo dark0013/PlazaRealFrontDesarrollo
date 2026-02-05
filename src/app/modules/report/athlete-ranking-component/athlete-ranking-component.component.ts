@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AthleteRankingServiceService } from 'app/services/system/report/athlete-ranking-service.service';
 
@@ -9,8 +9,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Catalog } from 'app/model/catalog.model';
 import { Category } from 'app/model/Category.model';
 import { CatalogService } from 'app/services/system/shared/catalog.service';
@@ -29,12 +30,14 @@ import * as XLSX from 'xlsx';
         MatDatepickerModule,
         MatNativeDateModule,
         MatInputModule,
+        MatPaginatorModule,
     ],
     templateUrl: './athlete-ranking-component.component.html',
     styleUrl: './athlete-ranking-component.component.scss',
 })
-export class AthleteRankingComponentComponent implements OnInit {
-    rankings: any[] = [];
+export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
+    dataSource = new MatTableDataSource<any>([]);
+
     displayedColumns = [
         'position',
         'name',
@@ -54,6 +57,7 @@ export class AthleteRankingComponentComponent implements OnInit {
 
     startDate!: string;
     endDate!: string;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
         private _rankingService: AthleteRankingServiceService,
@@ -63,6 +67,10 @@ export class AthleteRankingComponentComponent implements OnInit {
     ngOnInit(): void {
         this.loadCategories();
         this.loadTournaments();
+    }
+
+    ngAfterViewInit(): void {
+        this.dataSource.paginator = this.paginator;
     }
 
     loadTournaments(): void {
@@ -110,7 +118,7 @@ export class AthleteRankingComponentComponent implements OnInit {
 
         this._rankingService.getAthleteClassification(request).subscribe({
             next: (resp) => {
-                this.rankings = resp.data
+                this.dataSource.data = resp.data
                     .sort((a, b) => {
                         const puntosDiff =
                             Number(b.puntos_totales) - Number(a.puntos_totales);
@@ -140,11 +148,11 @@ export class AthleteRankingComponentComponent implements OnInit {
     }
 
     exportToExcel(): void {
-        if (!this.rankings || this.rankings.length === 0) {
+        if (!this.dataSource.data || this.dataSource.data.length === 0) {
             return;
         }
 
-        const data = this.rankings.map((item) => ({
+        const data = this.dataSource.data.map((item) => ({
             '#': item.position,
             Deportista: item.deportista,
             Categoría: this.categoryMap[item.categoria] || item.categoria,
