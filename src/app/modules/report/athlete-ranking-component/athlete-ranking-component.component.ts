@@ -53,7 +53,7 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     categories: Category[] = [];
 
     tournaments: any[] = [];
-    selectedTournamentId!: number;
+    selectedTournamentId: string = '0';
 
     startDate!: string;
     endDate!: string;
@@ -79,7 +79,7 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
                 this.tournaments = resp.data;
 
                 if (this.tournaments.length > 0) {
-                    this.selectedTournamentId = this.tournaments[0].value_key;
+                    //this.selectedTournamentId = this.tournaments[0].value_key;
                     this.loadRanking();
                 }
             },
@@ -111,7 +111,7 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
         const request = {
             category: this.selectedCategory,
             gender: this.selectedGender,
-            tournamentId: this.selectedTournamentId,
+            tournamentId: Number(this.selectedTournamentId),
             startDate: this.startDate,
             endDate: this.endDate,
         };

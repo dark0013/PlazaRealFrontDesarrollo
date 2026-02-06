@@ -60,6 +60,7 @@
                             [(value)]="selectedTournamentId"
                             (selectionChange)="onFilterChange()"
                         >
+                            <mat-option value="0">Todos</mat-option>
                             @for (item of tournaments; track $index) {
                                 <mat-option [value]="item.value_key">
                                     {{ item.option_value }}
