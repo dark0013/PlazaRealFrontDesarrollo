@@ -52,14 +52,17 @@ import { NotificationService } from 'app/shared/components/notification/notifica
         {
             provide: MAT_DATE_FORMATS,
             useValue: {
-                parse: { dateInput: 'DD/MM/YYYY' },
+                parse: {
+                    dateInput: 'dd/MM/yyyy',
+                },
                 display: {
-                    dateInput: 'DD/MM/YYYY',
-                    monthYearLabel: 'MMM YYYY',
-                    dateA11yLabel: 'LL',
-                    monthYearA11yLabel: 'MMMM YYYY',
+                    dateInput: 'dd/MM/yyyy',      // 👈 INPUT LIMPIO
+                    monthYearLabel: 'MMM yyyy',   // 👈 HEADER OK
+                    dateA11yLabel: 'dd/MM/yyyy',
+                    monthYearA11yLabel: 'MMMM yyyy',
                 },
             },
+
         },
     ],
 })
