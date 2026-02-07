@@ -54,14 +54,14 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Fecha inicio</mat-label>
-                        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="startDate" />
+                        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="startDate"  (dateChange)="onStartDateChange($event.value)"/>
                         <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                         <mat-datepicker #pickerStart></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Fecha fin</mat-label>
-                        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="endDate" />
+                        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="endDate"  (dateChange)="onEndDateChange($event.value)" />
                         <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                         <mat-datepicker #pickerEnd></mat-datepicker>
                     </mat-form-field>
