@@ -57,17 +57,43 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
 
     startDate!: string;
     endDate!: string;
+
+    startDatePicker!: Date;
+    endDatePicker!: Date;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
         private _rankingService: AthleteRankingServiceService,
         private _catalogService: CatalogService
-    ) {}
+    ) { }
+
 
     ngOnInit(): void {
         this.loadCategories();
         this.loadTournaments();
+
+        this.loadRanking();
+
+
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+
+        // ayer
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate());
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        // datepicker
+        this.startDatePicker = today;
+        this.endDatePicker = tomorrow;
+
+        // strings (como tu sistema los necesita)
+        this.startDate = this.formatDate(yesterday);
+        this.endDate = this.formatDate(tomorrow);
     }
+
 
     ngAfterViewInit(): void {
         this.dataSource.paginator = this.paginator;
@@ -146,6 +172,11 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     onFilterChange(): void {
         this.loadRanking();
     }
+    yesterday(): Date {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        return d;
+    }
 
     exportToExcel(): void {
         if (!this.dataSource.data || this.dataSource.data.length === 0) {
@@ -160,8 +191,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
                 item.genero === 'M'
                     ? 'Masculino'
                     : item.genero === 'F'
-                      ? 'Femenino'
-                      : 'Otro',
+                        ? 'Femenino'
+                        : 'Otro',
             Puntos: Number(item.puntos_totales),
             'Torneos Jugados': item.torneos_participados,
         }));
