@@ -65,15 +65,13 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     constructor(
         private _rankingService: AthleteRankingServiceService,
         private _catalogService: CatalogService
-    ) { }
-
+    ) {}
 
     ngOnInit(): void {
         this.loadCategories();
         this.loadTournaments();
 
         this.loadRanking();
-
 
         const today = new Date();
         today.setHours(12, 0, 0, 0);
@@ -93,7 +91,6 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
         this.startDate = this.formatDate(yesterday);
         this.endDate = this.formatDate(tomorrow);
     }
-
 
     ngAfterViewInit(): void {
         this.dataSource.paginator = this.paginator;
@@ -191,8 +188,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
                 item.genero === 'M'
                     ? 'Masculino'
                     : item.genero === 'F'
-                        ? 'Femenino'
-                        : 'Otro',
+                      ? 'Femenino'
+                      : 'Otro',
             Puntos: Number(item.puntos_totales),
             'Torneos Jugados': item.torneos_participados,
         }));
@@ -220,6 +217,10 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     }
 
     private formatDate(date: Date): string {
-        return date.toISOString().split('T')[0]; // YYYY-MM-DD
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
     }
 }
