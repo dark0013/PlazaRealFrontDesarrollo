@@ -55,8 +55,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     tournaments: any[] = [];
     selectedTournamentId: string = '0';
 
-    startDate!: string;
-    endDate!: string;
+    startDate!: Date;
+    endDate!: Date;
 
     startDatePicker!: Date;
     endDatePicker!: Date;
@@ -88,8 +88,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
         this.endDatePicker = tomorrow;
 
         // strings (como tu sistema los necesita)
-        this.startDate = this.formatDate(yesterday);
-        this.endDate = this.formatDate(tomorrow);
+        this.startDate = yesterday;
+        this.endDate = tomorrow;
     }
 
     ngAfterViewInit(): void {
@@ -135,8 +135,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
             category: this.selectedCategory,
             gender: this.selectedGender,
             tournamentId: Number(this.selectedTournamentId),
-            startDate: this.startDate,
-            endDate: this.endDate,
+            startDate: this.formatDate(this.startDate),
+            endDate: this.formatDate(this.endDate),
         };
 
         this._rankingService.getAthleteClassification(request).subscribe({
@@ -207,20 +207,19 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     }
 
     onStartDateChange(date: Date): void {
-        this.startDate = this.formatDate(date);
+        this.startDate = date;
         this.loadRanking();
     }
 
     onEndDateChange(date: Date): void {
-        this.endDate = this.formatDate(date);
+        this.endDate = date;
         this.loadRanking();
     }
 
     private formatDate(date: Date): string {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
+          const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
     }
 }
