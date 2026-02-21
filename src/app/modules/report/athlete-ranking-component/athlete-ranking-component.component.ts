@@ -222,4 +222,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
     }
+
+  /*   private formatDate(date: Date): string {
+          return date.toISOString().split('T')[0]; 
+    } */
 }
