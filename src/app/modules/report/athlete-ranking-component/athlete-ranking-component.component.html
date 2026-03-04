@@ -54,14 +54,16 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Fecha inicio</mat-label>
-                        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="startDate"  (dateChange)="onStartDateChange($event.value)"/>
+                        <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="startDate"
+                            (dateChange)="onStartDateChange($event.value)" />
                         <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
                         <mat-datepicker #pickerStart></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Fecha fin</mat-label>
-                        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="endDate"  (dateChange)="onEndDateChange($event.value)" />
+                        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="endDate"
+                            (dateChange)="onEndDateChange($event.value)" />
                         <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
                         <mat-datepicker #pickerEnd></mat-datepicker>
                     </mat-form-field>
@@ -75,7 +77,12 @@
                     Ranking de Deportistas
                 </div>
 
-                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+
+                <div class="mt-6 flex shrink-0 items-center gap-3 sm:ml-4 sm:mt-0">
+                    <button mat-flat-button color="accent" (click)="exportToPDF()">
+                        <mat-icon svgIcon="heroicons_outline:arrow-down-tray"></mat-icon>
+                        <span class="ml-2">Exportar PDF</span>
+                    </button>
                     <button mat-flat-button color="accent" (click)="exportToExcel()">
                         <mat-icon svgIcon="heroicons_outline:arrow-down-tray"></mat-icon>
                         <span class="ml-2">Exportar Excel</span>

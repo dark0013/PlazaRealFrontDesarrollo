@@ -17,6 +17,9 @@ import { Category } from 'app/model/Category.model';
 import { CatalogService } from 'app/services/system/shared/catalog.service';
 import * as XLSX from 'xlsx';
 
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 @Component({
     selector: 'app-athlete-ranking-component',
     imports: [
@@ -65,7 +68,7 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     constructor(
         private _rankingService: AthleteRankingServiceService,
         private _catalogService: CatalogService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.loadCategories();
@@ -188,8 +191,8 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
                 item.genero === 'M'
                     ? 'Masculino'
                     : item.genero === 'F'
-                      ? 'Femenino'
-                      : 'Otro',
+                        ? 'Femenino'
+                        : 'Otro',
             Puntos: Number(item.puntos_totales),
             'Torneos Jugados': item.torneos_participados,
         }));
@@ -206,6 +209,63 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
         );
     }
 
+
+    exportToPDF(): void {
+
+        if (!this.dataSource.data?.length) return;
+
+        const doc = new jsPDF();
+
+        const tableData = this.dataSource.data.map((item, index) => [
+            index + 1,
+            item.deportista,
+            this.categoryMap[item.categoria] || item.categoria,
+            item.genero === 'M'
+                ? 'Masculino'
+                : item.genero === 'F'
+                    ? 'Femenino'
+                    : 'Otro',
+            Number(item.puntos_totales),
+            item.torneos_participados,
+        ]);
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginLeft = 14;
+
+        doc.setFontSize(16);
+        doc.text('URBANIZACIÓN PLAZA REAL', pageWidth / 2, 15, {
+            align: 'center'
+        });
+
+        doc.setFontSize(14);
+        doc.text('Reporte Ranking de Deportistas', pageWidth / 2, 23, {
+            align: 'center'
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Generado: ${new Date().toLocaleDateString()}`, marginLeft, 31);
+
+        autoTable(doc, {
+            startY: 39,
+            head: [[
+                '#',
+                'Deportista',
+                'Categoría',
+                'Género',
+                'Puntos',
+                'Torneos Jugados'
+            ]],
+            body: tableData,
+            styles: {
+                fontSize: 9
+            },
+            headStyles: {
+                fillColor: [41, 128, 185] // azul elegante
+            }
+        });
+
+        doc.save(`ranking_deportistas_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
+
     onStartDateChange(date: Date): void {
         this.startDate = date;
         this.loadRanking();
@@ -217,13 +277,13 @@ export class AthleteRankingComponentComponent implements OnInit, AfterViewInit {
     }
 
     private formatDate(date: Date): string {
-          const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 
-  /*   private formatDate(date: Date): string {
-          return date.toISOString().split('T')[0]; 
-    } */
+    /*   private formatDate(date: Date): string {
+            return date.toISOString().split('T')[0]; 
+      } */
 }
