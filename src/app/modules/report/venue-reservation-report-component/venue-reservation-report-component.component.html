@@ -79,7 +79,17 @@
                     Reservas Asignadas
                 </div>
 
-                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+                <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0 gap-3">
+                    <button
+                        mat-flat-button
+                        color="accent"
+                        (click)="exportToPDF()"
+                    >
+                        <mat-icon
+                            svgIcon="heroicons_outline:arrow-down-tray"
+                        ></mat-icon>
+                        <span class="ml-2">Exportar PDF</span>
+                    </button>
                     <button
                         mat-flat-button
                         color="accent"

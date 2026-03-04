@@ -14,6 +14,10 @@ import { Catalog } from 'app/model/catalog.model';
 import { VenueReservationReportServiceService } from 'app/services/system/report/venue-reservation-report-service.service';
 import { CatalogService } from 'app/services/system/shared/catalog.service';
 
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 @Component({
     selector: 'app-venue-reservation-report-component',
     imports: [
@@ -48,7 +52,7 @@ export class VenueReservationReportComponentComponent implements OnInit {
     constructor(
         private _reservationService: VenueReservationReportServiceService,
         private _catalogService: CatalogService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.loadScenarios();
@@ -96,6 +100,63 @@ export class VenueReservationReportComponentComponent implements OnInit {
     exportToExcel(): void {
         this._reservationService.exportToExcel(this.dataSource.data);
     }
+
+
+
+    exportToPDF(): void {
+
+        if (!this.dataSource.data?.length) return;
+
+        const doc = new jsPDF();
+
+        const tableData = this.dataSource.data.map((m, i) => ([
+            i + 1,
+            m.scenario_name,
+            m.reservation_date,
+            m.reservation_time,
+            m.sportsman_name,
+            m.availability,
+        ]));
+
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginLeft = 14;
+
+        doc.setFontSize(16);
+        doc.text('URBANIZACIÓN PLAZA REAL', pageWidth / 2, 15, {
+            align: 'center'
+        });
+
+        doc.setFontSize(14);
+        doc.text('Reporte Reservas de Escenarios', pageWidth / 2, 23, {
+            align: 'center'
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Generado: ${new Date().toLocaleDateString()}`, marginLeft, 31);
+
+        autoTable(doc, {
+            startY: 39,
+            head: [[
+                '#',
+                'Escenario',
+                'Fecha',
+                'Horario',
+                'Responsable Reservación',
+                'Estado'
+            ]],
+            body: tableData,
+            styles: {
+                fontSize: 9
+            },
+            headStyles: {
+                fillColor: [41, 128, 185] // azul elegante
+            }
+        });
+
+        doc.save(`reserva_escenario_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
+
 
     private formatDate(date: Date): string {
         return date.toISOString().split('T')[0];
