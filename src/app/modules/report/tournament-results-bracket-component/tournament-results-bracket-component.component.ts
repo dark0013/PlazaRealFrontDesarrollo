@@ -13,6 +13,9 @@ import { TournamentResultsBracketServiceService } from 'app/services/system/repo
 import { CatalogService } from 'app/services/system/shared/catalog.service';
 import * as XLSX from 'xlsx';
 
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 @Component({
     selector: 'app-tournament-results-bracket-component',
     imports: [
@@ -51,7 +54,7 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
     constructor(
         private _bracketService: TournamentResultsBracketServiceService,
         private _catalogService: CatalogService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.loadTournaments();
@@ -114,5 +117,60 @@ export class TournamentResultsBracketComponentComponent implements OnInit {
         };
 
         XLSX.writeFile(workbook, 'tournament_results_bracket.xlsx');
+    }
+
+
+
+    exportToPDF(): void {
+
+        if (!this.dataSource.data?.length) return;
+
+        const doc = new jsPDF();
+
+        const tableData = this.dataSource.data.map((m, i) => ([
+            i + 1,
+            m.fase,
+            m.jugador_1,
+            m.jugador_2,
+            m.marcador,
+            m.ganador,
+        ]));
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginLeft = 14;
+
+        doc.setFontSize(16);
+        doc.text('URBANIZACIÓN PLAZA REAL', pageWidth / 2, 15, {
+            align: 'center'
+        });
+
+        doc.setFontSize(14);
+        doc.text('Reporte Cuadro de Resultados del Torneo', pageWidth / 2, 23, {
+            align: 'center'
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Generado: ${new Date().toLocaleDateString()}`, marginLeft, 31);
+
+        autoTable(doc, {
+            startY: 39,
+            head: [[
+                '#',
+                'Fase',
+                'Equipo/Jugador 1',
+                'Equipo/Jugador 2',
+                'Marcador',
+                'Ganador'
+            ]],
+            body: tableData,
+            styles: {
+                fontSize: 9
+            },
+            headStyles: {
+                fillColor: [41, 128, 185] // azul elegante
+            }
+        });
+
+        doc.save(`resultado_torneo_${new Date().toISOString().slice(0, 10)}.pdf`);
     }
 }
